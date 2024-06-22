@@ -12,3 +12,134 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+
+model Users {
+  id            Int            @id @default(autoincrement())
+  firstName     String        
+  lastName      String
+  mobile        String        @unique
+  email         String        @unique
+  password      String        
+  confirmPassword String
+  googleLogin   String?
+  profileImage  String?
+  isBlocked     Boolean       @default(false)
+  isAdmin       Boolean       @default(false)
+  isSeller      Boolean       @default(false)
+  createAt      DateTime      @default(now()) @db.Timestamp(0)
+  updateAt      DateTime      @updatedAt @db.Timestamp(0)
+
+  interested    Interest[]  
+  getVoucherItem VoucherItem[]
+  store         StoreProfile? 
+  comments       Comment[]
+  follow        Follow[]
+
+}
+
+model StoreProfile {
+  id            Int           @id @default(autoincrement())
+  userId        Int           @unique
+  name          String        @db.VarChar(50)
+  coverImage    String?       
+  discription   String?
+  
+  user          Users         @relation(fields: [userId], references: [id])
+  products      Product[]
+  follow        Follow[]
+
+}
+
+model Follow {
+  id            Int           @id @default(autoincrement())
+  storeProfileId  Int
+  userId        Int
+
+  user          Users         @relation(fields: [userId], references: [id])
+  stores        StoreProfile  @relation(fields: [storeProfileId], references: [id])
+
+
+}
+
+
+
+model Interest {
+  id            Int           @id @default(autoincrement())
+  userId        Int           
+  eventId       Int
+
+  user          Users         @relation(fields: [userId], references: [id])
+
+}
+
+model Product {
+  id            Int           @id @default(autoincrement())
+  storeProfileId  Int
+  name          String
+  discription   String?
+  image         String?
+
+  stores        StoreProfile  @relation(fields: [storeProfileId], references: [id])
+  eventItems    EventItem[]
+
+}
+
+model Events {
+  id          Int             @id @default(autoincrement())
+  eventItemId Int
+  name        String          @db.VarChar(100)
+  images      String?         
+  location    String
+  startDate   String          
+  endDate     String
+  isActive    ActiveStatus    @default(isActive)
+
+  voucher     VoucherList[]
+  eventItems  EventItem[]
+}
+
+model Comment {
+  id          Int             @id @default(autoincrement())
+  storeProfileId  Int
+  userId      Int
+  comment     String?
+  rate        String?
+  isVerify    Boolean         @default(false)
+
+  user          Users         @relation(fields: [userId], references: [id])
+
+}
+
+model EventItem {
+  id          Int             @id @default(autoincrement())
+  eventId     Int
+  productId   Int             
+  name        String
+  event       Events          @relation(fields: [eventId], references: [id])
+  products    Product         @relation(fields: [productId], references: [id])
+}
+
+model VoucherList {
+  id          Int             @id @default(autoincrement())
+  eventId     Int
+  code        String
+  count       Int
+  event       Events          @relation(fields: [eventId], references: [id])
+}
+
+model VoucherItem {
+  id          Int             @id @default(autoincrement())
+  voucherListId Int           
+  userId      Int
+
+  getVoucher  Users           @relation(fields: [userId], references: [id])
+}
+
+enum ActiveStatus {
+  isActive
+  actice
+}
+
+
+

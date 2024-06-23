@@ -9,137 +9,164 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
-
 model Users {
-  id            Int            @id @default(autoincrement())
-  firstName     String        
-  lastName      String
-  mobile        String        @unique
-  email         String        @unique
-  password      String        
-  confirmPassword String
+  id            Int       @id @default(autoincrement())
+  email         String?   @unique @db.VarChar(50)
+  password      String?   @db.VarChar(256)
+  firstName     String?   @db.VarChar(50)
+  lastName      String?   @db.VarChar(50)
+  mobile        String?   @unique @db.VarChar(10)
   googleLogin   String?
   profileImage  String?
-  isBlocked     Boolean       @default(false)
-  isAdmin       Boolean       @default(false)
-  isSeller      Boolean       @default(false)
-  createAt      DateTime      @default(now()) @db.Timestamp(0)
-  updateAt      DateTime      @updatedAt @db.Timestamp(0)
+  statusMessage Boolean   @default(false)
+  isBlocked     Boolean   @default(false)
+  blockDate     DateTime?
+  isAdmin       Boolean   @default(false)
+  isSeller      Boolean   @default(false)
 
-  interested    Interest[]  
-  getVoucherItem VoucherItem[]
-  store         StoreProfile? 
-  comments       Comment[]
-  follow        Follow[]
-
+  StoreProfile StoreProfile?
+  Follow       Follow[]
+  Interest     Interest[]
+  Comment      Comment[]
+  VoucherItem  VoucherItem[]
+  userSender   IndoxMessage[] @relation(name: "userSender")
+  userReceiver IndoxMessage[] @relation(name: "userReceiver")
+  userReporter Report[]       @relation(name: "userReporter")
+  userReported Report[]       @relation(name: "userReported")
 }
 
 model StoreProfile {
-  id            Int           @id @default(autoincrement())
-  userId        Int           @unique
-  name          String        @db.VarChar(50)
-  coverImage    String?       
-  discription   String?
-  
-  user          Users         @relation(fields: [userId], references: [id])
-  products      Product[]
-  follow        Follow[]
+  id          Int    @id @default(autoincrement())
+  userId      Int    @unique
+  name        String
+  coverImage  String
+  discription String @db.Text
 
+  user Users @relation(fields: [userId], references: [id])
+
+  Follow  Follow[]
+  Product Product[]
+  Comment Comment[]
+  Events  Events[]
 }
 
 model Follow {
-  id            Int           @id @default(autoincrement())
-  storeProfileId  Int
-  userId        Int
+  id             Int @id @default(autoincrement())
+  storeProfileId Int
+  userId         Int
 
-  user          Users         @relation(fields: [userId], references: [id])
-  stores        StoreProfile  @relation(fields: [storeProfileId], references: [id])
-
-
+  user   Users        @relation(fields: [userId], references: [id])
+  stores StoreProfile @relation(fields: [storeProfileId], references: [id])
 }
 
-
-
 model Interest {
-  id            Int           @id @default(autoincrement())
-  userId        Int           
-  eventId       Int
+  id      Int @id @default(autoincrement())
+  userId  Int
+  eventId Int
 
-  user          Users         @relation(fields: [userId], references: [id])
-
+  user  Users  @relation(fields: [userId], references: [id])
+  event Events @relation(fields: [eventId], references: [id])
 }
 
 model Product {
-  id            Int           @id @default(autoincrement())
-  storeProfileId  Int
-  name          String
-  discription   String?
-  image         String?
+  id             Int    @id @default(autoincrement())
+  storeProfileId Int
+  name           String
+  discription    String
+  image          String
 
-  stores        StoreProfile  @relation(fields: [storeProfileId], references: [id])
-  eventItems    EventItem[]
+  storesProfile StoreProfile @relation(fields: [storeProfileId], references: [id])
 
+  EventItem EventItem[]
 }
 
 model Events {
-  id          Int             @id @default(autoincrement())
-  eventItemId Int
-  name        String          @db.VarChar(100)
-  images      String?         
-  location    String
-  startDate   String          
-  endDate     String
-  isActive    ActiveStatus    @default(isActive)
+  id             Int     @id @default(autoincrement())
+  storeProfileId Int
+  name           String  @db.VarChar(100)
+  images         String
+  location       String
+  startDate      String
+  endDate        String
+  isActive       Boolean @default(false)
 
-  voucher     VoucherList[]
-  eventItems  EventItem[]
+  storeProfile StoreProfile @relation(fields: [storeProfileId], references: [id])
+
+  Interest    Interest[]
+  VoucherList VoucherList[]
+  EventItem   EventItem[]
 }
 
 model Comment {
-  id          Int             @id @default(autoincrement())
-  storeProfileId  Int
-  userId      Int
-  comment     String?
-  rate        String?
-  isVerify    Boolean         @default(false)
+  id             Int     @id @default(autoincrement())
+  storeProfileId Int
+  userId         Int
+  comment        String?
+  rate           Rate
+  isVerify       Boolean @default(false)
 
-  user          Users         @relation(fields: [userId], references: [id])
+  storeProfile StoreProfile @relation(fields: [storeProfileId], references: [id])
+  user         Users        @relation(fields: [userId], references: [id])
+}
 
+enum Rate {
+  ONE
+  TWO
+  THREE
+  FOUR
+  FIVE
 }
 
 model EventItem {
-  id          Int             @id @default(autoincrement())
-  eventId     Int
-  productId   Int             
-  name        String
-  event       Events          @relation(fields: [eventId], references: [id])
-  products    Product         @relation(fields: [productId], references: [id])
+  id        Int @id @default(autoincrement())
+  eventId   Int
+  productId Int
+
+  event    Events  @relation(fields: [eventId], references: [id])
+  products Product @relation(fields: [productId], references: [id])
 }
 
 model VoucherList {
-  id          Int             @id @default(autoincrement())
+  id          Int    @id @default(autoincrement())
   eventId     Int
-  code        String
-  count       Int
-  event       Events          @relation(fields: [eventId], references: [id])
+  code        String @db.VarChar(20)
+  totalAmount Int
+
+  event Events @relation(fields: [eventId], references: [id])
+
+  VoucherItem VoucherItem[]
 }
 
 model VoucherItem {
-  id          Int             @id @default(autoincrement())
-  voucherListId Int           
-  userId      Int
+  id            Int     @id @default(autoincrement())
+  voucherListId Int
+  userId        Int
+  status        Boolean @default(false)
 
-  getVoucher  Users           @relation(fields: [userId], references: [id])
+  voucherList VoucherList @relation(fields: [voucherListId], references: [id])
+  user        Users       @relation(fields: [userId], references: [id])
 }
 
-enum ActiveStatus {
-  isActive
-  actice
+model IndoxMessage {
+  id             Int    @id @default(autoincrement())
+  userIdSender   Int
+  userIdReceiver Int
+  topic          String
+  message        String @db.Text
+
+  userSender   Users @relation(name: "userSender", fields: [userIdSender], references: [id])
+  userReceiver Users @relation(name: "userReceiver", fields: [userIdReceiver], references: [id])
 }
 
+model Report {
+  id             Int @id @default(autoincrement())
+  userIdReporter Int
+  userIdReported Int
 
-
+  userReporter Users @relation(name: "userReporter", fields: [userIdReporter], references: [id])
+  userReported Users @relation(name: "userReported", fields: [userIdReported], references: [id])
+}

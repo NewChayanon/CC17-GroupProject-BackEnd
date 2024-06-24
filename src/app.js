@@ -5,10 +5,12 @@ const cors = require('cors');
 const notFound = require('./middlewares/not-found');
 const errorMiddleware = require('./middlewares/errorMiddleware');
 const authRouter = require('./routes/auth-route');
+const { authenticate } = require('./middlewares/authenticate');
 
 const app = express()
 
 app.use('/auth', authRouter)
+app.use('/user',authenticate)
 app.use(notFound)
 app.use(errorMiddleware)
 

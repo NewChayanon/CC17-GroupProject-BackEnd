@@ -2,6 +2,7 @@ const { json } = require('express')
 const express = require('express')
 const authService = require('../services/auth-services')
 const hashService = require('../services/hash-services')
+const createError = require('../utils/createError')
 
 const authController = {}
 
@@ -11,7 +12,7 @@ authController.register = async (req,res,next)=>{
     const data = req.body
     console.log('data', data)
     const existUser = await authService.findUserByEmail(data.email)
-    if(existUser) return res.json({message: 'email already in use', statusCode : 400})
+    if(existUser) return createError({message: 'email already in use', statusCode : 400})
 
     data.password = await hashService.hash(data.password)
     await authService.createUser(data)

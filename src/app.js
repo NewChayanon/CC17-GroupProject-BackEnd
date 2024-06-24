@@ -9,6 +9,7 @@ const authRouter = require('./routes/auth-route');
 const app = express()
 
 app.use('/auth', authRouter)
+app.use('/user')
 app.use(notFound)
 app.use(errorMiddleware)
 

@@ -20,13 +20,14 @@ model Users {
   firstName     String?   @db.VarChar(50)
   lastName      String?   @db.VarChar(50)
   mobile        String?   @unique @db.VarChar(10)
+  displayName   String?   @db.VarChar(50)
+  gender        Gender
   googleLogin   String?
   profileImage  String?
   statusMessage Boolean   @default(false)
   isBlocked     Boolean   @default(false)
   blockDate     DateTime?
-  isAdmin       Boolean   @default(false)
-  isSeller      Boolean   @default(false)
+  role          Role
 
   StoreProfile StoreProfile?
   Follow       Follow[]
@@ -37,6 +38,18 @@ model Users {
   userReceiver IndoxMessage[] @relation(name: "userReceiver")
   userReporter Report[]       @relation(name: "userReporter")
   userReported Report[]       @relation(name: "userReported")
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHERS
+}
+
+enum Role {
+  BUYER
+  SELLER
+  ADMIN
 }
 
 model StoreProfile {

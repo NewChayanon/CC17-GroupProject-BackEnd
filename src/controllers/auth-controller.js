@@ -24,7 +24,23 @@ authController.register = async (req,res,next)=>{
   
 
 }
-authController.login = (req,res,next)=>{}
+authController.login = async(req,res,next)=>{
+  try {
+    // find email user
+    const {email,password} = req.body
+    const existUser = await authService.findUserByEmail(email)
+    console.log('existUser', existUser.email,existUser.password)
+
+    // find password user
+    const isMatch = await hashService.compare(password,existUser.password)
+    if(!isMatch) createError({message: 'Invalid credential', statusCode: 400})
+    
+    const acessToken = jwtService.sign({id: existUser.id})
+    
+  } catch (error) {
+    
+  }
+}
 authController.getMe = (req,res,next)=>{}
 
 module.exports = authController;

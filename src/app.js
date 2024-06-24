@@ -6,6 +6,7 @@ const notFound = require('./middlewares/not-found');
 const errorMiddleware = require('./middlewares/errorMiddleware');
 const authRouter = require('./routes/auth-route');
 const { authenticate } = require('./middlewares/authenticate');
+const userRouter = require('./routes/user-route');
 
 const app = express()
 
@@ -15,7 +16,7 @@ app.use(express.json());
 
 
 app.use('/auth', authRouter)
-app.use('/user',authenticate)
+app.use('/user',authenticate,userRouter)
 
 
 app.use(notFound)

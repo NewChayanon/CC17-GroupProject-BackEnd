@@ -23,7 +23,7 @@ const event = {
   isActive: true
 }
 const interest = {
-  userId  :1,
+  userId  :2,
   eventId :1,
 }
 

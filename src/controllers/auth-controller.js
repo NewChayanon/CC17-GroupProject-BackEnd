@@ -3,6 +3,7 @@ const express = require('express')
 const authService = require('../services/auth-services')
 const hashService = require('../services/hash-services')
 const createError = require('../utils/createError')
+const jwtService = require('../services/jwt-services')
 
 const authController = {}
 
@@ -27,18 +28,21 @@ authController.register = async (req,res,next)=>{
 authController.login = async(req,res,next)=>{
   try {
     // find email user
-    const {email,password} = req.body
+    const {email,password,id} = req.body
     const existUser = await authService.findUserByEmail(email)
-    console.log('existUser', existUser.email,existUser.password)
+    if(!existUser) createError({message: 'Invalid credential', statusCode: 400})
+    console.log('existUser', existUser.email)
 
     // find password user
     const isMatch = await hashService.compare(password,existUser.password)
+    console.log('isMatch',isMatch)
     if(!isMatch) createError({message: 'Invalid credential', statusCode: 400})
-    
-    const acessToken = jwtService.sign({id: existUser.id})
-    
+      
+    const accessToken = jwtService.sign({id:id})
+    console.log('accessToken:',accessToken)
+    res.status(200).json({accessToken})
   } catch (error) {
-    
+    next(error)
   }
 }
 authController.getMe = (req,res,next)=>{}

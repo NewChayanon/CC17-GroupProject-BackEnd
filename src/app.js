@@ -9,8 +9,14 @@ const { authenticate } = require('./middlewares/authenticate');
 
 const app = express()
 
+app.use(cors())
+app.use(express.json());
+app.use(morgan('dev'));
+
+
 app.use('/auth', authRouter)
 app.use('/user',authenticate)
+
 
 app.use(notFound)
 app.use(errorMiddleware)

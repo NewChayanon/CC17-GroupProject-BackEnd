@@ -4,6 +4,6 @@ const authRouter = express();
 
 authRouter.post('/register', authController.register)
 authRouter.post('/login', authController.login)
-authRouter.getMaxListeners('/me', authController.getMe)
+authRouter.get('/me', authController.getMe)
 
 module.exports = authRouter

@@ -36,7 +36,7 @@ authController.login = async(req,res,next)=>{
     console.log('isMatch',isMatch)
     if(!isMatch) createError({message: 'Invalid credential', statusCode: 400})
       
-    const accessToken = jwtService.sign({id:id})
+    const accessToken = jwtService.sign({id:existUser.id})
     console.log('accessToken:',accessToken)
     res.status(200).json({accessToken})
   } catch (error) {

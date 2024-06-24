@@ -11,6 +11,7 @@ const app = express()
 
 app.use('/auth', authRouter)
 app.use('/user',authenticate)
+
 app.use(notFound)
 app.use(errorMiddleware)
 

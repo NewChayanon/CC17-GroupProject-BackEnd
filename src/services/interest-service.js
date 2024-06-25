@@ -14,5 +14,11 @@ interestService.findInterestByUserId = (userId) =>
       },
     },
   });
-//
+
+interestService.findInterestedByUserIdAndEventId = (userId, eventId) =>
+  prisma.interest.findFirst({ where: { AND: [{ userId }, { eventId }] } });
+
+interestService.deleteInterestById = (id) =>
+  prisma.interest.delete({ where: { id } });
+
 module.exports = interestService;

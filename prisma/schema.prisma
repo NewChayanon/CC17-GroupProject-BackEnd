@@ -27,7 +27,7 @@ model Users {
   statusMessage Boolean   @default(false)
   isBlocked     Boolean   @default(false)
   blockDate     DateTime?
-  role          Role @default(BUYER)
+  role          Role      @default(BUYER)
 
   StoreProfile StoreProfile?
   Follow       Follow[]
@@ -147,6 +147,7 @@ model VoucherList {
   id          Int    @id @default(autoincrement())
   eventId     Int
   code        String @db.VarChar(20)
+  condition   String @db.Text
   totalAmount Int
 
   event Events @relation(fields: [eventId], references: [id])
@@ -158,13 +159,17 @@ model VoucherItem {
   id            Int     @id @default(autoincrement())
   voucherListId Int
   userId        Int
-  status        Boolean @default(false)
+  status        VoucherItemStatus @default(COLLECTED)
 
   voucherList VoucherList @relation(fields: [voucherListId], references: [id])
   user        Users       @relation(fields: [userId], references: [id])
 }
-
-model InboxMessage {
+enum VoucherItemStatus {
+  COLLECTED
+  USED
+  EXPIRED
+}
+model IndoxMessage {
   id             Int    @id @default(autoincrement())
   userIdSender   Int
   userIdReceiver Int

@@ -169,7 +169,7 @@ enum VoucherItemStatus {
   USED
   EXPIRED
 }
-model IndoxMessage {
+model InboxMessage {
   id             Int    @id @default(autoincrement())
   userIdSender   Int
   userIdReceiver Int

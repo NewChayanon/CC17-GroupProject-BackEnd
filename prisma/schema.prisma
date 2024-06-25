@@ -176,9 +176,10 @@ model InboxMessage {
 }
 
 model Report {
-  id             Int @id @default(autoincrement())
+  id             Int    @id @default(autoincrement())
   userIdReporter Int
   userIdReported Int
+  message        String @db.Text
 
   userReporter Users @relation(name: "userReporter", fields: [userIdReporter], references: [id])
   userReported Users @relation(name: "userReported", fields: [userIdReported], references: [id])

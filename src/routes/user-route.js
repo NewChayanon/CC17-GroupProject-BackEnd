@@ -1,10 +1,10 @@
-const express = require('express')
-const userController = require('../controllers/user-controller')
-const userRouter = express.Router()
+const express = require("express");
+const userController = require("../controllers/user-controller");
+const userRouter = express.Router();
 
-userRouter.get('/me', userController.getMe)
-userRouter.get('/event',userController.findEventListOfUser)
-userRouter.get('/event/:eventId',userController.afterClickOnTheEventCard)
+userRouter.get("/me", userController.getMe);
+userRouter.get("/event", userController.findEventListOfUser);
+userRouter.get("/event/:eventId", userController.afterClickOnTheEventCard);
+userRouter.delete("/uninterested/:eventId",userController.uninterested);
 
-
-module.exports = userRouter
+module.exports = userRouter;

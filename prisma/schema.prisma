@@ -27,7 +27,7 @@ model Users {
   statusMessage Boolean   @default(false)
   isBlocked     Boolean   @default(false)
   blockDate     DateTime?
-  role          Role
+  role          Role @default(BUYER)
 
   StoreProfile StoreProfile?
   Follow       Follow[]

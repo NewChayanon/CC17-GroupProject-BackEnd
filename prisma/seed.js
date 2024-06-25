@@ -9,7 +9,7 @@ const userData = [
     firstName: "Admin",
     lastName: "Admin",
     mobile: "0000000000",
-    displayName:"Admin",
+    displayName: "Admin",
     role: "ADMIN",
   },
   {
@@ -19,7 +19,7 @@ const userData = [
     firstName: "test01",
     lastName: "test01",
     mobile: "0101010101",
-    displayName:"test01",
+    displayName: "test01",
   }, //buyer
   {
     id: 3,
@@ -28,7 +28,7 @@ const userData = [
     firstName: "test02",
     lastName: "test02",
     mobile: "0202020202",
-    displayName:"test02",
+    displayName: "test02",
     role: "SELLER",
   }, //seller
   {
@@ -38,7 +38,7 @@ const userData = [
     firstName: "test03",
     lastName: "test03",
     mobile: "0303030303",
-    displayName:"test03",
+    displayName: "test03",
   }, //buyer
 ];
 const storeProfile = {
@@ -57,7 +57,7 @@ const event = {
   isActive: true,
 };
 const interest = {
-  userId: 1,
+  userId: 2,
   eventId: 1,
 };
 const product = [
@@ -101,7 +101,7 @@ const inboxMessage = [
     message: "Down Server : 26/06/2024",
   },
 ];
-const report = { userIdReporter: 4, userIdReported: 3,message:"test" };
+const report = { userIdReporter: 4, userIdReported: 3, message: "test" };
 const run = async () => {
   await prisma.users.createMany({ data: userData });
   await prisma.storeProfile.create({ data: storeProfile });

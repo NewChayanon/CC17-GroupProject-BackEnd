@@ -21,13 +21,13 @@ model Users {
   lastName      String?   @db.VarChar(50)
   mobile        String?   @unique @db.VarChar(10)
   displayName   String?   @db.VarChar(50)
-  gender        Gender
+  gender        Gender?
   googleLogin   String?
   profileImage  String?
   statusMessage Boolean   @default(false)
   isBlocked     Boolean   @default(false)
   blockDate     DateTime?
-  role          Role
+  role          Role @default(BUYER)
 
   StoreProfile StoreProfile?
   Follow       Follow[]

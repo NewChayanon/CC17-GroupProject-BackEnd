@@ -45,7 +45,7 @@ const storeProfile = {
   userId: 3,
   name: "bananaStore",
   coverImage: "bananaStore",
-  discription: "bananaStore",
+  description: "bananaStore",
 };
 const event = {
   storeProfileId: 1,
@@ -61,14 +61,14 @@ const interest = {
   eventId: 1,
 };
 const product = [
-  { storeProfileId: 1, name: "Durian", discription: "Durian", image: "Durian" },
+  { storeProfileId: 1, name: "Durian", description: "Durian", image: "Durian" },
   {
     storeProfileId: 1,
     name: "mangosteen",
-    discription: "mangosteen",
+    description: "mangosteen",
     image: "mangosteen",
   },
-  { storeProfileId: 1, name: "longan", discription: "longan", image: "longan" },
+  { storeProfileId: 1, name: "longan", description: "longan", image: "longan" },
 ];
 const eventItem = [
   { eventId: 1, productId: 1 },
@@ -113,7 +113,7 @@ const run = async () => {
   await prisma.voucherItem.create({data:voucherItem})
   await prisma.follow.create({data:follow})
   await prisma.comment.createMany({data:comment})
-  await prisma.indoxMessage.createMany({data:inboxMessage})
+  await prisma.inboxMessage.createMany({data:inboxMessage})
   await prisma.report.create({data:report})
 
 };

@@ -34,8 +34,8 @@ model Users {
   Interest     Interest[]
   Comment      Comment[]
   VoucherItem  VoucherItem[]
-  userSender   IndoxMessage[] @relation(name: "userSender")
-  userReceiver IndoxMessage[] @relation(name: "userReceiver")
+  userSender   InboxMessage[] @relation(name: "userSender")
+  userReceiver InboxMessage[] @relation(name: "userReceiver")
   userReporter Report[]       @relation(name: "userReporter")
   userReported Report[]       @relation(name: "userReported")
 }
@@ -57,7 +57,7 @@ model StoreProfile {
   userId      Int    @unique
   name        String
   coverImage  String
-  discription String @db.Text
+  description String @db.Text
 
   user Users @relation(fields: [userId], references: [id])
 
@@ -89,7 +89,7 @@ model Product {
   id             Int    @id @default(autoincrement())
   storeProfileId Int
   name           String
-  discription    String
+  description    String
   image          String
 
   storesProfile StoreProfile @relation(fields: [storeProfileId], references: [id])
@@ -164,7 +164,7 @@ model VoucherItem {
   user        Users       @relation(fields: [userId], references: [id])
 }
 
-model IndoxMessage {
+model InboxMessage {
   id             Int    @id @default(autoincrement())
   userIdSender   Int
   userIdReceiver Int

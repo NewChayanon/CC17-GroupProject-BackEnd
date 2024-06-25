@@ -6,4 +6,5 @@ userRouter.get('/me', userController.getMe)
 userRouter.get('/event',userController.findEventListOfUser)
 userRouter.get('/event/:eventId',userController.afterClickOnTheEventCard)
 
+
 module.exports = userRouter

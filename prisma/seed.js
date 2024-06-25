@@ -101,7 +101,7 @@ const inboxMessage = [
     message: "Down Server : 26/06/2024",
   },
 ];
-const report = { userIdReporter: 4, userIdReported: 3 };
+const report = { userIdReporter: 4, userIdReported: 3,message:"test" };
 const run = async () => {
   await prisma.users.createMany({ data: userData });
   await prisma.storeProfile.create({ data: storeProfile });

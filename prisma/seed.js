@@ -58,6 +58,7 @@ const product = [
   { storeProfileId: 1, name: "longan", discription: "longan", image: "longan" },
 ];
 
+
 const run = async () => {
   await prisma.users.createMany({ data: userData });
   await prisma.storeProfile.create({ data: storeProfile });

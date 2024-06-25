@@ -22,5 +22,5 @@ app.use('/user',authenticate,userRouter)
 app.use(notFound)
 app.use(errorMiddleware)
 
-port = process.env.PORT
+port = process.env.PORT || 8888
 app.listen(port, ()=> console.log('server running on', port))

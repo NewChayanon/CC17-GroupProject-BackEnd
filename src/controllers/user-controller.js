@@ -5,8 +5,16 @@ const userService = require("../services/user-service");
 
 const userController = {};
 
-userController.getMe = (req, res, next) => {
-  res.status(200).json({ user: req.user });
+userController.getMe = async (req, res, next) => {
+try {
+  const authorization = req.headers.authorization;
+  const accessToken = authorization.split(" ")[1];
+  console.log('accessToken',accessToken)
+  res.status(200).json({ user: req.user,accessToken: accessToken});
+} catch (error) {
+  next(error)
+}
+ 
 };
 
 userController.findEventListOfUser = async (req, res, next) => {

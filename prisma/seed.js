@@ -13,7 +13,6 @@ const userData = [
     role: "ADMIN",
   },
   {
-    id: 2,
     email: "test01@mail.com",
     password,
     firstName: "test01",
@@ -22,7 +21,6 @@ const userData = [
     displayName: "test01",
   }, //buyer
   {
-    id: 3,
     email: "test02@mail.com",
     password,
     firstName: "test02",
@@ -30,9 +28,8 @@ const userData = [
     mobile: "0202020202",
     displayName: "test02",
     role: "SELLER",
-  }, //seller
+  }, //seller-3
   {
-    id: 4,
     email: "test03@mail.com",
     password,
     firstName: "test03",
@@ -40,26 +37,117 @@ const userData = [
     mobile: "0303030303",
     displayName: "test03",
   }, //buyer
+  {
+    email: "test04@mail.com",
+    password,
+    firstName: "test04",
+    lastName: "test04",
+    mobile: "0404040404",
+    displayName: "test04",
+    role: "SELLER",
+  }, //seller-5
+  {
+    email: "test05@mail.com",
+    password,
+    firstName: "test05",
+    lastName: "test05",
+    mobile: "0505050505",
+    displayName: "test05",
+  }, //buyer
+  {
+    email: "test06@mail.com",
+    password,
+    firstName: "test06",
+    lastName: "test06",
+    mobile: "0606060606",
+    displayName: "test06",
+  }, //buyer
+  {
+    email: "test07@mail.com",
+    password,
+    firstName: "test07",
+    lastName: "test07",
+    mobile: "0707070707",
+    displayName: "test07",
+  }, //buyer
+  {
+    email: "test08@mail.com",
+    password,
+    firstName: "test08",
+    lastName: "test08",
+    mobile: "0808080808",
+    displayName: "test08",
+  }, //buyer
+  {
+    email: "test09@mail.com",
+    password,
+    firstName: "test09",
+    lastName: "test09",
+    mobile: "0909090909",
+    displayName: "test09",
+  }, //buyer
+  {
+    email: "test10@mail.com",
+    password,
+    firstName: "test10",
+    lastName: "test10",
+    mobile: "1010101010",
+    displayName: "test10",
+  }, //buyer
 ];
-const storeProfile = {
-  userId: 3,
-  name: "bananaStore",
-  coverImage: "bananaStore",
-  description: "bananaStore",
-};
-const event = {
-  storeProfileId: 1,
-  name: "bananaEvent",
-  images: "bananaEvent",
-  location: "100.5,-50.66",
-  startDate: "24/06/2024",
-  endDate: "25/06/2024",
-  isActive: true,
-};
-const interest = {
-  userId: 2,
-  eventId: 1,
-};
+const storeProfile = [
+  {
+    userId: 3,
+    name: "bananaStore",
+    coverImage: "bananaStore",
+    description: "bananaStore",
+  },
+  {
+    userId: 4,
+    name: "DurianStore",
+    coverImage: "DurianStore",
+    description: "DurianStore",
+  },
+];
+const event = [
+  {
+    storeProfileId: 1,
+    name: "bananaEvent",
+    images: "bananaEvent",
+    location: "100.5,-50.66",
+    startDate: "24/06/2024",
+    endDate: "25/06/2024",
+    isActive: true,
+  },
+  {
+    storeProfileId: 1,
+    name: "bananaEvent",
+    images: "bananaEvent",
+    location: "50.0,50.0",
+    startDate: "24/06/2024",
+    endDate: "25/06/2024",
+    isActive: true,
+  },
+  {
+    storeProfileId: 2,
+    name: "bananaEvent",
+    images: "bananaEvent",
+    location: "50.0,50.0",
+    startDate: "24/06/2024",
+    endDate: "25/06/2024",
+    isActive: true,
+  },
+];
+const interest = [
+  {
+    userId: 2,
+    eventId: 1,
+  },
+  {
+    userId: 2,
+    eventId: 2,
+  },
+];
 const product = [
   { storeProfileId: 1, name: "Durian", description: "Durian", image: "Durian" },
   {
@@ -74,7 +162,12 @@ const eventItem = [
   { eventId: 1, productId: 1 },
   { eventId: 1, productId: 2 },
 ];
-const voucherList = { eventId: 1, code: "25JUN50P", totalAmount: 20 };
+const voucherList = {
+  eventId: 1,
+  code: "25JUN50P",
+  condition: "test",
+  totalAmount: 20,
+};
 const voucherItem = { voucherListId: 1, userId: 2 };
 const follow = { storeProfileId: 1, userId: 2 };
 const comment = [
@@ -102,11 +195,12 @@ const inboxMessage = [
   },
 ];
 const report = { userIdReporter: 4, userIdReported: 3, message: "test" };
+
 const run = async () => {
   await prisma.users.createMany({ data: userData });
-  await prisma.storeProfile.create({ data: storeProfile });
-  await prisma.events.create({ data: event });
-  await prisma.interest.create({ data: interest });
+  await prisma.storeProfile.createMany({ data: storeProfile });
+  await prisma.events.createMany({ data: event });
+  await prisma.interest.createMany({ data: interest });
   await prisma.product.createMany({ data: product });
   await prisma.eventItem.createMany({ data: eventItem });
   await prisma.voucherList.create({ data: voucherList });

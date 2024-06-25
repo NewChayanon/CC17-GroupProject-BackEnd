@@ -2,6 +2,11 @@ const interestService = require("../services/interest-service")
 
 const userController = {}
 
+
+userController.getMe = (req,res,next)=>{
+    res.status(200).json({user: req.user})
+}
+
 userController.findEventListOfUser = async (req, res, next) => {
     try {
         const user = req.user

@@ -6,6 +6,9 @@ exports.registerSchema = Joi.object({
   email : Joi.string().email({tlds: false}).required().strip(),
   password : Joi.string().required().pattern(/^[a-zA-Z0-9!@#$%^&*()-_=+?]{6,}$/),
   confirmPassword : Joi.string().required().valid(Joi.ref('password')).strip(),
+  statusMessage: Joi.boolean(),
+  isBlocked: Joi.boolean(),
+  role: Joi.string(),
   mobile : Joi.string().pattern(/^[0-9]{10}$/),
   role: Joi.string()
 });

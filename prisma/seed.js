@@ -4,6 +4,8 @@ const prisma = new PrismaClient();
 const password = bcrypt.hashSync("123456789");
 const userData = [
   {
+
+    id: 1,
     email: "admin@mail.com",
     password,
     firstName: "Admin",
@@ -12,6 +14,7 @@ const userData = [
     isAdmin: true,
   },
   {
+    id: 2,
     email: "test01@mail.com",
     password,
     firstName: "test01",
@@ -20,6 +23,7 @@ const userData = [
     isSeller: false,
   }, //buyer
   {
+    id: 3,
     email: "test02@mail.com",
     password,
     firstName: "test02",
@@ -28,6 +32,7 @@ const userData = [
     isSeller: true,
   }, //seller
   {
+    id:4,
     email: "test03@mail.com",
     password,
     firstName: "test03",
@@ -55,6 +60,16 @@ const interest = {
   userId: 1,
   eventId: 1,
 };
+const product = [
+  { storeProfileId: 1, name: "Durian", discription: "Durian", image: "Durian" },
+  {
+    storeProfileId: 1,
+    name: "mangosteen",
+    discription: "mangosteen",
+    image: "mangosteen",
+  },
+  { storeProfileId: 1, name: "longan", discription: "longan", image: "longan" },
+];
 const eventItem = [
   { eventId: 1, productId: 1 },
   { eventId: 1, productId: 2 },
@@ -92,6 +107,7 @@ const run = async () => {
   await prisma.storeProfile.create({ data: storeProfile });
   await prisma.events.create({ data: event });
   await prisma.interest.create({ data: interest });
+  await prisma.product.createMany({data:product})
   await prisma.eventItem.createMany({data:eventItem})
   await prisma.voucherList.create({data:voucherList})
   await prisma.voucherItem.create({data:voucherItem})
@@ -99,5 +115,6 @@ const run = async () => {
   await prisma.comment.createMany({data:comment})
   await prisma.indoxMessage.createMany({data:inboxMessage})
   await prisma.report.create({data:report})
+
 };
 run();

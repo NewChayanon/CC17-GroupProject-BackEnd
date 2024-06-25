@@ -9,6 +9,7 @@ authController.register = async (req,res,next)=>{
   try {
     // get data
     const data = req.body
+    delete data.confirmPassword
     console.log('data', data)
     const existUser = await authService.findUserByEmail(data.email)
     if(existUser) return createError({message: 'email already in use', statusCode : 400})
@@ -16,7 +17,7 @@ authController.register = async (req,res,next)=>{
     data.password = await hashService.hash(data.password)
     await authService.createUser(data)
     console.log(data.password)
-    return res.status(200).json(data)
+    return res.status(201).json(data)
   } catch (error) {
     next(error)
   }
@@ -26,7 +27,7 @@ authController.register = async (req,res,next)=>{
 authController.login = async(req,res,next)=>{
   try {
     // find email user
-    const {email,password,id} = req.body
+    const {email,password} = req.body
     const existUser = await authService.findUserByEmail(email)
     if(!existUser) createError({message: 'Invalid credential', statusCode: 400})
     console.log('existUser', existUser.email)
@@ -34,7 +35,7 @@ authController.login = async(req,res,next)=>{
     // find password user
     const isMatch = await hashService.compare(password,existUser.password)
     console.log('isMatch',isMatch)
-    if(!isMatch) createError({message: 'Invalid credential', statusCode: 400})
+    if(!isMatch) return createError({message: 'Invalid credential', statusCode: 400})
       
     const accessToken = jwtService.sign({id:existUser.id})
     console.log('accessToken:',accessToken)
@@ -43,6 +44,5 @@ authController.login = async(req,res,next)=>{
     next(error)
   }
 }
-authController.getMe = (req,res,next)=>{}
 
 module.exports = authController;

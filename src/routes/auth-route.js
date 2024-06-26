@@ -5,6 +5,7 @@ const authRouter = express.Router();
 
 authRouter.post('/register', registerValidator,authController.register)
 authRouter.post('/login', loginValidator,authController.login)
+authRouter.get('/near-me',authController.sellerNearMe)
 
 
 module.exports = authRouter

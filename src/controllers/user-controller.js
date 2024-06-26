@@ -42,6 +42,7 @@ userController.afterClickOnTheEventCard = async (req, res, next) => {
       findEventById,
       findEventOther
     );
+    
     res.json(newFindEventById);
   } catch (err) {
     next(err);

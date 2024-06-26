@@ -1,4 +1,5 @@
 const eventServices = require("../services/event-services");
+const inboxMessageService = require("../services/inboxMessage-service");
 const interestService = require("../services/interest-service");
 const refactorService = require("../services/refactor-services");
 const userService = require("../services/user-service");
@@ -6,15 +7,14 @@ const userService = require("../services/user-service");
 const userController = {};
 
 userController.getMe = async (req, res, next) => {
-try {
-  const authorization = req.headers.authorization;
-  const accessToken = authorization.split(" ")[1];
-  console.log('accessToken',accessToken)
-  res.status(200).json({ user: req.user,accessToken: accessToken});
-} catch (error) {
-  next(error)
-}
- 
+  try {
+    const authorization = req.headers.authorization;
+    const accessToken = authorization.split(" ")[1];
+    console.log("accessToken", accessToken);
+    res.status(200).json({ user: req.user, accessToken: accessToken });
+  } catch (error) {
+    next(error);
+  }
 };
 
 userController.findEventListOfUser = async (req, res, next) => {
@@ -42,7 +42,7 @@ userController.afterClickOnTheEventCard = async (req, res, next) => {
       findEventById,
       findEventOther
     );
-    
+
     res.json(newFindEventById);
   } catch (err) {
     next(err);
@@ -66,6 +66,16 @@ userController.uninterested = async (req, res, next) => {
     res.json(uninterestedEvent);
   } catch (error) {
     next(error);
+  }
+};
+
+userController.fetchAllInbox = async (req, res, next) => {
+  try {
+    const userId = req.user.id
+    const allInbox = await inboxMessageService.findManyInboxMessageByUserId(userId)
+    res.json(allInbox)
+  } catch (err) {
+    next(err);
   }
 };
 

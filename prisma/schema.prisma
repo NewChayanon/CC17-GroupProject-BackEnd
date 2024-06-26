@@ -103,6 +103,7 @@ model Events {
   name           String  @db.VarChar(100)
   images         String
   location       String
+  locationName   String
   startDate      String
   endDate        String
   isActive       Boolean @default(false)
@@ -156,7 +157,7 @@ model VoucherList {
 }
 
 model VoucherItem {
-  id            Int     @id @default(autoincrement())
+  id            Int               @id @default(autoincrement())
   voucherListId Int
   userId        Int
   status        VoucherItemStatus @default(COLLECTED)
@@ -164,11 +165,13 @@ model VoucherItem {
   voucherList VoucherList @relation(fields: [voucherListId], references: [id])
   user        Users       @relation(fields: [userId], references: [id])
 }
+
 enum VoucherItemStatus {
   COLLECTED
   USED
   EXPIRED
 }
+
 model InboxMessage {
   id             Int    @id @default(autoincrement())
   userIdSender   Int

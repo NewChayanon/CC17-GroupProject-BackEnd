@@ -18,4 +18,13 @@ eventServices.findManyEventByStoreId = (storeId, userId) =>
     include: { Interest: { where: { userId: userId } } },
   });
 
+eventServices.findAllEventByIsActive = () =>
+  prisma.events.findMany({
+    where: { isActive: true },
+    include: {
+      storeProfile: { include: { user: true, Follow: true } },
+      VoucherList: { include: { VoucherItem: true } },
+    },
+  });
+
 module.exports = eventServices;

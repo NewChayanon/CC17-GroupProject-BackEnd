@@ -10,6 +10,7 @@ const userData = [
     lastName: "Admin",
     mobile: "0000000000",
     displayName: "Admin",
+    profileImage:"https://picsum.photos/200",
     role: "ADMIN",
   },
   {
@@ -19,6 +20,7 @@ const userData = [
     lastName: "test01",
     mobile: "0101010101",
     displayName: "test01",
+    profileImage:"https://picsum.photos/200",
   }, //buyer
   {
     email: "test02@mail.com",
@@ -27,6 +29,7 @@ const userData = [
     lastName: "test02",
     mobile: "0202020202",
     displayName: "test02",
+    profileImage:"https://picsum.photos/200",
     role: "SELLER",
   }, //seller-3
   {
@@ -36,6 +39,7 @@ const userData = [
     lastName: "test03",
     mobile: "0303030303",
     displayName: "test03",
+    profileImage:"https://picsum.photos/200",
   }, //buyer
   {
     email: "test04@mail.com",
@@ -44,6 +48,7 @@ const userData = [
     lastName: "test04",
     mobile: "0404040404",
     displayName: "test04",
+    profileImage:"https://picsum.photos/200",
     role: "SELLER",
   }, //seller-5
   {
@@ -53,6 +58,7 @@ const userData = [
     lastName: "test05",
     mobile: "0505050505",
     displayName: "test05",
+    profileImage:"https://picsum.photos/200",
   }, //buyer
   {
     email: "test06@mail.com",
@@ -61,6 +67,7 @@ const userData = [
     lastName: "test06",
     mobile: "0606060606",
     displayName: "test06",
+    profileImage:"https://picsum.photos/200",
   }, //buyer
   {
     email: "test07@mail.com",
@@ -69,6 +76,7 @@ const userData = [
     lastName: "test07",
     mobile: "0707070707",
     displayName: "test07",
+    profileImage:"https://picsum.photos/200",
   }, //buyer
   {
     email: "test08@mail.com",
@@ -77,6 +85,7 @@ const userData = [
     lastName: "test08",
     mobile: "0808080808",
     displayName: "test08",
+    profileImage:"https://picsum.photos/200",
   }, //buyer
   {
     email: "test09@mail.com",
@@ -85,6 +94,7 @@ const userData = [
     lastName: "test09",
     mobile: "0909090909",
     displayName: "test09",
+    profileImage:"https://picsum.photos/200",
   }, //buyer
   {
     email: "test10@mail.com",
@@ -93,19 +103,20 @@ const userData = [
     lastName: "test10",
     mobile: "1010101010",
     displayName: "test10",
+    profileImage:"https://picsum.photos/200",
   }, //buyer
 ];
 const storeProfile = [
   {
     userId: 3,
     name: "bananaStore",
-    coverImage: "bananaStore",
+    coverImage: "https://picsum.photos/400",
     description: "bananaStore",
   },
   {
     userId: 4,
     name: "DurianStore",
-    coverImage: "DurianStore",
+    coverImage: "https://picsum.photos/400",
     description: "DurianStore",
   },
 ];
@@ -113,8 +124,9 @@ const event = [
   {
     storeProfileId: 1,
     name: "bananaEvent",
-    images: "bananaEvent",
-    location: "100.5,-50.66",
+    images: "https://picsum.photos/400",
+    location: "13.764975952290223,100.53828213857393",
+    locationName:"อนุสาวรีย์ชัยสมรภูมิ",
     startDate: "24/06/2024",
     endDate: "25/06/2024",
     isActive: true,
@@ -122,8 +134,9 @@ const event = [
   {
     storeProfileId: 1,
     name: "bananaEvent",
-    images: "bananaEvent",
-    location: "50.0,50.0",
+    images: "https://picsum.photos/400",
+    location: "13.757544971580751,100.53668712303082",
+    locationName:"ก๋วยเตี๋ยวลูกชิ้นปลาแปะเตียง",
     startDate: "24/06/2024",
     endDate: "25/06/2024",
     isActive: true,
@@ -131,8 +144,9 @@ const event = [
   {
     storeProfileId: 2,
     name: "bananaEvent",
-    images: "bananaEvent",
-    location: "50.0,50.0",
+    images: "https://picsum.photos/400",
+    location: "13.856011854291697,100.58539301844694",
+    locationName:"มหาวิทยาลัยศรีปทุม",
     startDate: "24/06/2024",
     endDate: "25/06/2024",
     isActive: true,

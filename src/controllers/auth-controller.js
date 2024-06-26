@@ -37,14 +37,13 @@ authController.login = async (req, res, next) => {
     console.log("existUser", existUser.email);
 
     // find password user
-    const isMatch = await hashService.compare(password, existUser.password);
-    console.log("isMatch", isMatch);
-    if (!isMatch)
-      return createError({ message: "Invalid credential", statusCode: 400 });
-
-    const accessToken = jwtService.sign({ id: existUser.id });
-    console.log("accessToken:", accessToken);
-    res.status(200).json({ accessToken });
+    const isMatch = await hashService.compare(password,existUser.password)
+    console.log('isMatch',isMatch)
+    if(!isMatch) return createError({message: 'Invalid credential', statusCode: 400})
+    delete existUser.password;
+    const accessToken = jwtService.sign({id:existUser.id})
+    console.log('accessToken:',accessToken)
+    res.status(200).json({existUser,accessToken})
   } catch (error) {
     next(error);
   }

@@ -71,9 +71,25 @@ userController.uninterested = async (req, res, next) => {
 
 userController.fetchAllInbox = async (req, res, next) => {
   try {
-    const userId = req.user.id
-    const allInbox = await inboxMessageService.findManyInboxMessageByUserId(userId)
-    res.json(allInbox)
+    const userId = req.user.id;
+    const allInbox = await inboxMessageService.findManyInboxMessageByUserId(
+      userId
+    );
+    res.json(allInbox);
+  } catch (err) {
+    next(err);
+  }
+};
+
+userController.removeMessageInbox = async (req, res, next) => {
+  try {
+    const inboxId = +req.params.inboxId;
+    const haveMessage = await inboxMessageService.findInboxMessageById(inboxId);
+    if (!haveMessage)
+      return res.status(404).json({ msg: "Don't have message" });
+    const removeMessaged =
+      await inboxMessageService.removeInboxMessageByInboxId(inboxId);
+    res.status(204).json({ msg: "Removed" });
   } catch (err) {
     next(err);
   }

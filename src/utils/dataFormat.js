@@ -1,7 +1,7 @@
 const dataFormat = {};
 
 dataFormat.sellerNearMe = (oldData) => {
-  const newFormat = oldData.map((el,index,arr) => {
+  const newFormat = oldData.map((el, index, arr) => {
     let obj = {};
     obj.id = el.id;
     obj.eventName = el.name;
@@ -19,12 +19,19 @@ dataFormat.sellerNearMe = (oldData) => {
     obj.sellerFirstName = el.storeProfile.user.firstName;
     obj.sellerCoverImage = el.storeProfile.user.profileImage;
     obj.countFollower = el.storeProfile.Follow.length;
-    obj.countEventOfSeller = arr.length
-    obj.countVoucher = 
+    obj.countEventOfSeller = arr.length;
+    obj.countVoucher =
       el.VoucherList.length == 0 ? 0 : el.VoucherList[0].VoucherItem.length;
+    return obj;
+  });
+  return newFormat;
+};
+
+dataFormat.selectStoreProfileId = (seller) =>
+  seller.map((el) => {
+    const obj = {};
+    obj.storeProfileId = el.storeProfileId;
     return obj
   });
-  return newFormat
-};
 
 module.exports = dataFormat;

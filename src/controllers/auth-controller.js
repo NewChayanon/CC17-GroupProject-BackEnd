@@ -6,6 +6,7 @@ const distanceLocationCal = require("../utils/distanceLocation");
 const eventServices = require("../services/event-services");
 const refactorService = require("../services/refactor-services");
 const dataFormat = require("../utils/dataFormat");
+const voucherItemService = require("../services/voucherItem-service");
 
 const authController = {};
 
@@ -60,11 +61,9 @@ authController.sellerNearMe = async (req, res, next) => {
       range
     );
     const storeProfileId = dataFormat.selectStoreProfileId(seller)
-    const findVoucherOfStore = await eventServices.findManyVoucherItemByStoreId(storeProfileId)
-    
-    const sellerNewFormat = await dataFormat.sellerNearMe(seller)
-
-    res.json(findVoucherOfStore);
+    const groupVoucherItem = await voucherItemService.groupByVoucherItemByStoreId(storeProfileId)
+    const sellerNewFormat = await dataFormat.sellerNearMe(seller,groupVoucherItem)
+    res.json(sellerNewFormat);
   } catch (error) {
     next(error);
   }

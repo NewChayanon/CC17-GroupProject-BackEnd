@@ -61,10 +61,11 @@ model StoreProfile {
 
   user Users @relation(fields: [userId], references: [id])
 
-  Follow  Follow[]
-  Product Product[]
-  Comment Comment[]
-  Events  Events[]
+  Follow      Follow[]
+  Product     Product[]
+  Comment     Comment[]
+  Events      Events[]
+  VoucherItem VoucherItem[]
 }
 
 model Follow {
@@ -104,6 +105,7 @@ model Events {
   images         String
   location       String
   locationName   String
+  description    String @db.Text
   startDate      String
   endDate        String
   isActive       Boolean @default(false)
@@ -157,13 +159,15 @@ model VoucherList {
 }
 
 model VoucherItem {
-  id            Int               @id @default(autoincrement())
-  voucherListId Int
-  userId        Int
-  status        VoucherItemStatus @default(COLLECTED)
+  id             Int               @id @default(autoincrement())
+  voucherListId  Int
+  storeProfileId Int
+  userId         Int
+  status         VoucherItemStatus @default(COLLECTED)
 
-  voucherList VoucherList @relation(fields: [voucherListId], references: [id])
-  user        Users       @relation(fields: [userId], references: [id])
+  voucherList  VoucherList  @relation(fields: [voucherListId], references: [id])
+  storeProfile StoreProfile @relation(fields: [storeProfileId], references: [id])
+  user         Users        @relation(fields: [userId], references: [id])
 }
 
 enum VoucherItemStatus {

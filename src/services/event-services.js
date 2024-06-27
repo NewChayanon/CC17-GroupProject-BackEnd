@@ -29,16 +29,5 @@ eventServices.findAllEventByIsActive = () =>
     },
   });
 
-eventServices.findManyVoucherItemByStoreId = async (storeProfileId) => {
-  let result = await Promise.all(storeProfileId.map(async (el) => {
-    let arr = await prisma.events.findMany({
-      where: { storeProfileId: el.storeProfileId },
-    });
-    
-    return arr;
-  }))
-  
-  return result;
-};
 
 module.exports = eventServices;

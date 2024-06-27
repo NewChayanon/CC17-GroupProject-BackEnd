@@ -8,6 +8,7 @@ const authRouter = require('./routes/auth-route');
 const { authenticate } = require('./middlewares/authenticate');
 const userRouter = require('./routes/user-route');
 const adminRouter = require('./routes/admin-route');
+const { isAdmin } = require('./middlewares/isAdmin');
 
 const app = express()
 
@@ -18,7 +19,7 @@ app.use(express.json());
 
 app.use('/auth', authRouter)
 app.use('/user',authenticate,userRouter)
-app.use('/admin', authenticate,adminRouter)
+app.use('/admin', authenticate,isAdmin,adminRouter)
 
 
 app.use(notFound)

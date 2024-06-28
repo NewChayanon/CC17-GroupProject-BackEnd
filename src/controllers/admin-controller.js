@@ -62,16 +62,14 @@ adminController.statusMessage = async(req,res,next) =>{
   }
  };
 
-
 adminController.createNotification = async (req,res,next) =>{
   try {
     const adminId = req.user.id
     const input = req.body
     
     let data = {...input,userIdSender:adminId}
-  // const users = await adminService.getNotification()
-  // console.log('users', users)
-    const result = await adminService.createMessage(data)
+ // const users = await adminService.getNotification()
+  // console.log('users', users)    const result = await adminService.createMessage(data)
     console.log('data',data)
     console.log('result',result)
     res.status(200).json({message: 'create successful'})

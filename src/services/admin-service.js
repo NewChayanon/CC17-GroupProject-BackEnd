@@ -26,6 +26,7 @@ adminService.getBuyer = (data) => prisma.users.findMany({
 
 
 //update
+
 adminService.updateBlock = (id, isBlocked) => prisma.users.update({
   where:{
     id: id
@@ -33,13 +34,35 @@ adminService.updateBlock = (id, isBlocked) => prisma.users.update({
   data:{
     isBlocked: isBlocked
   }
-})
+});
 
-//create notification
-adminService.createMessage = (message,title) => prisma.indoxMessage.create({
+adminService.updateStatus = (id, statusMessage) => prisma.users.update({
   where:{
-    AND: [{message:message, topic: title}]
+    id: id
+  },
+  data:{
+    statusMessage: statusMessage
   }
 });
+
+
+//notification
+
+  // find
+adminService.getNotification = (title, message) => prisma.users.findMany({
+  where: {
+    AND:[{isBlocked: false},{statusMessage: false},],
+    OR : [{role : "BUYER"},{role : "SELLER" }],
+    topic: title,
+    message:message
+  },
+  select: {
+    id: true
+  }
+});
+
+  //create
+  adminService.createMessage = (data)=> prisma.inboxMessage.create({data})
+
 
 module.exports = adminService;

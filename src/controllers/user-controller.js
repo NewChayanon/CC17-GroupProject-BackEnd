@@ -2,6 +2,7 @@ const eventServices = require("../services/event-services");
 const inboxMessageUserService = require("../services/inboxMessageUser-service");
 const interestService = require("../services/interest-service");
 const refactorService = require("../services/refactor-services");
+const userService = require("../services/user-service");
 const voucherItemService = require("../services/voucherItem-service");
 
 const userController = {};
@@ -99,6 +100,22 @@ userController.removeMessageInbox = async (req, res, next) => {
   }
 };
 
+
+userController.getNotificationPublic =async (req,res,next)=>{
+  const userId = req.user.id
+  if(req.user.role === 'ADMIN') res.status(300).json({message: 'not allowed to access'})
+  const result = await userService.findUserId(userId)
+
+  if(!result) res.status(300).json({message: 'user is not defined' })
+  if(result.statusMessage || result.isBlocked) res.status(300).json({message: 'No receive Notification'})
+
+  const publicNotification = await userService.getPublicNotification()
+  console.log('publicNotification',publicNotification)
+  res.status(200).json(publicNotification)
+  console.log('result', result)
+};
+
+
 userController.keepCoupon = async (req, res, next) => {
   try {
     const userId = req.user.id;
@@ -124,5 +141,6 @@ userController.keepCoupon = async (req, res, next) => {
     next(err);
   }
 };
+
 
 module.exports = userController;

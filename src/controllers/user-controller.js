@@ -1,9 +1,7 @@
-const { voucherItem } = require("../models/prisma");
 const eventServices = require("../services/event-services");
-const inboxMessageService = require("../services/inboxMessage-service");
+const inboxMessageUserService = require("../services/inboxMessageUser-service");
 const interestService = require("../services/interest-service");
 const refactorService = require("../services/refactor-services");
-const userService = require("../services/user-service");
 const voucherItemService = require("../services/voucherItem-service");
 
 const userController = {};
@@ -78,7 +76,7 @@ userController.interested = async (req, res, next) => {
 userController.fetchAllInbox = async (req, res, next) => {
   try {
     const userId = req.user.id;
-    const allInbox = await inboxMessageService.findManyInboxMessageByUserId(
+    const allInbox = await inboxMessageUserService.findManyInboxMessageByUserId(
       userId
     );
     res.json(allInbox);
@@ -90,11 +88,11 @@ userController.fetchAllInbox = async (req, res, next) => {
 userController.removeMessageInbox = async (req, res, next) => {
   try {
     const inboxId = +req.params.inboxId;
-    const haveMessage = await inboxMessageService.findInboxMessageById(inboxId);
+    const haveMessage = await inboxMessageUserService.findInboxMessageById(inboxId);
     if (!haveMessage)
       return res.status(404).json({ msg: "Don't have message" });
     const removeMessaged =
-      await inboxMessageService.removeInboxMessageByInboxId(inboxId);
+      await inboxMessageUserService.removeInboxMessageByInboxId(inboxId);
     res.status(204).json({ msg: "Removed" });
   } catch (err) {
     next(err);
@@ -127,6 +125,7 @@ userController.keepCoupon = async (req, res, next) => {
       event.storeProfile.id,
       userId
     );
+    
     if (haveCoupon) {
       return res.status(204).json({ msg: "You have coupon" });
     }

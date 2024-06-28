@@ -112,7 +112,7 @@ userController.keepCoupon = async (req, res, next) => {
       userId
     );
     if (haveCoupon) {
-      return res.status(200).json({ msg: "You have coupon" });
+      return res.status(204).json({ msg: "You have coupon" });
     }
     const keepCoupon =
       await voucherItemService.createVoucherItemByVoucherListIdAndStoreProfileIdAndUserId(
@@ -120,7 +120,7 @@ userController.keepCoupon = async (req, res, next) => {
         event.storeProfile.id,
         userId
       );
-    res.json({ msg: "Keep coupon success" });
+    res.status(204).json({ msg: "Keep coupon success" });
   } catch (err) {
     next(err);
   }

@@ -110,6 +110,7 @@ model Events {
   startDate      String
   endDate        String
   isActive       Boolean @default(false)
+  isDelete       Boolean @default(false)
 
   storeProfile StoreProfile @relation(fields: [storeProfileId], references: [id])
 
@@ -142,6 +143,7 @@ model EventItem {
   id        Int @id @default(autoincrement())
   eventId   Int
   productId Int
+  price     Int
 
   event    Events  @relation(fields: [eventId], references: [id])
   products Product @relation(fields: [productId], references: [id])
@@ -153,6 +155,7 @@ model VoucherList {
   code        String @db.VarChar(20)
   condition   String @db.Text
   totalAmount Int
+  discount    Int
 
   event Events @relation(fields: [eventId], references: [id])
 

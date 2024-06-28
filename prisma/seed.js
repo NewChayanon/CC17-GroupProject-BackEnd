@@ -155,7 +155,8 @@ const event = [
     images: "https://picsum.photos/400",
     location: "13.757544971580751,100.53668712303082",
     locationName: "ก๋วยเตี๋ยวลูกชิ้นปลาแปะเตียง",
-    description:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit maiores, quisquam error ex sit natus debitis ratione distinctio saepe, harum, facere laborum deleniti autem dolorem asperiores consequuntur accusamus eveniet incidunt! Ea a unde tenetur sint neque blanditiis architecto fugit aliquid, exercitationem, odit reprehenderit, vitae nobis quo? Error distinctio dolores nam.",
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit maiores, quisquam error ex sit natus debitis ratione distinctio saepe, harum, facere laborum deleniti autem dolorem asperiores consequuntur accusamus eveniet incidunt! Ea a unde tenetur sint neque blanditiis architecto fugit aliquid, exercitationem, odit reprehenderit, vitae nobis quo? Error distinctio dolores nam.",
     startDate: "24/06/2024",
     endDate: "25/06/2024",
     isActive: true,
@@ -166,7 +167,8 @@ const event = [
     images: "https://picsum.photos/400",
     location: "13.856011854291697,100.58539301844694",
     locationName: "มหาวิทยาลัยศรีปทุม",
-    description:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit maiores, quisquam error ex sit natus debitis ratione distinctio saepe, harum, facere laborum deleniti autem dolorem asperiores consequuntur accusamus eveniet incidunt! Ea a unde tenetur sint neque blanditiis architecto fugit aliquid, exercitationem, odit reprehenderit, vitae nobis quo? Error distinctio dolores nam.",
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit maiores, quisquam error ex sit natus debitis ratione distinctio saepe, harum, facere laborum deleniti autem dolorem asperiores consequuntur accusamus eveniet incidunt! Ea a unde tenetur sint neque blanditiis architecto fugit aliquid, exercitationem, odit reprehenderit, vitae nobis quo? Error distinctio dolores nam.",
     startDate: "24/06/2024",
     endDate: "25/06/2024",
     isActive: true,
@@ -177,7 +179,8 @@ const event = [
     images: "https://picsum.photos/400",
     location: "13.856011854291697,100.58539301844694",
     locationName: "มหาวิทยาลัยศรีปทุม",
-    description:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit maiores, quisquam error ex sit natus debitis ratione distinctio saepe, harum, facere laborum deleniti autem dolorem asperiores consequuntur accusamus eveniet incidunt! Ea a unde tenetur sint neque blanditiis architecto fugit aliquid, exercitationem, odit reprehenderit, vitae nobis quo? Error distinctio dolores nam.",
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit maiores, quisquam error ex sit natus debitis ratione distinctio saepe, harum, facere laborum deleniti autem dolorem asperiores consequuntur accusamus eveniet incidunt! Ea a unde tenetur sint neque blanditiis architecto fugit aliquid, exercitationem, odit reprehenderit, vitae nobis quo? Error distinctio dolores nam.",
     startDate: "24/06/2024",
     endDate: "25/06/2024",
     isActive: true,
@@ -204,8 +207,8 @@ const product = [
   { storeProfileId: 1, name: "longan", description: "longan", image: "longan" },
 ];
 const eventItem = [
-  { eventId: 1, productId: 1 },
-  { eventId: 1, productId: 2 },
+  { eventId: 1, productId: 1, price: 100 },
+  { eventId: 1, productId: 2, price: 100 },
 ];
 const voucherList = [
   {
@@ -213,24 +216,28 @@ const voucherList = [
     code: "25JUN50P",
     condition: "test",
     totalAmount: 20,
+    discount: 10,
   },
   {
     eventId: 2,
     code: "25JUN50P",
     condition: "test",
     totalAmount: 20,
+    discount: 10,
   },
   {
     eventId: 3,
     code: "25JUN50P",
     condition: "test",
     totalAmount: 20,
+    discount: 10,
   },
   {
     eventId: 4,
     code: "25JUN50P",
     condition: "test",
     totalAmount: 20,
+    discount: 10,
   },
 ];
 const voucherItem = [

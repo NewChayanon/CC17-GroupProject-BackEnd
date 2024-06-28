@@ -101,37 +101,6 @@ userController.removeMessageInbox = async (req, res, next) => {
   }
 };
 
-<<<<<<< HEAD
-
-userController.getAllUser = async(req,res,next) =>{
-  try {
-    const BuyerAndSeller = await userService.getAllBuyerAndSeller()
-    console.log('BuyerAndSeller',BuyerAndSeller)
-    res.status(200).json({BuyerAndSeller})
-  } catch (error) {
-    next(error)
-  }
-};
-
-userController.getSeller = async(req,res,next) =>{
-  try {
-    const seller = await userService.getSeller()
-    console.log('seller',seller)
-    res.status(201).json(seller)
-  } catch (error) {
-    next(error)
-  }
-};
-
-userController.getBuyer = async (req,res,next) =>{
-  try {
-    const buyer = await userService.getBuyer()
-    console.log('buyer',buyer)
-    res.status(201).json(buyer)
-  } catch (error) {
-    next(error)
-  }
-};
 
 userController.getNotificationPublic =async (req,res,next)=>{
   const userId = req.user.id
@@ -147,7 +116,7 @@ userController.getNotificationPublic =async (req,res,next)=>{
   console.log('result', result)
 };
 
-=======
+
 userController.keepCoupon = async (req, res, next) => {
   try {
     const userId = req.user.id;
@@ -173,5 +142,5 @@ userController.keepCoupon = async (req, res, next) => {
   }
 };
 
->>>>>>> dev
+
 module.exports = userController;

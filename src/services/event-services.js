@@ -22,9 +22,12 @@ eventServices.findAllEventByIsActive = () =>
   prisma.events.findMany({
     where: { isActive: true },
     include: {
-      storeProfile: { include: { user: true, Follow: true } },
+      storeProfile: {
+        include: { user: true, Follow: true },
+      },
       VoucherList: { include: { VoucherItem: true } },
     },
   });
+
 
 module.exports = eventServices;

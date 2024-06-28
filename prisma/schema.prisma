@@ -29,15 +29,16 @@ model Users {
   blockDate     DateTime?
   role          Role      @default(BUYER)
 
-  StoreProfile StoreProfile?
-  Follow       Follow[]
-  Interest     Interest[]
-  Comment      Comment[]
-  VoucherItem  VoucherItem[]
-  userSender   InboxMessage[] @relation(name: "userSender")
-  userReceiver InboxMessage[] @relation(name: "userReceiver")
-  userReporter Report[]       @relation(name: "userReporter")
-  userReported Report[]       @relation(name: "userReported")
+  StoreProfile      StoreProfile?
+  Follow            Follow[]
+  Interest          Interest[]
+  Comment           Comment[]
+  VoucherItem       VoucherItem[]
+  userSender        InboxMessageUser[]  @relation(name: "userSender")
+  userReceiver      InboxMessageUser[]  @relation(name: "userReceiver")
+  userReporter      Report[]            @relation(name: "userReporter")
+  userReported      Report[]            @relation(name: "userReported")
+  IndoxMessageAdmin IndoxMessageAdmin[]
 }
 
 enum Gender {
@@ -105,7 +106,7 @@ model Events {
   images         String
   location       String
   locationName   String
-  description    String @db.Text
+  description    String  @db.Text
   startDate      String
   endDate        String
   isActive       Boolean @default(false)
@@ -176,15 +177,26 @@ enum VoucherItemStatus {
   EXPIRED
 }
 
-model InboxMessage {
-  id             Int    @id @default(autoincrement())
-  userIdSender   Int
-  userIdReceiver Int
-  topic          String
-  message        String @db.Text
+model IndoxMessageAdmin {
+  id           Int      @id @default(autoincrement())
+  userIdSender Int
+  topic        String
+  message      String   @db.Text
+  createdAt    DateTime @default(now()) @db.Timestamp(0)
 
-  userSender   Users @relation(name: "userSender", fields: [userIdSender], references: [id])
-  userReceiver Users @relation(name: "userReceiver", fields: [userIdReceiver], references: [id])
+  users Users @relation(fields: [userIdSender], references: [id])
+}
+
+model InboxMessageUser {
+  id             Int      @id @default(autoincrement())
+  userIdSender   Int
+  userIdReceiver Int?
+  topic          String
+  message        String   @db.Text
+  createdAt      DateTime @default(now()) @db.Timestamp(0)
+
+  userSender   Users  @relation(name: "userSender", fields: [userIdSender], references: [id])
+  userReceiver Users? @relation(name: "userReceiver", fields: [userIdReceiver], references: [id])
 }
 
 model Report {

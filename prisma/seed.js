@@ -262,7 +262,7 @@ const comment = [
   { storeProfileId: 1, userId: 2, comment: "D", rate: "FIVE", isVerify: true },
   { storeProfileId: 1, userId: 4, comment: "F", rate: "ONE" },
 ];
-const inboxMessage = [
+const inboxMessageUser = [
   {
     userIdSender: 1,
     userIdReceiver: 2,
@@ -295,7 +295,7 @@ const run = async () => {
   await prisma.voucherItem.createMany({ data: voucherItem });
   await prisma.follow.create({ data: follow });
   await prisma.comment.createMany({ data: comment });
-  await prisma.inboxMessage.createMany({ data: inboxMessage });
+  await prisma.inboxMessageUser.createMany({ data: inboxMessageUser });
   await prisma.report.create({ data: report });
 };
 run();

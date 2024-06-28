@@ -38,7 +38,7 @@ model Users {
   userReceiver      InboxMessageUser[]  @relation(name: "userReceiver")
   userReporter      Report[]            @relation(name: "userReporter")
   userReported      Report[]            @relation(name: "userReported")
-  IndoxMessageAdmin IndoxMessageAdmin[]
+  InboxMessageAdmin InboxMessageAdmin[]
 }
 
 enum Gender {
@@ -177,7 +177,7 @@ enum VoucherItemStatus {
   EXPIRED
 }
 
-model IndoxMessageAdmin {
+model InboxMessageAdmin {
   id           Int      @id @default(autoincrement())
   userIdSender Int
   topic        String

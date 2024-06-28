@@ -1,8 +1,10 @@
+const { voucherItem } = require("../models/prisma");
 const eventServices = require("../services/event-services");
 const inboxMessageService = require("../services/inboxMessage-service");
 const interestService = require("../services/interest-service");
 const refactorService = require("../services/refactor-services");
 const userService = require("../services/user-service");
+const voucherItemService = require("../services/voucherItem-service");
 
 const userController = {};
 
@@ -58,13 +60,16 @@ userController.interested = async (req, res, next) => {
       eventId
     );
     if (!interestId) {
-      const interest = await interestService.createInterestByUserIdAndEventId(userId,eventId)
+      const interest = await interestService.createInterestByUserIdAndEventId(
+        userId,
+        eventId
+      );
       return res.status(201).json({ msg: "Interested success" });
     }
     const uninterestedEvent = await interestService.deleteInterestById(
       interestId.id
     );
-    res.json({mes:"Uninterested success"});
+    res.json({ mes: "Uninterested success" });
   } catch (error) {
     next(error);
   }
@@ -91,6 +96,31 @@ userController.removeMessageInbox = async (req, res, next) => {
     const removeMessaged =
       await inboxMessageService.removeInboxMessageByInboxId(inboxId);
     res.status(204).json({ msg: "Removed" });
+  } catch (err) {
+    next(err);
+  }
+};
+
+userController.keepCoupon = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    const eventId = +req.params.eventId;
+    const event = await eventServices.findEventByEventId(eventId);
+    const haveCoupon = await voucherItemService.findVoucherItemByUserIdAnd(
+      event.VoucherList[0].id,
+      event.storeProfile.id,
+      userId
+    );
+    if (haveCoupon) {
+      return res.status(204).json({ msg: "You have coupon" });
+    }
+    const keepCoupon =
+      await voucherItemService.createVoucherItemByVoucherListIdAndStoreProfileIdAndUserId(
+        event.VoucherList[0].id,
+        event.storeProfile.id,
+        userId
+      );
+    res.status(204).json({ msg: "Keep coupon success" });
   } catch (err) {
     next(err);
   }

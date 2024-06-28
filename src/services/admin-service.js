@@ -27,19 +27,6 @@ adminService.updateStatus = (id, statusMessage) => prisma.users.update({
 
 //notification
 
-  // find
-adminService.getNotification = (title, message) => prisma.users.findMany({
-  where: {
-    AND:[{isBlocked: false},{statusMessage: false},],
-    OR : [{role : "BUYER"},{role : "SELLER" }],
-    topic: title,
-    message:message
-  },
-  select: {
-    id: true
-  }
-});
-
   //create
   adminService.createMessage = (data)=> prisma.inboxMessage.create({data})
 

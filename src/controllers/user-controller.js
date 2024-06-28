@@ -127,4 +127,9 @@ userController.getBuyer = async (req,res,next) =>{
   }
 };
 
+userController.getNotification =async (req,res,next)=>{
+  const users = await userService.getNotification()
+  console.log('users', users)
+};
+
 module.exports = userController;

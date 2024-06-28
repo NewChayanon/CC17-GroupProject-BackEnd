@@ -2,6 +2,7 @@ const eventServices = require("../services/event-services");
 const inboxMessageUserService = require("../services/inboxMessageUser-service");
 const interestService = require("../services/interest-service");
 const refactorService = require("../services/refactor-services");
+const userService = require("../services/user-service");
 const voucherItemService = require("../services/voucherItem-service");
 
 const userController = {};

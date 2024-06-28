@@ -21,4 +21,7 @@ interestService.findInterestedByUserIdAndEventId = (userId, eventId) =>
 interestService.deleteInterestById = (id) =>
   prisma.interest.delete({ where: { id } });
 
+interestService.createInterestByUserIdAndEventId = (userId,eventId) => prisma.interest.create({data:{userId,eventId}})
+
+
 module.exports = interestService;

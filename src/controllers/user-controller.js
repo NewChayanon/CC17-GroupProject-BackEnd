@@ -49,7 +49,7 @@ userController.afterClickOnTheEventCard = async (req, res, next) => {
   }
 };
 
-userController.uninterested = async (req, res, next) => {
+userController.interested = async (req, res, next) => {
   try {
     const userId = req.user.id;
     const eventId = +req.params.eventId;
@@ -58,12 +58,13 @@ userController.uninterested = async (req, res, next) => {
       eventId
     );
     if (!interestId) {
-      return res.status(404).json({ msg: "InterestId invalid" });
+      const interest = await interestService.createInterestByUserIdAndEventId(userId,eventId)
+      return res.status(201).json({ msg: "Interested success" });
     }
     const uninterestedEvent = await interestService.deleteInterestById(
       interestId.id
     );
-    res.json(uninterestedEvent);
+    res.json({mes:"Uninterested success"});
   } catch (error) {
     next(error);
   }

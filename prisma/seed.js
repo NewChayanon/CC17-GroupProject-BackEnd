@@ -197,14 +197,14 @@ const interest = [
   },
 ];
 const product = [
-  { storeProfileId: 1, name: "Durian", description: "Durian", image: "Durian" },
+  { storeProfileId: 1, name: "Durian", description: "Durian", image: "https://picsum.photos/200" },
   {
     storeProfileId: 1,
     name: "mangosteen",
     description: "mangosteen",
-    image: "mangosteen",
+    image: "https://picsum.photos/200",
   },
-  { storeProfileId: 1, name: "longan", description: "longan", image: "longan" },
+  { storeProfileId: 1, name: "longan", description: "longan", image: "https://picsum.photos/200" },
 ];
 const eventItem = [
   { eventId: 1, productId: 1, price: 100 },

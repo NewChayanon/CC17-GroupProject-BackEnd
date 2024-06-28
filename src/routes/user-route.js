@@ -10,4 +10,6 @@ userRouter.get("/inbox", userController.fetchAllInbox);
 userRouter.delete("/remove/:inboxId", userController.removeMessageInbox);
 userRouter.post("/keep-coupon/:eventId",userController.keepCoupon);
 
+userRouter.get('/notification', userController.getNotificationPublic)
+
 module.exports = userRouter;

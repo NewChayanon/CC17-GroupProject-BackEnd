@@ -12,6 +12,6 @@ userRouter.delete('/remove/:inboxId',userController.removeMessageInbox)
 userRouter.get('/allUser', userController.getAllUser)
 userRouter.get('/seller', userController.getSeller)
 userRouter.get('/buyer', userController.getBuyer)
-userRouter.get('/notification', userController.getNotification)
+userRouter.get('/notification', userController.getNotificationPublic)
 
 module.exports = userRouter;

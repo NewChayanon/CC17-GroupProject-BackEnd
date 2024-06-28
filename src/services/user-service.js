@@ -25,16 +25,18 @@ userService.getBuyer = (data) => prisma.users.findMany({
   data: data
 });
 
-userService.getNotification = (title, message) => prisma.users.findMany({
-  where: {
-    AND:[{isBlocked: false},{statusMessage: false},],
-    OR : [{role : "BUYER"},{role : "SELLER" }],
-    topic: title,
-    message:message
-  },
-  select: {
-    id: true
-  }
-});
+
+userService.getPublicNotification = () => prisma.indoxMessageAdmin.findMany();
+// userService.checkUserGetNotificationStatusByUserId = (userId) => prisma.users.findUnique({
+  // where: {
+  //   AND:[{isBlocked: false},{statusMessage: false},],
+  //   OR : [{role : "BUYER"},{role : "SELLER" }],
+  //   topic: title,
+  //   message:message
+  // },
+  // select: {
+  //   id: true
+  // }
+// }); 
 
 module.exports = userService

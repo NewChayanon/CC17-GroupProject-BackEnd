@@ -36,7 +36,7 @@ adminController.createNotification = async (req,res,next) =>{
     const adminId = req.user.id
     const input = req.body
     
-    let data = {...input,userIdSender:adminId,userIdReceiver:2}
+    let data = {...input,userIdSender:adminId}
     const result = await adminService.createMessage(data)
     console.log('data',data)
     console.log('result',result)

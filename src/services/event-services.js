@@ -7,7 +7,7 @@ eventServices.findEventByEventId = (eventId) =>
     where: { id: eventId },
     include: {
       VoucherList: true,
-      EventItem: true,
+      EventItem: {include:{products:true}},
       storeProfile: { include: { user: true } },
     },
   });

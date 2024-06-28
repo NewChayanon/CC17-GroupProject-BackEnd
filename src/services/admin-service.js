@@ -62,7 +62,7 @@ adminService.getNotification = (title, message) => prisma.users.findMany({
 });
 
   //create
-  adminService.createMessage = (data)=> prisma.inboxMessage.create({data})
+  adminService.createMessage = (data)=> prisma.inboxMessageAdmin.create({data})
 
 
 module.exports = adminService;

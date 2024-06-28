@@ -8,6 +8,7 @@ adminController.blocked = async(req,res,next) =>{
   const userId = +req.params.userId
   console.log(userId)
   const data = await userService.findUserId(userId)
+  if(!data) res.status(300).json({message: 'user not found'})
   console.log(data)
   const blockedUserId = await adminService.updateBlock(userId,!data.isBlocked)
   console.log('blockedUserId', blockedUserId)

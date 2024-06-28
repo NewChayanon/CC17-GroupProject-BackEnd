@@ -8,211 +8,33 @@ datasource db {
 }
 
 model Users {
-  id                Int                 @id @default(autoincrement())
-  email             String?             @unique @db.VarChar(50)
-  password          String?             @db.VarChar(256)
-  firstName         String?             @db.VarChar(50)
-  lastName          String?             @db.VarChar(50)
-  mobile            String?             @unique @db.VarChar(10)
-  displayName       String?             @db.VarChar(50)
-  gender            Gender?
-  googleLogin       String?
-  profileImage      String?
-  statusMessage     Boolean             @default(false)
-  isBlocked         Boolean             @default(false)
-  blockDate         DateTime?
-  role              Role                @default(BUYER)
-  Comment           Comment[]
-<<<<<<< HEAD
-  Follow            Follow[]
+  id            Int       @id @default(autoincrement())
+  email         String?   @unique @db.VarChar(50)
+  password      String?   @db.VarChar(256)
+  firstName     String?   @db.VarChar(50)
+  lastName      String?   @db.VarChar(50)
+  mobile        String?   @unique @db.VarChar(10)
+  displayName   String?   @db.VarChar(50)
+  gender        Gender?
+  googleLogin   String?
+  profileImage  String?
+  statusMessage Boolean   @default(false)
+  isBlocked     Boolean   @default(false)
+  blockDate     DateTime?
+  role          Role      @default(BUYER)
+
+  Interest     Interest[]
+  StoreProfile StoreProfile?
+  Follow       Follow[]
+  Comment      Comment[]
+  VoucherItem  VoucherItem[]
+  InboxMessageAdmin InboxMessageAdmin[]
   userReceiver      InboxMessageUser[]  @relation("userReceiver")
   userSender        InboxMessageUser[]  @relation("userSender")
-  IndoxMessageAdmin IndoxMessageAdmin[]
-  Interest          Interest[]
   userReported      Report[]            @relation("userReported")
   userReporter      Report[]            @relation("userReporter")
-  StoreProfile      StoreProfile?
-  VoucherItem       VoucherItem[]
 }
 
-model StoreProfile {
-  id          Int           @id @default(autoincrement())
-  userId      Int           @unique
-  name        String
-  coverImage  String
-  description String        @db.Text
-  Comment     Comment[]
-  Events      Events[]
-  Follow      Follow[]
-  Product     Product[]
-  user        Users         @relation(fields: [userId], references: [id])
-  VoucherItem VoucherItem[]
-}
-
-model Follow {
-  id             Int          @id @default(autoincrement())
-  storeProfileId Int
-  userId         Int
-  stores         StoreProfile @relation(fields: [storeProfileId], references: [id])
-  user           Users        @relation(fields: [userId], references: [id])
-
-  @@index([storeProfileId], map: "Follow_storeProfileId_fkey")
-  @@index([userId], map: "Follow_userId_fkey")
-}
-
-model Interest {
-  id      Int    @id @default(autoincrement())
-  userId  Int
-  eventId Int
-  event   Events @relation(fields: [eventId], references: [id])
-  user    Users  @relation(fields: [userId], references: [id])
-
-  @@index([eventId], map: "Interest_eventId_fkey")
-  @@index([userId], map: "Interest_userId_fkey")
-}
-
-model Product {
-  id             Int          @id @default(autoincrement())
-  storeProfileId Int
-  name           String
-  description    String
-  image          String
-  EventItem      EventItem[]
-  storesProfile  StoreProfile @relation(fields: [storeProfileId], references: [id])
-
-  @@index([storeProfileId], map: "Product_storeProfileId_fkey")
-}
-
-model Events {
-  id             Int           @id @default(autoincrement())
-  storeProfileId Int
-  name           String        @db.VarChar(100)
-  images         String
-  location       String
-  locationName   String
-  description    String        @db.Text
-  startDate      String
-  endDate        String
-  isActive       Boolean       @default(false)
-  EventItem      EventItem[]
-  storeProfile   StoreProfile  @relation(fields: [storeProfileId], references: [id])
-  Interest       Interest[]
-  VoucherList    VoucherList[]
-
-  @@index([storeProfileId], map: "Events_storeProfileId_fkey")
-}
-
-model Comment {
-  id             Int          @id @default(autoincrement())
-  storeProfileId Int
-  userId         Int
-  comment        String?
-  rate           Rate
-  isVerify       Boolean      @default(false)
-  storeProfile   StoreProfile @relation(fields: [storeProfileId], references: [id])
-  user           Users        @relation(fields: [userId], references: [id])
-
-  @@index([storeProfileId], map: "Comment_storeProfileId_fkey")
-  @@index([userId], map: "Comment_userId_fkey")
-}
-
-model EventItem {
-  id        Int     @id @default(autoincrement())
-  eventId   Int
-  productId Int
-  event     Events  @relation(fields: [eventId], references: [id])
-  products  Product @relation(fields: [productId], references: [id])
-
-  @@index([eventId], map: "EventItem_eventId_fkey")
-  @@index([productId], map: "EventItem_productId_fkey")
-}
-
-model VoucherList {
-  id          Int           @id @default(autoincrement())
-  eventId     Int
-  code        String        @db.VarChar(20)
-  condition   String        @db.Text
-  totalAmount Int
-  VoucherItem VoucherItem[]
-  event       Events        @relation(fields: [eventId], references: [id])
-
-  @@index([eventId], map: "VoucherList_eventId_fkey")
-}
-
-model VoucherItem {
-  id             Int               @id @default(autoincrement())
-  voucherListId  Int
-  storeProfileId Int
-  userId         Int
-  status         VoucherItemStatus @default(COLLECTED)
-  storeProfile   StoreProfile      @relation(fields: [storeProfileId], references: [id])
-  user           Users             @relation(fields: [userId], references: [id])
-  voucherList    VoucherList       @relation(fields: [voucherListId], references: [id])
-
-  @@index([storeProfileId], map: "VoucherItem_storeProfileId_fkey")
-  @@index([userId], map: "VoucherItem_userId_fkey")
-  @@index([voucherListId], map: "VoucherItem_voucherListId_fkey")
-}
-
-model IndoxMessageAdmin {
-  id           Int      @id @default(autoincrement())
-  userIdSender Int
-  topic        String
-  message      String   @db.Text
-  createdAt    DateTime @default(now()) @db.Timestamp(0)
-  users        Users    @relation(fields: [userIdSender], references: [id])
-
-  @@index([userIdSender], map: "IndoxMessageAdmin_userIdSender_fkey")
-}
-
-model InboxMessageUser {
-  id             Int      @id @default(autoincrement())
-  userIdSender   Int
-  userIdReceiver Int?
-  topic          String
-  message        String   @db.Text
-  createdAt      DateTime @default(now()) @db.Timestamp(0)
-  userReceiver   Users?   @relation("userReceiver", fields: [userIdReceiver], references: [id])
-  userSender     Users    @relation("userSender", fields: [userIdSender], references: [id])
-
-  @@index([userIdReceiver], map: "InboxMessageUser_userIdReceiver_fkey")
-  @@index([userIdSender], map: "InboxMessageUser_userIdSender_fkey")
-}
-
-model Report {
-  id             Int    @id @default(autoincrement())
-  userIdReporter Int
-  userIdReported Int
-  message        String @db.Text
-  userReported   Users  @relation("userReported", fields: [userIdReported], references: [id])
-  userReporter   Users  @relation("userReporter", fields: [userIdReporter], references: [id])
-
-  @@index([userIdReported], map: "Report_userIdReported_fkey")
-  @@index([userIdReporter], map: "Report_userIdReporter_fkey")
-=======
-  VoucherItem       VoucherItem[]
-  userSender        InboxMessageUser[]  @relation(name: "userSender")
-  userReceiver      InboxMessageUser[]  @relation(name: "userReceiver")
-  userReporter      Report[]            @relation(name: "userReporter")
-  userReported      Report[]            @relation(name: "userReported")
-  InboxMessageAdmin InboxMessageAdmin[]
->>>>>>> dev
-}
-
-enum Gender {
-  MALE
-  FEMALE
-  OTHERS
-}
-
-enum Role {
-  BUYER
-  SELLER
-  ADMIN
-}
-
-<<<<<<< HEAD
-=======
 model StoreProfile {
   id          Int    @id @default(autoincrement())
   userId      Int    @unique
@@ -222,11 +44,11 @@ model StoreProfile {
 
   user Users @relation(fields: [userId], references: [id])
 
-  Follow      Follow[]
-  Product     Product[]
-  Comment     Comment[]
   Events      Events[]
+  Product     Product[]
   VoucherItem VoucherItem[]
+  Comment     Comment[]
+  Follow      Follow[]
 }
 
 model Follow {
@@ -234,8 +56,8 @@ model Follow {
   storeProfileId Int
   userId         Int
 
-  user   Users        @relation(fields: [userId], references: [id])
   stores StoreProfile @relation(fields: [storeProfileId], references: [id])
+  user   Users        @relation(fields: [userId], references: [id])
 }
 
 model Interest {
@@ -291,17 +113,6 @@ model Comment {
   user         Users        @relation(fields: [userId], references: [id])
 }
 
->>>>>>> dev
-enum Rate {
-  ONE
-  TWO
-  THREE
-  FOUR
-  FIVE
-}
-
-<<<<<<< HEAD
-=======
 model EventItem {
   id        Int @id @default(autoincrement())
   eventId   Int
@@ -331,20 +142,10 @@ model VoucherItem {
   storeProfileId Int
   userId         Int
   status         VoucherItemStatus @default(COLLECTED)
-
-  voucherList  VoucherList  @relation(fields: [voucherListId], references: [id])
-  storeProfile StoreProfile @relation(fields: [storeProfileId], references: [id])
-  user         Users        @relation(fields: [userId], references: [id])
+  voucherList    VoucherList       @relation(fields: [voucherListId], references: [id])
+  storeProfile   StoreProfile      @relation(fields: [storeProfileId], references: [id])
+  user           Users             @relation(fields: [userId], references: [id])
 }
-
->>>>>>> dev
-enum VoucherItemStatus {
-  COLLECTED
-  USED
-  EXPIRED
-}
-<<<<<<< HEAD
-=======
 
 model InboxMessageAdmin {
   id           Int      @id @default(autoincrement())
@@ -363,9 +164,8 @@ model InboxMessageUser {
   topic          String
   message        String   @db.Text
   createdAt      DateTime @default(now()) @db.Timestamp(0)
-
-  userSender   Users  @relation(name: "userSender", fields: [userIdSender], references: [id])
-  userReceiver Users? @relation(name: "userReceiver", fields: [userIdReceiver], references: [id])
+  userSender     Users    @relation("userSender", fields: [userIdSender], references: [id])
+  userReceiver   Users?   @relation("userReceiver", fields: [userIdReceiver], references: [id])
 }
 
 model Report {
@@ -373,8 +173,32 @@ model Report {
   userIdReporter Int
   userIdReported Int
   message        String @db.Text
-
-  userReporter Users @relation(name: "userReporter", fields: [userIdReporter], references: [id])
-  userReported Users @relation(name: "userReported", fields: [userIdReported], references: [id])
+  userReporter   Users  @relation("userReporter", fields: [userIdReporter], references: [id])
+  userReported   Users  @relation("userReported", fields: [userIdReported], references: [id])
 }
->>>>>>> dev
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHERS
+}
+
+enum Role {
+  BUYER
+  SELLER
+  ADMIN
+}
+
+enum Rate {
+  ONE
+  TWO
+  THREE
+  FOUR
+  FIVE
+}
+
+enum VoucherItemStatus {
+  COLLECTED
+  USED
+  EXPIRED
+}

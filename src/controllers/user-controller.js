@@ -89,7 +89,9 @@ userController.fetchAllInbox = async (req, res, next) => {
 userController.removeMessageInbox = async (req, res, next) => {
   try {
     const inboxId = +req.params.inboxId;
-    const haveMessage = await inboxMessageUserService.findInboxMessageById(inboxId);
+    const haveMessage = await inboxMessageUserService.findInboxMessageById(
+      inboxId
+    );
     if (!haveMessage)
       return res.status(404).json({ msg: "Don't have message" });
     const removeMessaged =
@@ -100,21 +102,21 @@ userController.removeMessageInbox = async (req, res, next) => {
   }
 };
 
+userController.getNotificationPublic = async (req, res, next) => {
+  const userId = req.user.id;
+  if (req.user.role === "ADMIN")
+    res.status(300).json({ message: "not allowed to access" });
+  const result = await userService.findUserId(userId);
 
-userController.getNotificationPublic =async (req,res,next)=>{
-  const userId = req.user.id
-  if(req.user.role === 'ADMIN') res.status(300).json({message: 'not allowed to access'})
-  const result = await userService.findUserId(userId)
+  if (!result) res.status(300).json({ message: "user is not defined" });
+  if (result.statusMessage || result.isBlocked)
+    res.status(300).json({ message: "No receive Notification" });
 
-  if(!result) res.status(300).json({message: 'user is not defined' })
-  if(result.statusMessage || result.isBlocked) res.status(300).json({message: 'No receive Notification'})
-
-  const publicNotification = await userService.getPublicNotification()
-  console.log('publicNotification',publicNotification)
-  res.status(200).json(publicNotification)
-  console.log('result', result)
+  const publicNotification = await userService.getPublicNotification();
+  console.log("publicNotification", publicNotification);
+  res.status(200).json(publicNotification);
+  console.log("result", result);
 };
-
 
 userController.keepCoupon = async (req, res, next) => {
   try {
@@ -126,7 +128,7 @@ userController.keepCoupon = async (req, res, next) => {
       event.storeProfile.id,
       userId
     );
-    
+
     if (haveCoupon) {
       return res.status(204).json({ msg: "You have coupon" });
     }
@@ -141,6 +143,5 @@ userController.keepCoupon = async (req, res, next) => {
     next(err);
   }
 };
-
 
 module.exports = userController;

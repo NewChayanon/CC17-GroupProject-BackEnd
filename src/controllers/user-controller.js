@@ -31,25 +31,6 @@ userController.findEventListOfUser = async (req, res, next) => {
   }
 };
 
-userController.afterClickOnTheEventCard = async (req, res, next) => {
-  try {
-    const eventId = +req.params.eventId;
-    console.log(eventId);
-    const findEventById = await eventServices.findEventByEventId(eventId);
-    const findEventOther = await eventServices.findManyEventByStoreId(
-      findEventById.storeProfile.id
-    );
-    const newFindEventById = refactorService.eventId(
-      findEventById,
-      findEventOther
-    );
-
-    res.json(newFindEventById);
-  } catch (err) {
-    next(err);
-  }
-};
-
 userController.interested = async (req, res, next) => {
   try {
     const userId = req.user.id;

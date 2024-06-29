@@ -4,7 +4,6 @@ const userRouter = express.Router();
 
 userRouter.get("/me", userController.getMe);
 userRouter.get("/event", userController.findEventListOfUser);
-userRouter.get("/event/:eventId", userController.afterClickOnTheEventCard);
 userRouter.put("/interested/:eventId", userController.interested);
 userRouter.get("/inbox", userController.fetchAllInbox);
 userRouter.delete("/remove/:inboxId", userController.removeMessageInbox);

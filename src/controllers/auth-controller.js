@@ -38,13 +38,14 @@ authController.login = async (req, res, next) => {
     console.log("existUser", existUser.email);
 
     // find password user
-    const isMatch = await hashService.compare(password,existUser.password)
-    console.log('isMatch',isMatch)
-    if(!isMatch) return createError({message: 'Invalid credential', statusCode: 400})
+    const isMatch = await hashService.compare(password, existUser.password);
+    console.log("isMatch", isMatch);
+    if (!isMatch)
+      return createError({ message: "Invalid credential", statusCode: 400 });
     delete existUser.password;
-    const accessToken = jwtService.sign({id:existUser.id})
-    console.log('accessToken:',accessToken)
-    res.status(200).json({existUser,accessToken})
+    const accessToken = jwtService.sign({ id: existUser.id });
+    console.log("accessToken:", accessToken);
+    res.status(200).json({ existUser, accessToken });
   } catch (error) {
     next(error);
   }
@@ -60,12 +61,35 @@ authController.sellerNearMe = async (req, res, next) => {
       userLocation,
       range
     );
-    const storeProfileId = dataFormat.selectStoreProfileId(seller)
-    const groupVoucherItem = await voucherItemService.groupByVoucherItemByStoreId(storeProfileId)
-    const sellerNewFormat = await dataFormat.sellerNearMe(seller,groupVoucherItem)
+    const storeProfileId = dataFormat.selectStoreProfileId(seller);
+    const groupVoucherItem =
+      await voucherItemService.groupByVoucherItemByStoreId(storeProfileId);
+    const sellerNewFormat = await dataFormat.sellerNearMe(
+      seller,
+      groupVoucherItem
+    );
     res.json(sellerNewFormat);
   } catch (error) {
     next(error);
+  }
+};
+
+authController.afterClickOnTheEventCard = async (req, res, next) => {
+  try {
+    const eventId = +req.params.eventId;
+    console.log(eventId);
+    const findEventById = await eventServices.findEventByEventId(eventId);
+    const findEventOther = await eventServices.findManyEventByStoreId(
+      findEventById.storeProfile.id
+    );
+    const newFindEventById = refactorService.eventId(
+      findEventById,
+      findEventOther
+    );
+
+    res.json(newFindEventById);
+  } catch (err) {
+    next(err);
   }
 };
 

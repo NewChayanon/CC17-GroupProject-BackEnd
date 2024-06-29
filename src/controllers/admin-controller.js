@@ -2,7 +2,36 @@ const adminService = require('../services/admin-service');
 const userService = require('../services/user-service');
 const adminController = {}
 
+adminController.getAllUser = async(req,res,next) =>{
+  try {
+    const BuyerAndSeller = await adminService.getAllBuyerAndSeller()
+    console.log('BuyerAndSeller',BuyerAndSeller)
+    res.status(200).json({BuyerAndSeller})
+  } catch (error) {
+    next(error)
+  }
+};
 
+
+adminController.getSeller = async(req,res,next) =>{
+  try {
+    const seller = await adminService.getSeller()
+    console.log('seller',seller)
+    res.status(201).json(seller)
+  } catch (error) {
+    next(error)
+  }
+};
+
+adminController.getBuyer = async (req,res,next) =>{
+  try {
+    const buyer = await adminService.getBuyer()
+    console.log('buyer',buyer)
+    res.status(201).json(buyer)
+  } catch (error) {
+    next(error)
+  }
+};
 adminController.blocked = async(req,res,next) =>{
  try {
   const userId = +req.params.userId
@@ -18,19 +47,6 @@ adminController.blocked = async(req,res,next) =>{
  }
 };
 
-adminController.statusMessage = async(req,res,next) =>{
-  try {
-   const userId = +req.params.userId
-   console.log(userId)
-   const data = await userService.findUserId(userId)
-   console.log(data)
-   const statusMessage = await adminService.updateStatus(userId,!data.statusMessage)
-   console.log('statusMessage', statusMessage)
-   res.json(statusMessage)
-  } catch (error) {
-   next(error)
-  }
- };
 
 adminController.createNotification = async (req,res,next) =>{
   try {

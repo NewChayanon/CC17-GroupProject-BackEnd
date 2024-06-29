@@ -197,14 +197,24 @@ const interest = [
   },
 ];
 const product = [
-  { storeProfileId: 1, name: "Durian", description: "Durian", image: "https://picsum.photos/200" },
+  {
+    storeProfileId: 1,
+    name: "Durian",
+    description: "Durian",
+    image: "https://picsum.photos/200",
+  },
   {
     storeProfileId: 1,
     name: "mangosteen",
     description: "mangosteen",
     image: "https://picsum.photos/200",
   },
-  { storeProfileId: 1, name: "longan", description: "longan", image: "https://picsum.photos/200" },
+  {
+    storeProfileId: 1,
+    name: "longan",
+    description: "longan",
+    image: "https://picsum.photos/200",
+  },
 ];
 const eventItem = [
   { eventId: 1, productId: 1, price: 100 },
@@ -258,13 +268,20 @@ const voucherItem = [
   { storeProfileId: 2, voucherListId: 3, userId: 9 },
   { storeProfileId: 2, voucherListId: 3, userId: 10 },
   { storeProfileId: 2, voucherListId: 3, userId: 11 },
-  { storeProfileId: 3, voucherListId: 3, userId: 7 },
-  { storeProfileId: 3, voucherListId: 3, userId: 8 },
-  { storeProfileId: 3, voucherListId: 3, userId: 9 },
-  { storeProfileId: 3, voucherListId: 3, userId: 10 },
-  { storeProfileId: 3, voucherListId: 3, userId: 11 },
+  { storeProfileId: 3, voucherListId: 4, userId: 7 },
+  { storeProfileId: 3, voucherListId: 4, userId: 8 },
+  { storeProfileId: 3, voucherListId: 4, userId: 9 },
+  { storeProfileId: 3, voucherListId: 4, userId: 10 },
+  { storeProfileId: 3, voucherListId: 4, userId: 11 },
 ];
-const follow = { storeProfileId: 1, userId: 2 };
+const follow = [
+  { storeProfileId: 1, userId: 2 },
+  { storeProfileId: 2, userId: 2 },
+  { storeProfileId: 3, userId: 2 },
+  { storeProfileId: 1, userId: 4 },
+  { storeProfileId: 1, userId: 6 },
+  { storeProfileId: 3, userId: 6 },
+];
 const comment = [
   { storeProfileId: 1, userId: 2, comment: "D", rate: "FIVE", isVerify: true },
   { storeProfileId: 1, userId: 4, comment: "F", rate: "ONE" },
@@ -306,7 +323,7 @@ const run = async () => {
   await prisma.eventItem.createMany({ data: eventItem });
   await prisma.voucherList.createMany({ data: voucherList });
   await prisma.voucherItem.createMany({ data: voucherItem });
-  await prisma.follow.create({ data: follow });
+  await prisma.follow.createMany({ data: follow });
   await prisma.comment.createMany({ data: comment });
   await prisma.inboxMessageUser.createMany({ data: inboxMessageUser });
   await prisma.report.create({ data: report });

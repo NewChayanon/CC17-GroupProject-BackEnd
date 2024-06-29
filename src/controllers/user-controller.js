@@ -1,9 +1,12 @@
 const eventServices = require("../services/event-services");
+const followService = require("../services/follow-service");
 const inboxMessageUserService = require("../services/inboxMessageUser-service");
 const interestService = require("../services/interest-service");
 const refactorService = require("../services/refactor-services");
+const storeProfileService = require("../services/storeProfile-service");
 const userService = require("../services/user-service");
 const voucherItemService = require("../services/voucherItem-service");
+const dataFormat = require("../utils/dataFormat");
 
 const userController = {};
 
@@ -84,25 +87,28 @@ userController.removeMessageInbox = async (req, res, next) => {
 };
 
 // open/close notification
-userController.statusMessage = async(req,res,next) =>{
+userController.statusMessage = async (req, res, next) => {
   try {
-   const userId = +req.params.userId
-   console.log('userId',userId)
-   const data = await userService.findUserId(userId)
-   console.log('data',data)
+    const userId = +req.params.userId;
+    console.log("userId", userId);
+    const data = await userService.findUserId(userId);
+    console.log("data", data);
 
-   if(data.id !== req.user.id) {
-    console.log(data.id)
-    console.log(req.user.id)
-    return res.status(300).json({message : 'not allowed to convert data'})
-  }
-   const statusMessage = await userService.updateStatus(userId,!data.statusMessage)
-   console.log('statusMessage', statusMessage)
-   res.json(statusMessage)
+    if (data.id !== req.user.id) {
+      console.log(data.id);
+      console.log(req.user.id);
+      return res.status(300).json({ message: "not allowed to convert data" });
+    }
+    const statusMessage = await userService.updateStatus(
+      userId,
+      !data.statusMessage
+    );
+    console.log("statusMessage", statusMessage);
+    res.json(statusMessage);
   } catch (error) {
-   next(error)
+    next(error);
   }
- };
+};
 
 userController.getNotificationPublic = async (req, res, next) => {
   const userId = req.user.id;
@@ -144,6 +150,31 @@ userController.keepCoupon = async (req, res, next) => {
       );
 
     res.status(201).json({ msg: "Successfully collected coupons." });
+  } catch (err) {
+    next(err);
+  }
+};
+
+userController.fetchAllFavorite = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    const allFavorite = await followService.findManyFavoriteByUserId(userId);
+
+    const storeProfileId = allFavorite.map((el) => ({
+      id: el.storeProfileId,
+    }));
+
+    const allStoreProfileIdInFavorite =
+      await storeProfileService.findManyStoreProfileByStoreProfileId(
+        storeProfileId
+      );
+
+    const allFavoriteList = dataFormat.allFavoriteList(
+      allFavorite,
+      allStoreProfileIdInFavorite
+    );
+
+    res.json(allFavoriteList);
   } catch (err) {
     next(err);
   }

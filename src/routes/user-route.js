@@ -11,5 +11,6 @@ userRouter.delete("/remove/:inboxId", userController.removeMessageInbox);
 userRouter.post("/keep-coupon/:eventId", userController.keepCoupon);
 userRouter.patch('/statusMessage/:userId', isUser,userController.statusMessage)
 userRouter.get("/notification", userController.getNotificationPublic);
+userRouter.get('/favorite',userController.fetchAllFavorite)
 
 module.exports = userRouter;

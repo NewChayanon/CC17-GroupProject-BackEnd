@@ -8,6 +8,7 @@ adminController.blocked = async(req,res,next) =>{
   const userId = +req.params.userId
   console.log(userId)
   const data = await userService.findUserId(userId)
+  if(!data) res.status(300).json({message: 'user not found'})
   console.log(data)
   const blockedUserId = await adminService.updateBlock(userId,!data.isBlocked)
   console.log('blockedUserId', blockedUserId)
@@ -38,6 +39,8 @@ adminController.createNotification = async (req,res,next) =>{
     
     let data = {...input,userIdSender:adminId}
     const result = await adminService.createMessage(data)
+ // const users = await adminService.getNotification()
+  // console.log('users', users)  
     console.log('data',data)
     console.log('result',result)
     res.status(200).json({message: 'create successful'})

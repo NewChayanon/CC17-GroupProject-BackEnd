@@ -28,7 +28,7 @@ adminService.updateStatus = (id, statusMessage) => prisma.users.update({
 //notification
 
   //create
-  adminService.createMessage = (data)=> prisma.indoxMessageAdmin.create({data})
+  adminService.createMessage = (data)=> prisma.inboxMessageAdmin.create({data})
 
 
 module.exports = adminService;

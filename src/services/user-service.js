@@ -5,6 +5,14 @@ const userService = {}
 userService.findUserId = (id) => prisma.users.findUnique({where:{id}})
 userService.findEmail = (email) => prisma.users.findUnique({where:{email}})
 
+userService.updateStatus = (id, statusMessage) => prisma.users.update({
+  where:{
+    id: id
+  },
+  data:{
+    statusMessage: statusMessage
+  }
+});
 
 userService.getPublicNotification = () => prisma.inboxMessageAdmin.findMany();
 

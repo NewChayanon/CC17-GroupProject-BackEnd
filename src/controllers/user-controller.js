@@ -83,6 +83,27 @@ userController.removeMessageInbox = async (req, res, next) => {
   }
 };
 
+// open/close notification
+userController.statusMessage = async(req,res,next) =>{
+  try {
+   const userId = +req.params.userId
+   console.log('userId',userId)
+   const data = await userService.findUserId(userId)
+   console.log('data',data)
+
+   if(data.id !== req.user.id) {
+    console.log(data.id)
+    console.log(req.user.id)
+    return res.status(300).json({message : 'not allowed to convert data'})
+  }
+   const statusMessage = await userService.updateStatus(userId,!data.statusMessage)
+   console.log('statusMessage', statusMessage)
+   res.json(statusMessage)
+  } catch (error) {
+   next(error)
+  }
+ };
+
 userController.getNotificationPublic = async (req, res, next) => {
   const userId = req.user.id;
   if (req.user.role === "ADMIN")

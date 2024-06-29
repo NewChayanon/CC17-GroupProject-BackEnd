@@ -23,6 +23,7 @@ authController.register = async (req, res, next) => {
     data.password = await hashService.hash(data.password);
     await authService.createUser(data);
     console.log(data.password);
+    delete data.password;
     return res.status(201).json(data);
   } catch (error) {
     next(error);

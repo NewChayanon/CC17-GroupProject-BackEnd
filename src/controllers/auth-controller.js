@@ -57,17 +57,25 @@ authController.sellerNearMe = async (req, res, next) => {
     const userLocation = "13.758343972739715,100.5349746040127";
     const range = 13; //km.
     const allEventIsActive = await eventServices.findAllEventByIsActive();
+
     const seller = refactorService.filterLocationWithinRange(
       allEventIsActive,
       userLocation,
       range
     );
+
     const storeProfileId = dataFormat.selectStoreProfileId(seller);
+
+    const groupEvent = await eventServices.groupByEventByStoreId(
+      storeProfileId
+    );
     const groupVoucherItem =
       await voucherItemService.groupByVoucherItemByStoreId(storeProfileId);
+
     const sellerNewFormat = await dataFormat.sellerNearMe(
       seller,
-      groupVoucherItem
+      groupVoucherItem,
+      groupEvent
     );
     res.json(sellerNewFormat);
   } catch (error) {

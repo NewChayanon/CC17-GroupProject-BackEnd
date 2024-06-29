@@ -6,8 +6,8 @@ eventServices.findEventByEventId = (eventId) =>
   prisma.events.findUnique({
     where: { id: eventId },
     include: {
-      VoucherList: {include:{VoucherItem:true}},
-      EventItem: {include:{products:true}},
+      VoucherList: { include: { VoucherItem: true } },
+      EventItem: { include: { products: true } },
       storeProfile: { include: { user: true } },
     },
   });
@@ -29,5 +29,11 @@ eventServices.findAllEventByIsActive = () =>
     },
   });
 
+eventServices.groupByEventByStoreId = (storeProfileId) =>
+  prisma.events.groupBy({
+    by: ["storeProfileId"],
+    where: { storeProfileId: { in: storeProfileId } },
+    _count: { storeProfileId: true },
+  });
 
 module.exports = eventServices;

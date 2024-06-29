@@ -122,23 +122,26 @@ userController.keepCoupon = async (req, res, next) => {
   try {
     const userId = req.user.id;
     const eventId = +req.params.eventId;
-    const event = await eventServices.findEventByEventId(eventId);
-    const haveCoupon = await voucherItemService.findVoucherItemByUserIdAnd(
-      event.VoucherList[0].id,
-      event.storeProfile.id,
-      userId
-    );
+    const {
+      VoucherList: [VoucherList],
+      storeProfile,
+    } = await eventServices.findEventByEventId(eventId);
+    const { VoucherItem } = VoucherList;
+    if (VoucherItem.length >= VoucherList.totalAmount)
+      return res.status(200).json({ msg: "Coupon sold out." });
 
-    if (haveCoupon) {
-      return res.status(204).json({ msg: "You have coupon" });
-    }
+    const haveCoupon = VoucherItem.find((el) => el.userId == userId);
+
+    if (haveCoupon) return res.status(200).json({ msg: "You have a coupon." });
+
     const keepCoupon =
       await voucherItemService.createVoucherItemByVoucherListIdAndStoreProfileIdAndUserId(
-        event.VoucherList[0].id,
-        event.storeProfile.id,
+        VoucherList.id,
+        storeProfile.id,
         userId
       );
-    res.status(204).json({ msg: "Keep coupon success" });
+
+    res.status(201).json({ msg: "Successfully collected coupons." });
   } catch (err) {
     next(err);
   }

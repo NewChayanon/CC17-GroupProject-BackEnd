@@ -6,7 +6,7 @@ eventServices.findEventByEventId = (eventId) =>
   prisma.events.findUnique({
     where: { id: eventId },
     include: {
-      VoucherList: true,
+      VoucherList: {include:{VoucherItem:true}},
       EventItem: {include:{products:true}},
       storeProfile: { include: { user: true } },
     },

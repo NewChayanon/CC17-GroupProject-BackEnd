@@ -229,7 +229,7 @@ const voucherList = [
     eventId: 3,
     code: "25JUN50P",
     condition: "test",
-    totalAmount: 20,
+    totalAmount: 10,
     discount: 10,
   },
   {
@@ -275,6 +275,12 @@ const inboxMessageUser = [
     userIdReceiver: 2,
     topic: "Down Server",
     message: "Down Server : 26/06/2024",
+  },
+  {
+    userIdSender: 12,
+    userIdReceiver: 2,
+    topic: "mangosteen",
+    message: "mangosteen DDD",
   },
   {
     userIdSender: 1,

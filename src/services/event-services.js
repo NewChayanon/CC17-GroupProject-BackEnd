@@ -47,4 +47,9 @@ eventServices.groupByEventByStoreId = (storeProfileId) =>
     _count: { storeProfileId: true },
   });
 
+
+  eventServices.createEvents = (storeEvent) => prisma.events.create({storeEvent})
+
+  
+
 module.exports = eventServices;

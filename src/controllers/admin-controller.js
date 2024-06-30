@@ -64,4 +64,20 @@ adminController.createNotification = async (req,res,next) =>{
   }
 };
 
+adminController.getAllMessages = async(req,res,next) =>{
+  const text = await adminService.getAllMessages()
+  console.log('text',text)
+};
+
+
+
+adminController.deleteMessages = async(req,res,next) =>{
+  const deleteId = +req.params.id
+  console.log('deleteId',deleteId)
+  const deleteText = await adminService.deleteMessageById(deleteId)
+  console.log('deleteText',deleteText)
+  res.status(200).json({message: "delete successful"})
+};
+
+
 module.exports = adminController;

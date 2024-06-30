@@ -8,6 +8,9 @@ adminRouter.get('/seller', adminController.getSeller)
 adminRouter.get('/buyer', adminController.getBuyer)
 adminRouter.patch('/block/:userId', adminController.blocked)
 adminRouter.post('/newMessage', adminController.createNotification)
+adminRouter.get('/allMessages', adminController.getAllMessages)
+adminRouter.patch('/editMessages/:id',adminController.editMessages)
+adminRouter.delete('/deleteMessage/:id', adminController.deleteMessages)
 
 module.exports = adminRouter;
 

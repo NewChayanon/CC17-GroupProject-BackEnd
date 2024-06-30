@@ -136,6 +136,7 @@ userController.keepCoupon = async (req, res, next) => {
       VoucherList: [VoucherList],
       storeProfile,
     } = await eventServices.findEventByEventId(eventId);
+    if(!VoucherList)return res.json({msg:"This event have't coupon."})
     const { VoucherItem } = VoucherList;
     if (VoucherItem.length >= VoucherList.totalAmount)
       return res.status(200).json({ msg: "Coupon sold out." });

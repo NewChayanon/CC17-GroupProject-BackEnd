@@ -187,5 +187,5 @@ dataFormat.storeProfileId = (oldData) => {
       commenterLastName: user.lastName,
     })),
   };
-
+}
 module.exports = dataFormat;

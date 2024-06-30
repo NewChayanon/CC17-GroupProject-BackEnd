@@ -7,6 +7,7 @@ const eventServices = require("../services/event-services");
 const refactorService = require("../services/refactor-services");
 const dataFormat = require("../utils/dataFormat");
 const voucherItemService = require("../services/voucherItem-service");
+const storeProfileService = require("../services/storeProfile-service");
 
 const authController = {};
 
@@ -97,6 +98,17 @@ authController.afterClickOnTheEventCard = async (req, res, next) => {
     );
 
     res.json(newFindEventById);
+  } catch (err) {
+    next(err);
+  }
+};
+
+authController.storeProfile = async (req, res, next) => {
+  try {
+    const storeProfileId = +req.params.storeProfileId
+    const infoStoreProfile = await storeProfileService.findStoreProfileByStoreProfileId(storeProfileId)
+    const result = dataFormat.storeProfileId(infoStoreProfile)
+    res.json(result)
   } catch (err) {
     next(err);
   }

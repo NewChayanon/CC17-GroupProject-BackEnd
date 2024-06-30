@@ -40,6 +40,10 @@ userController.interested = async (req, res, next) => {
   try {
     const userId = req.user.id;
     const eventId = +req.params.eventId;
+    const event = await eventServices.findEventByEventId(eventId);
+    if (!event) {
+      return res.status(400).json({ msg: "Event invalid." });
+    }
     const interestId = await interestService.findInterestedByUserIdAndEventId(
       userId,
       eventId
@@ -132,11 +136,16 @@ userController.keepCoupon = async (req, res, next) => {
   try {
     const userId = req.user.id;
     const eventId = +req.params.eventId;
+    const event = await eventServices.findEventByEventId(eventId);
+    if (!event) {
+      return res.status(400).json({ msg: "Event invalid." });
+    }
     const {
       VoucherList: [VoucherList],
       storeProfile,
-    } = await eventServices.findEventByEventId(eventId);
-    if(!VoucherList)return res.json({msg:"This event have't coupon."})
+    } = event;
+
+    if (!VoucherList) return res.json({ msg: "This event have't a coupon." });
     const { VoucherItem } = VoucherList;
     if (VoucherItem.length >= VoucherList.totalAmount)
       return res.status(200).json({ msg: "Coupon sold out." });
@@ -187,11 +196,13 @@ userController.afterClickOnTheEventCard = async (req, res, next) => {
   try {
     const userId = req.user.id;
     const eventId = +req.params.eventId;
-    console.log(eventId);
     const findEventById = await eventServices.findEventByEventIdAndUserId(
       eventId,
       userId
     );
+    if (!findEventById) {
+      return res.status(400).json({ msg: "Event invalid" });
+    }
     const findEventOther = await eventServices.findManyEventByStoreId(
       findEventById.storeProfile.id,
       eventId,

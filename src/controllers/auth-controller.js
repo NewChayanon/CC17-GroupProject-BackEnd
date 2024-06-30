@@ -88,6 +88,9 @@ authController.afterClickOnTheEventCard = async (req, res, next) => {
   try {
     const eventId = +req.params.eventId;
     const findEventById = await eventServices.findEventByEventId(eventId);
+    if (!findEventById) {
+      return res.status(400).json({msg:"Event invalid."})
+    }
     const findEventOther = await eventServices.findManyEventByStoreId(
       findEventById.storeProfile.id,
       eventId
@@ -107,6 +110,9 @@ authController.storeProfile = async (req, res, next) => {
   try {
     const storeProfileId = +req.params.storeProfileId
     const infoStoreProfile = await storeProfileService.findStoreProfileByStoreProfileId(storeProfileId)
+    if (!infoStoreProfile) {
+      return res.status(400).json({msg:"Store profile invalid."})
+    }
     const result = dataFormat.storeProfileId(infoStoreProfile)
     res.json(result)
   } catch (err) {

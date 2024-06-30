@@ -10,5 +10,6 @@ authRouter.post("/register", registerValidator, authController.register);
 authRouter.post("/login", loginValidator, authController.login);
 authRouter.get("/near-me", authController.sellerNearMe);
 authRouter.get("/event/:eventId", authController.afterClickOnTheEventCard);
+authRouter.get("/:storeProfileId",authController.storeProfile)
 
 module.exports = authRouter;

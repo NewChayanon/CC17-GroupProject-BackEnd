@@ -23,11 +23,11 @@ model Users {
   blockDate     DateTime?
   role          Role      @default(BUYER)
 
-  Interest     Interest[]
-  StoreProfile StoreProfile?
-  Follow       Follow[]
-  Comment      Comment[]
-  VoucherItem  VoucherItem[]
+  Interest          Interest[]
+  StoreProfile      StoreProfile?
+  Follow            Follow[]
+  Comment           Comment[]
+  VoucherItem       VoucherItem[]
   InboxMessageAdmin InboxMessageAdmin[]
   userReceiver      InboxMessageUser[]  @relation("userReceiver")
   userSender        InboxMessageUser[]  @relation("userSender")
@@ -36,11 +36,12 @@ model Users {
 }
 
 model StoreProfile {
-  id          Int    @id @default(autoincrement())
-  userId      Int    @unique
-  name        String
-  coverImage  String
-  description String @db.Text
+  id                Int    @id @default(autoincrement())
+  userId            Int    @unique
+  name              String
+  coverImage        String
+  sellerDescription String @db.Text
+  description       String @db.Text
 
   user Users @relation(fields: [userId], references: [id])
 
@@ -102,12 +103,14 @@ model Events {
 }
 
 model Comment {
-  id             Int     @id @default(autoincrement())
+  id             Int      @id @default(autoincrement())
   storeProfileId Int
   userId         Int
-  comment        String?
+  topic          String   @db.Text
+  comment        String?  @db.Text
   rate           Rate
-  isVerify       Boolean @default(false)
+  isVerify       Boolean  @default(false)
+  createdAt      DateTime @default(now()) @db.Timestamp(0)
 
   storeProfile StoreProfile @relation(fields: [storeProfileId], references: [id])
   user         Users        @relation(fields: [userId], references: [id])

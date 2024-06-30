@@ -61,4 +61,39 @@ dataFormat.allFavoriteList = (allFavorite, allStoreProfileIdInFavorite) => {
   return updatedFavoriteList;
 };
 
+dataFormat.storeProfileId = (oldData) => {
+  const {
+    id,
+    coverImage,
+    user,
+    name,
+    Follow,
+    Events,
+    VoucherItem,
+    sellerDescription,
+    description,
+    Comment,
+  } = oldData;
+
+  return {
+    id,
+    storeCoverImage: coverImage,
+    sellerCoverImage: user.profileImage,
+    sellerFirstName: user.firstName,
+    sellerLastName: user.lastName,
+    storeName: name,
+    storeFollowers: Follow.length,
+    storeEvents: Events.length,
+    storeVouchers: VoucherItem.length,
+    followed: false,
+    sellerDescription,
+    storeDescription: description,
+    review: Comment.map(({ user, userId, storeProfileId, ...rest }) => ({
+      ...rest,
+      commenterFirstName: user.firstName,
+      commenterLastName: user.lastName,
+    })),
+  };
+};
+
 module.exports = dataFormat;

@@ -1,3 +1,4 @@
+const { storeProfile } = require("../models/prisma");
 const eventServices = require("../services/event-services");
 const followService = require("../services/follow-service");
 const inboxMessageUserService = require("../services/inboxMessageUser-service");
@@ -7,6 +8,7 @@ const storeProfileService = require("../services/storeProfile-service");
 const userService = require("../services/user-service");
 const voucherItemService = require("../services/voucherItem-service");
 const dataFormat = require("../utils/dataFormat");
+const createError = require("../utils/createError");
 
 const userController = {};
 
@@ -202,6 +204,42 @@ userController.afterClickOnTheEventCard = async (req, res, next) => {
     res.json(newFindEventById);
   } catch (err) {
     next(err);
+  }
+};
+
+// seller
+
+userController.createStore = async (req, res, next) => {
+  try {
+    const store = req.body;
+    const userId = req.body.userId;
+    // console.log('userId', userId)
+    const findUserId = await storeProfileService.findStoreProfileByUserId(
+      userId
+    );
+    // console.log('findUserId',findUserId)
+    if (findUserId) {
+      return createError({
+        message: "Not allowed to create store you have store already",
+        statusCode: 400,
+      });
+    }
+    const createStoreProfile = await storeProfileService.createStoreProfile(
+      store
+    );
+    console.log("createStoreProfile", createStoreProfile);
+    res.status(200).json({ message: "create store complete!!!." });
+  } catch (error) {
+    next(error);
+  }
+};
+
+userController.createEvent = async (req, res, next) => {
+  try {
+    const createEvent = await eventServices.createEvents();
+    console.log("createEvent", createEvent);
+  } catch (error) {
+    next(error);
   }
 };
 

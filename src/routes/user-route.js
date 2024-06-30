@@ -3,6 +3,7 @@ const userController = require("../controllers/user-controller");
 const { isUser } = require("../middlewares/isUser");
 const userRouter = express.Router();
 
+// buyer
 userRouter.get("/me", userController.getMe);
 userRouter.get("/event", userController.findEventListOfUser);
 userRouter.put("/interested/:eventId", userController.interested);
@@ -13,5 +14,10 @@ userRouter.patch('/statusMessage/:userId', isUser,userController.statusMessage)
 userRouter.get("/notification", userController.getNotificationPublic);
 userRouter.get('/favorite',userController.fetchAllFavorite)
 userRouter.get("/event/:eventId", userController.afterClickOnTheEventCard);
+
+
+// seller
+userRouter.post('/create-event', userController.createEvent)
+userRouter.post('/createStoreProfile', userController.createStore)
 
 module.exports = userRouter;

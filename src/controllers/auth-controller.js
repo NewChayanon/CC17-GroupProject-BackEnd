@@ -87,12 +87,12 @@ authController.sellerNearMe = async (req, res, next) => {
 authController.afterClickOnTheEventCard = async (req, res, next) => {
   try {
     const eventId = +req.params.eventId;
-    console.log(eventId);
     const findEventById = await eventServices.findEventByEventId(eventId);
     const findEventOther = await eventServices.findManyEventByStoreId(
-      findEventById.storeProfile.id
+      findEventById.storeProfile.id,
+      eventId
     );
-    const newFindEventById = refactorService.eventId(
+    const newFindEventById = dataFormat.authEventId(
       findEventById,
       findEventOther
     );

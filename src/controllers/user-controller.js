@@ -180,4 +180,29 @@ userController.fetchAllFavorite = async (req, res, next) => {
   }
 };
 
+userController.afterClickOnTheEventCard = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    const eventId = +req.params.eventId;
+    console.log(eventId);
+    const findEventById = await eventServices.findEventByEventIdAndUserId(
+      eventId,
+      userId
+    );
+    const findEventOther = await eventServices.findManyEventByStoreId(
+      findEventById.storeProfile.id,
+      eventId,
+      userId
+    );
+    const newFindEventById = dataFormat.userEventId(
+      findEventById,
+      findEventOther
+    );
+
+    res.json(newFindEventById);
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = userController;

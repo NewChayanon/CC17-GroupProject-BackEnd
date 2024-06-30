@@ -194,6 +194,18 @@ const event = [
     endDate: "25/06/2024",
     isActive: true,
   },
+  {
+    storeProfileId: 1,
+    name: "bananaEvent",
+    images: "https://picsum.photos/400",
+    location: "13.757544971580751,100.53668712303082",
+    locationName: "ก๋วยเตี๋ยวลูกชิ้นปลาแปะเตียง",
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit maiores, quisquam error ex sit natus debitis ratione distinctio saepe, harum, facere laborum deleniti autem dolorem asperiores consequuntur accusamus eveniet incidunt! Ea a unde tenetur sint neque blanditiis architecto fugit aliquid, exercitationem, odit reprehenderit, vitae nobis quo? Error distinctio dolores nam.",
+    startDate: "24/06/2024",
+    endDate: "25/06/2024",
+    isActive: true,
+  },
 ];
 const interest = [
   {
@@ -202,6 +214,18 @@ const interest = [
   },
   {
     userId: 2,
+    eventId: 2,
+  },
+  {
+    userId: 2,
+    eventId: 3,
+  },
+  {
+    userId: 6,
+    eventId: 2,
+  },
+  {
+    userId: 7,
     eventId: 2,
   },
 ];

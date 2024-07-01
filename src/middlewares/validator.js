@@ -17,3 +17,8 @@ exports.loginValidator = (req,res,next)=>{
   req.input = value
   next();
 };
+
+exports.validateCoverImage = (req,res,next)=>{
+  if(!req.files) return createError({message: 'at least one of cover image', statusCode: 400})
+  next()
+}

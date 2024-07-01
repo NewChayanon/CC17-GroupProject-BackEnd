@@ -1,3 +1,4 @@
+const fs = require('fs/promises');
 const { storeProfile } = require("../models/prisma");
 const eventServices = require("../services/event-services");
 const followService = require("../services/follow-service");
@@ -9,7 +10,7 @@ const userService = require("../services/user-service");
 const voucherItemService = require("../services/voucherItem-service");
 const dataFormat = require("../utils/dataFormat");
 const createError = require("../utils/createError");
-
+const uploadService = require('../services/upload-service')
 const userController = {};
 
 userController.getMe = async (req, res, next) => {
@@ -223,28 +224,69 @@ userController.afterClickOnTheEventCard = async (req, res, next) => {
 
 userController.createStore = async (req, res, next) => {
   try {
-    const store = req.body;
-    const userId = req.body.userId;
-    // console.log('userId', userId)
-    const findUserId = await storeProfileService.findStoreProfileByUserId(
-      userId
-    );
-    // console.log('findUserId',findUserId)
-    if (findUserId) {
-      return createError({
-        message: "Not allowed to create store you have store already",
-        statusCode: 400,
-      });
+  
+    const userId = +req.user.id;
+
+    const findUserId = await storeProfileService.findStoreProfileByUserId(userId)
+    console.log('findUserId',findUserId)
+    if(findUserId) createError(res.status(300).json({message: "Not allowed to create store you have store already"}))
+
+    const promises = [];
+    if(req.files.coverImage){
+      const result = uploadService.upload(req.files.coverImage[0].path).then(url =>({url, key: 'coverImage'}))
+      promises.push(result)
     }
-    const createStoreProfile = await storeProfileService.createStoreProfile(
-      store
-    );
+
+    const result = await Promise.all(promises)
+    console.log('result',result)
+    const data = result.reduce((acc,item)=>{
+      acc[item.key]= item.url
+      return acc
+    },{})
+
+    const input = {
+      userId: userId,
+      name: req.body.name,
+      coverImage: data.coverImage,
+      sellerDescription: req.body.sellerDescription,
+      description: req.body.description
+    }
+    const createStoreProfile = await storeProfileService.createStoreProfile(+req.body.userId, input);
     console.log("createStoreProfile", createStoreProfile);
     res.status(200).json({ message: "create store complete!!!." });
   } catch (error) {
     next(error);
   }
 };
+
+userController.updateCoverImage = async (req,res,next) =>{
+  try{
+    const promises = [];
+    console.log(req.files)
+    if(req.files.coverImage){
+      const result = uploadService.upload(req.files.coverImage[0].path).then(url =>({url, key: 'coverImage'}))
+      promises.push(result)
+    }
+
+    const result = await Promise.all(promises)
+    console.log(result)
+    const data = result.reduce((acc,item)=>{
+      acc[item.key]= item.url
+      return acc
+    },{})
+    console.log('data1',data)
+    await userService.updateCoverImageById(+req.body.userId, data);
+    console.log('first3')
+    res.status(200).json(data)
+  }catch(err){
+    next(err)
+  } finally{
+    console.log(req.files.coverImage[0].path)
+    if(req.files.coverImage){
+      fs.unlink(req.files.coverImage[0].path)
+    }
+  }
+}
 
 userController.createEvent = async (req, res, next) => {
   try {

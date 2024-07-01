@@ -61,7 +61,7 @@ dataFormat.allFavoriteList = (allFavorite, allStoreProfileIdInFavorite) => {
   return updatedFavoriteList;
 };
 
-dataFormat.userEventId = (event, otherEvents) => {
+dataFormat.userEventId = (event, otherEvents, userId) => {
   const {
     id,
     name,
@@ -74,7 +74,11 @@ dataFormat.userEventId = (event, otherEvents) => {
     Interest,
     EventItem,
   } = event;
-
+  const statusCoupon = VoucherList[0]
+    ? VoucherList[0].VoucherItem.find((el) => el.userId === userId)
+      ? VoucherList[0].VoucherItem.find((el) => el.userId === userId).status
+      : "You haven't collected any coupons yet."
+    : "Coupon is empty";
   const newEvent = {
     id,
     eventName: name,
@@ -100,6 +104,7 @@ dataFormat.userEventId = (event, otherEvents) => {
         price,
       };
     }),
+    statusCoupon,
     eventOther: otherEvents.map((event) => {
       const { id, startDate, endDate, location, Interest } = event;
       return {
@@ -142,6 +147,7 @@ dataFormat.authEventId = (eventDetails, otherEvents) => {
       productDescription: item.products.description,
       price: item.price,
     })),
+    statusCoupon:"Please login.",
     eventOther: otherEvents.map((event) => ({
       id: event.id,
       eventStartDate: event.startDate,

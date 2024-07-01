@@ -210,7 +210,8 @@ userController.afterClickOnTheEventCard = async (req, res, next) => {
     );
     const newFindEventById = dataFormat.userEventId(
       findEventById,
-      findEventOther
+      findEventOther,
+      userId
     );
 
     res.json(newFindEventById);

@@ -59,7 +59,7 @@ userController.interested = async (req, res, next) => {
     const uninterestedEvent = await interestService.deleteInterestById(
       interestId.id
     );
-    res.json({ mes: "Uninterested success" });
+    res.json({ meg: "Uninterested success" });
   } catch (error) {
     next(error);
   }
@@ -211,7 +211,8 @@ userController.afterClickOnTheEventCard = async (req, res, next) => {
     );
     const newFindEventById = dataFormat.userEventId(
       findEventById,
-      findEventOther
+      findEventOther,
+      userId
     );
 
     res.json(newFindEventById);
@@ -299,6 +300,58 @@ userController.createEvent = async (req, res, next) => {
     console.log("createEvent", createEvent);
   } catch (error) {
     next(error);
+  }
+};
+
+userController.storeProfile = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    const storeProfileId = +req.params.storeProfileId;
+    const infoStoreProfile =
+      await storeProfileService.findStoreProfileByStoreProfileId(
+        storeProfileId
+      );
+    if (!infoStoreProfile) {
+      return res.status(400).json({ msg: "Store profile invalid." });
+    }
+    const result = dataFormat.userStoreProfileId(infoStoreProfile, userId);
+    res.json(result);
+  } catch (err) {
+    next(err);
+  }
+};
+
+userController.followAndUnFollowStoreProfile = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    const storeProfileId = +req.params.storeProfileId;
+
+    const storeProfile =
+      await storeProfileService.findStoreProfileByStoreProfileId(
+        storeProfileId
+      );
+    if (!storeProfile) {
+      return res.status(400).json({ msg: "Store profile invalid." });
+    }
+
+    const isFollow = await followService.findFollowByUserIdAndStoreProfileId(
+      userId,
+      storeProfileId
+    );
+
+    if (!isFollow) {
+      const followed =
+        await followService.createFollowByUserIdAndStoreProfileId(
+          userId,
+          storeProfileId
+        );
+      return res.status(201).json({ msg: "Followed" });
+    }
+
+    const unFollowed = await followService.deleteFollowById(isFollow.id);
+    res.json({ meg: "UnFollowed" });
+  } catch (err) {
+    next(err);
   }
 };
 

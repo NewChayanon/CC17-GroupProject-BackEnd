@@ -16,7 +16,8 @@ userRouter.patch('/statusMessage/:userId', isUser,userController.statusMessage)
 userRouter.get("/notification", userController.getNotificationPublic);
 userRouter.get('/favorite',userController.fetchAllFavorite)
 userRouter.get("/event/:eventId", userController.afterClickOnTheEventCard);
-
+userRouter.get("/:storeProfileId",userController.storeProfile)
+userRouter.put("/follow/:storeProfileId",userController.followAndUnFollowStoreProfile)
 
 // seller create
 userRouter.post('/create-event', userController.createEvent)

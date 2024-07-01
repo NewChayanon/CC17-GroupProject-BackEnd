@@ -74,11 +74,7 @@ dataFormat.userEventId = (event, otherEvents, userId) => {
     Interest,
     EventItem,
   } = event;
-  const statusCoupon = VoucherList[0]
-    ? VoucherList[0].VoucherItem.find((el) => el.userId === userId)
-      ? VoucherList[0].VoucherItem.find((el) => el.userId === userId).status
-      : "You haven't collected any coupons yet."
-    : "Coupon is empty";
+  const userVoucherStatus = VoucherList[0]?.VoucherItem.find(el=>el.userId === userId)
   const newEvent = {
     id,
     eventName: name,
@@ -86,8 +82,14 @@ dataFormat.userEventId = (event, otherEvents, userId) => {
     eventStartDate: startDate,
     eventEndDate: endDate,
     eventLocation: location,
-    voucherCode: VoucherList.length ? VoucherList[0].code : null,
-    voucherCondition: VoucherList.length ? VoucherList[0].condition : null,
+    voucherItem: VoucherList.length
+      ? {
+          voucherCode: VoucherList[0].code,
+          voucherCondition: VoucherList[0].condition,
+          voucherRemainingAmount: VoucherList[0].totalAmount - VoucherList[0].VoucherItem.length,
+          userVoucherStatus : userVoucherStatus ? userVoucherStatus.status : [],
+        }
+      : [],
     sellerId: storeProfile.user.id,
     sellerFirstName: storeProfile.user.firstName,
     sellerDisplayName: storeProfile.user.displayName,
@@ -104,7 +106,7 @@ dataFormat.userEventId = (event, otherEvents, userId) => {
         price,
       };
     }),
-    statusCoupon,
+    // statusCoupon,
     eventOther: otherEvents.map((event) => {
       const { id, startDate, endDate, location, Interest } = event;
       return {
@@ -147,7 +149,7 @@ dataFormat.authEventId = (eventDetails, otherEvents) => {
       productDescription: item.products.description,
       price: item.price,
     })),
-    statusCoupon:"Please login.",
+    statusCoupon: "Please login.",
     eventOther: otherEvents.map((event) => ({
       id: event.id,
       eventStartDate: event.startDate,

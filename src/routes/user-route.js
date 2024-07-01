@@ -15,7 +15,7 @@ userRouter.get("/notification", userController.getNotificationPublic);
 userRouter.get('/favorite',userController.fetchAllFavorite)
 userRouter.get("/event/:eventId", userController.afterClickOnTheEventCard);
 userRouter.get("/:storeProfileId",userController.storeProfile)
-
+userRouter.put("/follow/:storeProfileId",userController.followAndUnFollowStoreProfile)
 
 // seller
 userRouter.post('/create-event', userController.createEvent)

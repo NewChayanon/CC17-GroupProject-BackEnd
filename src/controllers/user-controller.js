@@ -257,14 +257,51 @@ userController.createEvent = async (req, res, next) => {
 
 userController.storeProfile = async (req, res, next) => {
   try {
-    const userId = req.user.id
-    const storeProfileId = +req.params.storeProfileId
-    const infoStoreProfile = await storeProfileService.findStoreProfileByStoreProfileId(storeProfileId)
+    const userId = req.user.id;
+    const storeProfileId = +req.params.storeProfileId;
+    const infoStoreProfile =
+      await storeProfileService.findStoreProfileByStoreProfileId(
+        storeProfileId
+      );
     if (!infoStoreProfile) {
-      return res.status(400).json({msg:"Store profile invalid."})
+      return res.status(400).json({ msg: "Store profile invalid." });
     }
-    const result = dataFormat.userStoreProfileId(infoStoreProfile,userId)
-    res.json(result)
+    const result = dataFormat.userStoreProfileId(infoStoreProfile, userId);
+    res.json(result);
+  } catch (err) {
+    next(err);
+  }
+};
+
+userController.followAndUnFollowStoreProfile = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    const storeProfileId = +req.params.storeProfileId;
+
+    const storeProfile =
+      await storeProfileService.findStoreProfileByStoreProfileId(
+        storeProfileId
+      );
+    if (!storeProfile) {
+      return res.status(400).json({ msg: "Store profile invalid." });
+    }
+
+    const isFollow = await followService.findFollowByUserIdAndStoreProfileId(
+      userId,
+      storeProfileId
+    );
+
+    if (!isFollow) {
+      const followed =
+        await followService.createFollowByUserIdAndStoreProfileId(
+          userId,
+          storeProfileId
+        );
+      return res.status(201).json({ msg: "Followed" });
+    }
+
+    const unFollowed = await followService.deleteFollowById(isFollow.id);
+    res.json({ meg: "UnFollowed" });
   } catch (err) {
     next(err);
   }

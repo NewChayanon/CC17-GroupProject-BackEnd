@@ -256,6 +256,11 @@ userController.createStore = async (req, res, next) => {
     res.status(200).json({ message: "create store complete!!!." });
   } catch (error) {
     next(error);
+  }finally{
+    console.log(req.files.coverImage[0].path)
+    if(req.files.coverImage){
+      fs.unlink(req.files.coverImage[0].path)
+    }
   }
 };
 

@@ -58,7 +58,7 @@ userController.interested = async (req, res, next) => {
     const uninterestedEvent = await interestService.deleteInterestById(
       interestId.id
     );
-    res.json({ mes: "Uninterested success" });
+    res.json({ meg: "Uninterested success" });
   } catch (error) {
     next(error);
   }
@@ -252,6 +252,21 @@ userController.createEvent = async (req, res, next) => {
     console.log("createEvent", createEvent);
   } catch (error) {
     next(error);
+  }
+};
+
+userController.storeProfile = async (req, res, next) => {
+  try {
+    const userId = req.user.id
+    const storeProfileId = +req.params.storeProfileId
+    const infoStoreProfile = await storeProfileService.findStoreProfileByStoreProfileId(storeProfileId)
+    if (!infoStoreProfile) {
+      return res.status(400).json({msg:"Store profile invalid."})
+    }
+    const result = dataFormat.userStoreProfileId(infoStoreProfile,userId)
+    res.json(result)
+  } catch (err) {
+    next(err);
   }
 };
 

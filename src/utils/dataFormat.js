@@ -89,7 +89,7 @@ dataFormat.userEventId = (event, otherEvents) => {
     sellerDisplayName: storeProfile.user.displayName,
     storeCoverImage: storeProfile.coverImage,
     storeDescription: storeProfile.description,
-    interestThisEvent: Interest.length !== 0,
+    interest: Interest.length !== 0,
     eventList: EventItem.map((item) => {
       const { id, products, price } = item;
       return {
@@ -134,7 +134,7 @@ dataFormat.authEventId = (eventDetails, otherEvents) => {
     sellerDisplayName: eventDetails.storeProfile.user.displayName,
     storeCoverImage: eventDetails.storeProfile.coverImage,
     storeDescription: eventDetails.storeProfile.description,
-    interestThisEvent: false,
+    interest: false,
     eventList: eventDetails.EventItem.map((item) => ({
       productId: item.id,
       productName: item.products.name,
@@ -154,7 +154,7 @@ dataFormat.authEventId = (eventDetails, otherEvents) => {
   return formattedEventDetails;
 };
 
-dataFormat.storeProfileId = (oldData) => {
+dataFormat.authStoreProfileId = (oldData) => {
   const {
     id,
     coverImage,
@@ -187,5 +187,41 @@ dataFormat.storeProfileId = (oldData) => {
       commenterLastName: user.lastName,
     })),
   };
-}
+};
+
+dataFormat.userStoreProfileId = (oldData, userId) => {
+  const {
+    id,
+    coverImage,
+    user,
+    name,
+    Follow,
+    Events,
+    VoucherItem,
+    sellerDescription,
+    description,
+    Comment,
+  } = oldData;
+
+  return {
+    id,
+    storeCoverImage: coverImage,
+    sellerCoverImage: user.profileImage,
+    sellerFirstName: user.firstName,
+    sellerLastName: user.lastName,
+    storeName: name,
+    storeFollowers: Follow.length,
+    storeEvents: Events.length,
+    storeVouchers: VoucherItem.length,
+    followed: Follow.find((el) => el.userId === userId) ? true : false,
+    sellerDescription,
+    storeDescription: description,
+    review: Comment.map(({ user, userId, storeProfileId, ...rest }) => ({
+      ...rest,
+      commenterFirstName: user.firstName,
+      commenterLastName: user.lastName,
+    })),
+  };
+};
+
 module.exports = dataFormat;

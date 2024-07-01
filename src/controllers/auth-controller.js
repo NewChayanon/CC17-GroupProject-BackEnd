@@ -113,7 +113,7 @@ authController.storeProfile = async (req, res, next) => {
     if (!infoStoreProfile) {
       return res.status(400).json({msg:"Store profile invalid."})
     }
-    const result = dataFormat.storeProfileId(infoStoreProfile)
+    const result = dataFormat.authStoreProfileId(infoStoreProfile)
     res.json(result)
   } catch (err) {
     next(err);

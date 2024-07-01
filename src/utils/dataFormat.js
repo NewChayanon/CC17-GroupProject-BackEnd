@@ -74,7 +74,9 @@ dataFormat.userEventId = (event, otherEvents, userId) => {
     Interest,
     EventItem,
   } = event;
-  const userVoucherStatus = VoucherList[0]?.VoucherItem.find(el=>el.userId === userId)
+  const userVoucherStatus = VoucherList[0]?.VoucherItem.find(
+    (el) => el.userId === userId
+  );
   const newEvent = {
     id,
     eventName: name,
@@ -86,8 +88,9 @@ dataFormat.userEventId = (event, otherEvents, userId) => {
       ? {
           voucherCode: VoucherList[0].code,
           voucherCondition: VoucherList[0].condition,
-          voucherRemainingAmount: VoucherList[0].totalAmount - VoucherList[0].VoucherItem.length,
-          userVoucherStatus : userVoucherStatus ? userVoucherStatus.status : [],
+          voucherRemainingAmount:
+            VoucherList[0].totalAmount - VoucherList[0].VoucherItem.length,
+          userVoucherStatus: userVoucherStatus ? userVoucherStatus.status : [],
         }
       : [],
     sellerId: storeProfile.user.id,
@@ -130,12 +133,15 @@ dataFormat.authEventId = (eventDetails, otherEvents) => {
     eventStartDate: eventDetails.startDate,
     eventEndDate: eventDetails.endDate,
     eventLocation: eventDetails.location,
-    voucherCode: eventDetails.VoucherList.length
-      ? eventDetails.VoucherList[0].code
-      : null,
-    voucherCondition: eventDetails.VoucherList.length
-      ? eventDetails.VoucherList[0].condition
-      : null,
+    voucherItem: VoucherList.length
+      ? {
+          voucherCode: VoucherList[0].code,
+          voucherCondition: VoucherList[0].condition,
+          voucherRemainingAmount:
+            VoucherList[0].totalAmount - VoucherList[0].VoucherItem.length,
+          userVoucherStatus: [],
+        }
+      : [],
     sellerId: eventDetails.storeProfile.user.id,
     sellerFirstName: eventDetails.storeProfile.user.firstName,
     sellerDisplayName: eventDetails.storeProfile.user.displayName,
@@ -149,7 +155,7 @@ dataFormat.authEventId = (eventDetails, otherEvents) => {
       productDescription: item.products.description,
       price: item.price,
     })),
-    statusCoupon: "Please login.",
+
     eventOther: otherEvents.map((event) => ({
       id: event.id,
       eventStartDate: event.startDate,

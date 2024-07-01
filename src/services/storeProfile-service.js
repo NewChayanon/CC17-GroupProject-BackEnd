@@ -18,7 +18,7 @@ storeProfileService.findStoreProfileByUserId = (userId) => prisma.storeProfile.f
 
 
  // create
-storeProfileService.createStoreProfile = (userId,data) =>prisma.storeProfile.create({data});
+storeProfileService.createStoreProfile = (data) =>prisma.storeProfile.create({data});
 
 
 

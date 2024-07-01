@@ -227,7 +227,7 @@ userController.createStore = async (req, res, next) => {
   try {
   
     const userId = +req.user.id;
-
+    console.log('userId', userId)
     const findUserId = await storeProfileService.findStoreProfileByUserId(userId)
     console.log('findUserId',findUserId)
     if(findUserId) createError(res.status(300).json({message: "Not allowed to create store you have store already"}))
@@ -252,7 +252,7 @@ userController.createStore = async (req, res, next) => {
       sellerDescription: req.body.sellerDescription,
       description: req.body.description
     }
-    const createStoreProfile = await storeProfileService.createStoreProfile(+req.body.userId, input);
+    const createStoreProfile = await storeProfileService.createStoreProfile(input);
     console.log("createStoreProfile", createStoreProfile);
     res.status(200).json({ message: "create store complete!!!." });
   } catch (error) {

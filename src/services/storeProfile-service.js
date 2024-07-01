@@ -12,17 +12,14 @@ storeProfileService.findManyStoreProfileByStoreProfileId = (storeProfileId) =>
 //seller
  // find
 
-storeProfileService.findStoreProfileByUserId = (storeProfileId) =>
-  prisma.storeProfile.findFirst({
-    where:{userId: storeProfileId}
+storeProfileService.findStoreProfileByUserId = (userId) => prisma.storeProfile.findFirst({
+  where:{userId:userId}
   })
 
 
  // create
-storeProfileService.createStoreProfile = (data) =>
-  prisma.storeProfile.create({data}
+storeProfileService.createStoreProfile = (userId,data) =>prisma.storeProfile.create({data});
 
-  );
 
 
 

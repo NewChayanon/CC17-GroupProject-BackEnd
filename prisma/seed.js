@@ -360,7 +360,13 @@ const inboxMessageUser = [
     message: "Down Server : 26/06/2024",
   },
 ];
-const report = { userIdReporter: 4, userIdReported: 3, message: "test" };
+const report = {
+  userIdReporter: 4,
+  storeProfileReported: 3,
+  subject: "mangosteen",
+  message: "test",
+  image: "https://picsum.photos/400",
+};
 
 const run = async () => {
   await prisma.users.createMany({ data: userData });

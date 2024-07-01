@@ -22,6 +22,8 @@ model Users {
   isBlocked     Boolean   @default(false)
   blockDate     DateTime?
   role          Role      @default(BUYER)
+  createdAt     DateTime  @default(now()) @db.Timestamp(0)
+  updatedAt     DateTime  @updatedAt @db.Timestamp(0)
 
   Interest          Interest[]
   StoreProfile      StoreProfile?
@@ -31,17 +33,18 @@ model Users {
   InboxMessageAdmin InboxMessageAdmin[]
   userReceiver      InboxMessageUser[]  @relation("userReceiver")
   userSender        InboxMessageUser[]  @relation("userSender")
-  userReported      Report[]            @relation("userReported")
-  userReporter      Report[]            @relation("userReporter")
+  Report            Report[]
 }
 
 model StoreProfile {
-  id                Int    @id @default(autoincrement())
-  userId            Int    @unique
+  id                Int      @id @default(autoincrement())
+  userId            Int      @unique
   name              String
   coverImage        String
-  sellerDescription String @db.Text
-  description       String @db.Text
+  sellerDescription String   @db.Text
+  description       String   @db.Text
+  createdAt         DateTime @default(now()) @db.Timestamp(0)
+  updatedAt         DateTime @updatedAt @db.Timestamp(0)
 
   user Users @relation(fields: [userId], references: [id])
 
@@ -50,6 +53,7 @@ model StoreProfile {
   VoucherItem VoucherItem[]
   Comment     Comment[]
   Follow      Follow[]
+  Report      Report[]
 }
 
 model Follow {
@@ -172,12 +176,15 @@ model InboxMessageUser {
 }
 
 model Report {
-  id             Int    @id @default(autoincrement())
-  userIdReporter Int
-  userIdReported Int
-  message        String @db.Text
-  userReporter   Users  @relation("userReporter", fields: [userIdReporter], references: [id])
-  userReported   Users  @relation("userReported", fields: [userIdReported], references: [id])
+  id                   Int    @id @default(autoincrement())
+  storeProfileReported Int
+  userIdReporter       Int
+  subject              String @db.Text
+  message              String @db.Text
+  image                String @db.Text
+
+  storeProfile StoreProfile @relation(fields: [storeProfileReported], references: [id])
+  user         Users        @relation(fields: [userIdReporter], references: [id])
 }
 
 enum Gender {

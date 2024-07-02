@@ -24,6 +24,13 @@ userService.updateCoverImageById = (userId,data) => prisma.storeProfile.update({
   
 })
 
+userService.updatePersonalInformationById = (id,data) => prisma.users.update({
+  where:{
+    id
+  },
+  data:data
+})
+
 //future
 
 // userService.checkUserGetNotificationStatusByUserId = (userId) => prisma.users.findUnique({

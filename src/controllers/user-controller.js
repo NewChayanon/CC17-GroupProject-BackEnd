@@ -11,7 +11,9 @@ const voucherItemService = require("../services/voucherItem-service");
 const dataFormat = require("../utils/dataFormat");
 const createError = require("../utils/createError");
 const uploadService = require("../services/upload-service");
+const reportService = require("../services/report-service");
 const hashService = require("../services/hash-services");
+
 const userController = {};
 
 userController.getMe = async (req, res, next) => {
@@ -210,7 +212,7 @@ userController.afterClickOnTheEventCard = async (req, res, next) => {
       eventId,
       userId
     );
-    
+
     const newFindEventById = dataFormat.userEventId(
       findEventById,
       findEventOther,
@@ -235,11 +237,9 @@ userController.createStore = async (req, res, next) => {
     console.log("findUserId", findUserId);
     if (findUserId)
       createError(
-        res
-          .status(300)
-          .json({
-            message: "Not allowed to create store you have store already",
-          })
+        res.status(300).json({
+          message: "Not allowed to create store you have store already",
+        })
       );
 
     const promises = [];
@@ -417,6 +417,39 @@ userController.followAndUnFollowStoreProfile = async (req, res, next) => {
     res.json({ meg: "UnFollowed" });
   } catch (err) {
     next(err);
+  }
+};
+
+userController.userReport = async (req, res, next) => {
+  try {
+    const storeProfileReported = +req.params.senderId;
+    const userIdReporter = req.user.id;
+    const reportImage = req.file.path;
+    const { subject, message } = req.report;
+
+    if (!(reportImage && subject && message)) {
+      return res.status(400).json({ msg: "Report or image is required" });
+    }
+
+    const image = await uploadService.upload(reportImage);
+
+    const data = {
+      storeProfileReported,
+      userIdReporter,
+      subject,
+      message,
+      image
+    };
+
+    const reported = await reportService.createReportByData(data);
+
+    res.json(reported);
+  } catch (err) {
+    next(err);
+  } finally {
+    if (req.file.path) {
+      fs.unlink(req.file.path);
+    }
   }
 };
 

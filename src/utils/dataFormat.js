@@ -256,4 +256,31 @@ dataFormat.userStoreProfileId = (oldData, userId) => {
   };
 };
 
+dataFormat.couponList = (allCoupon) =>
+  allCoupon.map(
+    ({
+      id,
+      status: userVoucherStatus,
+      storeProfile: { name: storeName },
+      voucherList: {
+        condition: voucherCondition,
+        code: voucherCode,
+        event: {
+          name: eventName,
+          startDate: eventStartDate,
+          endDate: eventEndDate,
+        },
+      },
+    }) => ({
+      id,
+      storeName,
+      eventName,
+      voucherCondition,
+      eventStartDate,
+      eventEndDate,
+      voucherCode,
+      userVoucherStatus,
+    })
+  );
+
 module.exports = dataFormat;

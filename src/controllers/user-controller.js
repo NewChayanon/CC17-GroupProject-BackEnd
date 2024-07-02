@@ -466,11 +466,11 @@ userController.followAndUnFollowStoreProfile = async (req, res, next) => {
 
 userController.userReport = async (req, res, next) => {
   try {
-    const storeProfileReported = +req.params.senderId;
+    const storeProfileReported = +req.params.storeProfileId;
     const userIdReporter = req.user.id;
     const reportImage = req.file.path;
     const { subject, message } = req.report;
-
+    
     if (!storeProfileReported) {
       return res.status(400).json({ msg: "StoreProfile is required." });
     }
@@ -533,6 +533,19 @@ userController.userCreateComment = async (req, res, next) => {
 
     const commented = await commentService.createCommentByData(data);
     res.status(201).json({ msg: "Create comment successfully" });
+  } catch (err) {
+    next(err);
+  }
+};
+
+userController.fetchAllCoupon = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    const allCoupon = await voucherItemService.findManyVoucherItemByUserId(
+      userId
+    );
+    const newAllCoupon = dataFormat.couponList(allCoupon);
+    res.json(newAllCoupon);
   } catch (err) {
     next(err);
   }

@@ -13,6 +13,7 @@ const createError = require("../utils/createError");
 const uploadService = require("../services/upload-service");
 const reportService = require("../services/report-service");
 const hashService = require("../services/hash-services");
+const commentService = require("../services/comment-service");
 
 const userController = {};
 
@@ -310,7 +311,7 @@ userController.updateCoverImage = async (req, res, next) => {
   }
 };
 
-userController.updateProfileAndProfileImage = async (req,res,next) =>{
+userController.updateProfileAndProfileImage = async (req, res, next) => {
   try {
     const promises = [];
     console.log(req.files);
@@ -335,29 +336,34 @@ userController.updateProfileAndProfileImage = async (req,res,next) =>{
       profileImage: data?.profileImage,
       mobile: req.body?.mobile,
       password: req.body?.password,
-      confirmPassword: req.body?.confirmPassword
+      confirmPassword: req.body?.confirmPassword,
     };
 
-    if(updateInfo.password !== updateInfo.confirmPassword){
-      return createError({message: 'password or confirmPassword invalid',statusCode: 400})
+    if (updateInfo.password !== updateInfo.confirmPassword) {
+      return createError({
+        message: "password or confirmPassword invalid",
+        statusCode: 400,
+      });
     }
-    updateInfo.password = await hashService.hash(updateInfo.password)
-    console.log('updateInfo',updateInfo)
-   
+    updateInfo.password = await hashService.hash(updateInfo.password);
+    console.log("updateInfo", updateInfo);
+
     delete updateInfo.password;
     delete updateInfo.confirmPassword;
-    await userService.updatePersonalInformationById(+req.user.id,updateInfo);
-    console.log('updateInfo',updateInfo)
-    res.status(200).json({ message: "update personal information complete!!!." });
+    await userService.updatePersonalInformationById(+req.user.id, updateInfo);
+    console.log("updateInfo", updateInfo);
+    res
+      .status(200)
+      .json({ message: "update personal information complete!!!." });
   } catch (error) {
-    next(error)
+    next(error);
   } finally {
     console.log(req.files.profileImage[0].path);
     if (req.files.coverImage) {
       fs.unlink(req.files.profileImage[0].path);
     }
   }
-}
+};
 
 userController.createEvent = async (req, res, next) => {
   try {
@@ -427,8 +433,20 @@ userController.userReport = async (req, res, next) => {
     const reportImage = req.file.path;
     const { subject, message } = req.report;
 
+    if (!storeProfileReported) {
+      return res.status(400).json({ msg: "StoreProfile is required." });
+    }
+
+    const haveStoreProfile =
+      await storeProfileService.findStoreProfileByStoreProfileId(
+        storeProfileReported
+      );
+    if (!haveStoreProfile) {
+      return res.status(400).json({ msg: "StoreProfile invalid." });
+    }
+
     if (!(reportImage && subject && message)) {
-      return res.status(400).json({ msg: "Report or image is required" });
+      return res.status(400).json({ msg: "Report or image is required." });
     }
 
     const image = await uploadService.upload(reportImage);
@@ -438,18 +456,47 @@ userController.userReport = async (req, res, next) => {
       userIdReporter,
       subject,
       message,
-      image
+      image,
     };
 
     const reported = await reportService.createReportByData(data);
 
-    res.json(reported);
+    res.status(201).json({ msg: "Create report successfully." });
   } catch (err) {
     next(err);
   } finally {
     if (req.file.path) {
       fs.unlink(req.file.path);
     }
+  }
+};
+
+userController.userCreateComment = async (req, res, next) => {
+  try {
+    const storeProfileId = +req.params.storeProfileId;
+    const userId = req.user.id;
+    const { topic, comment, rate } = req.body;
+
+    if (!(storeProfileId && topic && comment && rate)) {
+      return res.status(400).json({ msg: "Comment invalid" });
+    }
+
+    const haveStoreProfile =
+      await storeProfileService.findStoreProfileByStoreProfileId(
+        storeProfileId
+      );
+    if (!haveStoreProfile) {
+      return res.status(400).json({ msg: "StoreProfile invalid" });
+    }
+
+    const data = { storeProfileId, userId, topic, comment, rate };
+
+    req.body.isVerify ? (data.isVerify = req.body.isVerify) : null;
+
+    const commented = await commentService.createCommentByData(data);
+    res.status(201).json({ msg: "Create comment successfully" });
+  } catch (err) {
+    next(err);
   }
 };
 

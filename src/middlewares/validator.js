@@ -1,6 +1,6 @@
 const createError = require("../utils/createError");
 const { registerSchema, loginSchema } = require("../validators/auth-validator");
-const { userReport } = require("../validators/user-validator");
+const { userReport, userComment } = require("../validators/user-validator");
 
 exports.registerValidator = (req,res,next)=>{
   console.log(req.body)
@@ -39,5 +39,14 @@ exports.userReportValidator = (req,res,next)=>{
     return res.status(400).json({ message: error.details[0].message });
   }
   req.report = value;
+  next();
+}
+
+exports.commentValidator = (req,res,next)=>{
+  const { value, error } = userComment.validate(req.body);
+  if (error) {
+    return res.status(400).json({ message: error.details[0].message });
+  }
+  req.comment = value;
   next();
 }

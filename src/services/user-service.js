@@ -5,12 +5,13 @@ const userService = {}
 userService.findUserId = (id) => prisma.users.findUnique({where:{id}})
 userService.findEmail = (email) => prisma.users.findUnique({where:{email}})
 
-userService.updateStatus = (id, statusMessage) => prisma.users.update({
+userService.updateStatus = (id,role ,statusMessage) => prisma.users.update({
   where:{
     id: id
   },
   data:{
-    statusMessage: statusMessage
+    statusMessage: statusMessage,
+    role:role
   }
 });
 

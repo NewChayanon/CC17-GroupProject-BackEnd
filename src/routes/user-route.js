@@ -20,7 +20,10 @@ userRouter.get("/:storeProfileId",userController.storeProfile)
 userRouter.put("/follow/:storeProfileId",userController.followAndUnFollowStoreProfile)
 
 // seller create
-userRouter.post('/create-event', userController.createEvent)
+userRouter.post('/create-event', 
+  upload.fields([{name: 'images', maxCount:1}]),
+  validateCoverImage,
+  userController.createEvent)
 
 userRouter.post('/createStoreProfile',
   upload.fields([{name: 'coverImage', maxCount:1}]),

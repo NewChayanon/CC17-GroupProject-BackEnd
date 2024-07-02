@@ -12,14 +12,14 @@ eventServices.findEventByEventId = (eventId) =>
     },
   });
 
-eventServices.findEventByEventIdAndUserId = (eventId,userId) =>
+eventServices.findEventByEventIdAndUserId = (eventId, userId) =>
   prisma.events.findUnique({
     where: { id: eventId },
     include: {
-      VoucherList: { include: { VoucherItem: true } },
+      VoucherList: {include:{VoucherItem:true}},
       EventItem: { include: { products: true } },
       storeProfile: { include: { user: true } },
-      Interest:{where:{AND:[{userId},{eventId}]}}
+      Interest: { where: { AND: [{ userId }, { eventId }] } },
     },
   });
 
@@ -48,7 +48,8 @@ eventServices.groupByEventByStoreId = (storeProfileId) =>
   });
 
 
-  eventServices.createEventsByStoreProfileId = (data) => prisma.events.create({data})
+eventServices.createEventsByStoreProfileId = (data) => prisma.events.create({data})
+
 
 
 

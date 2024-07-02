@@ -258,7 +258,7 @@ const voucherList = [
     eventId: 1,
     code: "25JUN50P",
     condition: "test",
-    totalAmount: 20,
+    totalAmount: 5,
     discount: 10,
   },
   {
@@ -272,7 +272,7 @@ const voucherList = [
     eventId: 3,
     code: "25JUN50P",
     condition: "test",
-    totalAmount: 10,
+    totalAmount: 7,
     discount: 10,
   },
   {
@@ -299,8 +299,6 @@ const voucherItem = [
   { storeProfileId: 2, voucherListId: 3, userId: 7 },
   { storeProfileId: 2, voucherListId: 3, userId: 8 },
   { storeProfileId: 2, voucherListId: 3, userId: 9 },
-  { storeProfileId: 2, voucherListId: 3, userId: 10 },
-  { storeProfileId: 2, voucherListId: 3, userId: 11 },
   { storeProfileId: 3, voucherListId: 4, userId: 7 },
   { storeProfileId: 3, voucherListId: 4, userId: 8 },
   { storeProfileId: 3, voucherListId: 4, userId: 9 },
@@ -360,7 +358,13 @@ const inboxMessageUser = [
     message: "Down Server : 26/06/2024",
   },
 ];
-const report = { userIdReporter: 4, userIdReported: 3, message: "test" };
+const report = {
+  userIdReporter: 4,
+  storeProfileReported: 3,
+  subject: "mangosteen",
+  message: "test",
+  image: "https://picsum.photos/400",
+};
 
 const run = async () => {
   await prisma.users.createMany({ data: userData });

@@ -1,4 +1,4 @@
-const fs = require('fs/promises');
+const fs = require("fs/promises");
 const { storeProfile } = require("../models/prisma");
 const eventServices = require("../services/event-services");
 const followService = require("../services/follow-service");
@@ -10,7 +10,11 @@ const userService = require("../services/user-service");
 const voucherItemService = require("../services/voucherItem-service");
 const dataFormat = require("../utils/dataFormat");
 const createError = require("../utils/createError");
-const uploadService = require('../services/upload-service')
+const uploadService = require("../services/upload-service");
+const reportService = require("../services/report-service");
+const hashService = require("../services/hash-services");
+const commentService = require("../services/comment-service");
+
 const userController = {};
 
 userController.getMe = async (req, res, next) => {
@@ -209,6 +213,7 @@ userController.afterClickOnTheEventCard = async (req, res, next) => {
       eventId,
       userId
     );
+
     const newFindEventById = dataFormat.userEventId(
       findEventById,
       findEventOther,
@@ -225,76 +230,142 @@ userController.afterClickOnTheEventCard = async (req, res, next) => {
 
 userController.createStore = async (req, res, next) => {
   try {
-  
     const userId = +req.user.id;
-    console.log('userId', userId)
-    const findUserId = await storeProfileService.findStoreProfileByUserId(userId)
-    console.log('findUserId',findUserId)
-    if(findUserId) createError(res.status(300).json({message: "Not allowed to create store you have store already"}))
+    console.log("userId", userId);
+    const findUserId = await storeProfileService.findStoreProfileByUserId(
+      userId
+    );
+    console.log("findUserId", findUserId);
+    if (findUserId)
+      createError(
+        res.status(300).json({
+          message: "Not allowed to create store you have store already",
+        })
+      );
 
     const promises = [];
-    if(req.files.coverImage){
-      const result = uploadService.upload(req.files.coverImage[0].path).then(url =>({url, key: 'coverImage'}))
-      promises.push(result)
+    if (req.files.coverImage) {
+      const result = uploadService
+        .upload(req.files.coverImage[0].path)
+        .then((url) => ({ url, key: "coverImage" }));
+      promises.push(result);
     }
 
-    const result = await Promise.all(promises)
-    console.log('result',result)
-    const data = result.reduce((acc,item)=>{
-      acc[item.key]= item.url
-      return acc
-    },{})
+    const result = await Promise.all(promises);
+    console.log("result", result);
+    const data = result.reduce((acc, item) => {
+      acc[item.key] = item.url;
+      return acc;
+    }, {});
 
     const input = {
       userId: userId,
       name: req.body.name,
       coverImage: data.coverImage,
       sellerDescription: req.body.sellerDescription,
-      description: req.body.description
+
     }
     const createStoreProfile = await storeProfileService.createStoreProfile(input);
     const convertToSeller = await userService.updateStatus(userId, role= "SELLER")
+
+
     console.log("createStoreProfile", createStoreProfile);
 
     res.status(200).json({ message: "create store complete!!!." });
   } catch (error) {
     next(error);
-  }finally{
-    console.log(req.files.coverImage[0].path)
-    if(req.files.coverImage){
-      fs.unlink(req.files.coverImage[0].path)
+  } finally {
+    console.log(req.files.coverImage[0].path);
+    if (req.files.coverImage) {
+      fs.unlink(req.files.coverImage[0].path);
     }
   }
 };
 
-userController.updateCoverImage = async (req,res,next) =>{
-  try{
+userController.updateCoverImage = async (req, res, next) => {
+  try {
     const promises = [];
-    console.log(req.files)
-    if(req.files.coverImage){
-      const result = uploadService.upload(req.files.coverImage[0].path).then(url =>({url, key: 'coverImage'}))
-      promises.push(result)
+    console.log(req.files);
+    if (req.files.coverImage) {
+      const result = uploadService
+        .upload(req.files.coverImage[0].path)
+        .then((url) => ({ url, key: "coverImage" }));
+      promises.push(result);
     }
 
-    const result = await Promise.all(promises)
-    console.log(result)
-    const data = result.reduce((acc,item)=>{
-      acc[item.key]= item.url
-      return acc
-    },{})
-    console.log('data1',data)
-    await userService.updateCoverImageById(+req.body.userId, data);
-    console.log('first3')
-    res.status(200).json(data)
-  }catch(err){
-    next(err)
-  } finally{
-    console.log(req.files.coverImage[0].path)
-    if(req.files.coverImage){
-      fs.unlink(req.files.coverImage[0].path)
+    const result = await Promise.all(promises);
+    console.log(result);
+    const data = result.reduce((acc, item) => {
+      acc[item.key] = item.url;
+      return acc;
+    }, {});
+    console.log("data1", data);
+    await userService.updateCoverImageById(+req.user.id, data);
+    console.log("first3");
+    res.status(200).json(data);
+  } catch (err) {
+    next(err);
+  } finally {
+    console.log(req.files.coverImage[0].path);
+    if (req.files.coverImage) {
+      fs.unlink(req.files.coverImage[0].path);
     }
   }
-}
+};
+
+userController.updateProfileAndProfileImage = async (req, res, next) => {
+  try {
+    const promises = [];
+    console.log(req.files);
+    if (req.files.profileImage) {
+      const result = uploadService
+        .upload(req.files.profileImage[0].path)
+        .then((url) => ({ url, key: "profileImage" }));
+      promises.push(result);
+    }
+
+    const result = await Promise.all(promises);
+    console.log(result);
+    const data = result.reduce((acc, item) => {
+      acc[item.key] = item.url;
+      return acc;
+    }, {});
+    console.log("data1", data);
+
+    const updateInfo = {
+      firstName: req.body?.firstName,
+      lastName: req.body?.lastName,
+      profileImage: data?.profileImage,
+      mobile: req.body?.mobile,
+      password: req.body?.password,
+      confirmPassword: req.body?.confirmPassword,
+    };
+
+    if (updateInfo.password !== updateInfo.confirmPassword) {
+      return createError({
+        message: "password or confirmPassword invalid",
+        statusCode: 400,
+      });
+    }
+    updateInfo.password = await hashService.hash(updateInfo.password);
+    console.log("updateInfo", updateInfo);
+
+    delete updateInfo.password;
+    delete updateInfo.confirmPassword;
+    await userService.updatePersonalInformationById(+req.user.id, updateInfo);
+    console.log("updateInfo", updateInfo);
+    res
+      .status(200)
+      .json({ message: "update personal information complete!!!." });
+  } catch (error) {
+    next(error);
+  } finally {
+    console.log(req.files.profileImage[0].path);
+    if (req.files.coverImage) {
+      fs.unlink(req.files.profileImage[0].path);
+    }
+  }
+};
 
 userController.createEvent = async (req, res, next) => {
   try {
@@ -388,6 +459,80 @@ userController.followAndUnFollowStoreProfile = async (req, res, next) => {
 
     const unFollowed = await followService.deleteFollowById(isFollow.id);
     res.json({ meg: "UnFollowed" });
+  } catch (err) {
+    next(err);
+  }
+};
+
+userController.userReport = async (req, res, next) => {
+  try {
+    const storeProfileReported = +req.params.senderId;
+    const userIdReporter = req.user.id;
+    const reportImage = req.file.path;
+    const { subject, message } = req.report;
+
+    if (!storeProfileReported) {
+      return res.status(400).json({ msg: "StoreProfile is required." });
+    }
+
+    const haveStoreProfile =
+      await storeProfileService.findStoreProfileByStoreProfileId(
+        storeProfileReported
+      );
+    if (!haveStoreProfile) {
+      return res.status(400).json({ msg: "StoreProfile invalid." });
+    }
+
+    if (!(reportImage && subject && message)) {
+      return res.status(400).json({ msg: "Report or image is required." });
+    }
+
+    const image = await uploadService.upload(reportImage);
+
+    const data = {
+      storeProfileReported,
+      userIdReporter,
+      subject,
+      message,
+      image,
+    };
+
+    const reported = await reportService.createReportByData(data);
+
+    res.status(201).json({ msg: "Create report successfully." });
+  } catch (err) {
+    next(err);
+  } finally {
+    if (req.file.path) {
+      fs.unlink(req.file.path);
+    }
+  }
+};
+
+userController.userCreateComment = async (req, res, next) => {
+  try {
+    const storeProfileId = +req.params.storeProfileId;
+    const userId = req.user.id;
+    const { topic, comment, rate } = req.body;
+
+    if (!(storeProfileId && topic && comment && rate)) {
+      return res.status(400).json({ msg: "Comment invalid" });
+    }
+
+    const haveStoreProfile =
+      await storeProfileService.findStoreProfileByStoreProfileId(
+        storeProfileId
+      );
+    if (!haveStoreProfile) {
+      return res.status(400).json({ msg: "StoreProfile invalid" });
+    }
+
+    const data = { storeProfileId, userId, topic, comment, rate };
+
+    req.body.isVerify ? (data.isVerify = req.body.isVerify) : null;
+
+    const commented = await commentService.createCommentByData(data);
+    res.status(201).json({ msg: "Create comment successfully" });
   } catch (err) {
     next(err);
   }

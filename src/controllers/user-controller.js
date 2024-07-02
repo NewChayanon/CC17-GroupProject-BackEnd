@@ -432,7 +432,7 @@ userController.userReport = async (req, res, next) => {
     const userIdReporter = req.user.id;
     const reportImage = req.file.path;
     const { subject, message } = req.report;
-    console.log(storeProfileReported);
+    
     if (!storeProfileReported) {
       return res.status(400).json({ msg: "StoreProfile is required." });
     }

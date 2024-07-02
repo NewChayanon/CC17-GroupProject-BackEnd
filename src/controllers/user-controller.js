@@ -263,12 +263,14 @@ userController.createStore = async (req, res, next) => {
       name: req.body.name,
       coverImage: data.coverImage,
       sellerDescription: req.body.sellerDescription,
-      description: req.body.description,
-    };
-    const createStoreProfile = await storeProfileService.createStoreProfile(
-      input
-    );
+
+    }
+    const createStoreProfile = await storeProfileService.createStoreProfile(input);
+    const convertToSeller = await userService.updateStatus(userId, role= "SELLER")
+
+
     console.log("createStoreProfile", createStoreProfile);
+
     res.status(200).json({ message: "create store complete!!!." });
   } catch (error) {
     next(error);
@@ -367,10 +369,46 @@ userController.updateProfileAndProfileImage = async (req, res, next) => {
 
 userController.createEvent = async (req, res, next) => {
   try {
-    const createEvent = await eventServices.createEvents();
+    const userInfo = req.user.id
+    console.log('userInfo',userInfo)
+    const findUserIdInStoreProfile = await storeProfileService.findStoreProfileByUserId(userInfo)
+    console.log('findUserIdInStoreProfile',findUserIdInStoreProfile)
+    console.log('findUserIdInStoreProfileId',findUserIdInStoreProfile.id)
+ 
+ 
+    const promises = [];
+    if(req.files.images){
+      const result = uploadService.upload(req.files.images[0].path).then(url =>({url, key: 'images'}))
+      promises.push(result)
+    }
+    const result = await Promise.all(promises)
+    console.log('result',result)
+    const input = result.reduce((acc,item)=>{
+      acc[item.key]= item.url
+      return acc
+    },{})
+
+    const data = {
+      storeProfileId: findUserIdInStoreProfile.id,
+      name: req.body.name,
+      images: input.images,
+      location: req.body.location,
+      locationName: req.body.locationName,
+      description: req.body.description,
+      startDate : req.body.startDate,
+      endDate : req.body.endDate
+
+    }
+    const createEvent = await eventServices.createEventsByStoreProfileId(data);
     console.log("createEvent", createEvent);
+    res.status(200).json({ message: "create event complete!!!." });
   } catch (error) {
     next(error);
+  }finally{
+    console.log(req.files.images[0].path)
+    if(req.files.images){
+      fs.unlink(req.files.images[0].path)
+    }
   }
 };
 

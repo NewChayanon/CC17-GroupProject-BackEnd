@@ -22,9 +22,15 @@ userRouter.put("/follow/:storeProfileId",userController.followAndUnFollowStorePr
 userRouter.post("/report/:senderId",upload.single("reportImage"),userReportValidator,userController.userReport)
 userRouter.post("/comment/:storeProfileId",commentValidator,userController.userCreateComment)
 
+
 // seller 
   //create
-userRouter.post('/create-event', userController.createEvent)
+userRouter.post('/create-event', 
+  upload.fields([{name: 'images', maxCount:1}]),
+  validateCoverImage,
+  userController.createEvent)
+
+
 
 userRouter.post('/createStoreProfile',
   upload.fields([{name: 'coverImage', maxCount:1}]),

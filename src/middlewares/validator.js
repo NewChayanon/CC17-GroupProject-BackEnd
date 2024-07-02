@@ -24,6 +24,11 @@ exports.validateCoverImage = (req,res,next)=>{
   next()
 }
 
+exports.validateUpdateProfileOrProfileImage = (req,res,next)=>{
+  if(!req.files) return createError({message: 'at least one of profile', statusCode: 400})
+  next()
+}
+
 exports.userReportValidator = (req,res,next)=>{
   if (!req.file) {
     return res.status(400).json({msg:"at least one of report image"})

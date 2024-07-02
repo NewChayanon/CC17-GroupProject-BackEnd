@@ -12,6 +12,8 @@ const dataFormat = require("../utils/dataFormat");
 const createError = require("../utils/createError");
 const uploadService = require("../services/upload-service");
 const reportService = require("../services/report-service");
+const hashService = require("../services/hash-services");
+
 const userController = {};
 
 userController.getMe = async (req, res, next) => {
@@ -295,7 +297,7 @@ userController.updateCoverImage = async (req, res, next) => {
       return acc;
     }, {});
     console.log("data1", data);
-    await userService.updateCoverImageById(+req.body.userId, data);
+    await userService.updateCoverImageById(+req.user.id, data);
     console.log("first3");
     res.status(200).json(data);
   } catch (err) {
@@ -307,6 +309,55 @@ userController.updateCoverImage = async (req, res, next) => {
     }
   }
 };
+
+userController.updateProfileAndProfileImage = async (req,res,next) =>{
+  try {
+    const promises = [];
+    console.log(req.files);
+    if (req.files.profileImage) {
+      const result = uploadService
+        .upload(req.files.profileImage[0].path)
+        .then((url) => ({ url, key: "profileImage" }));
+      promises.push(result);
+    }
+
+    const result = await Promise.all(promises);
+    console.log(result);
+    const data = result.reduce((acc, item) => {
+      acc[item.key] = item.url;
+      return acc;
+    }, {});
+    console.log("data1", data);
+
+    const updateInfo = {
+      firstName: req.body?.firstName,
+      lastName: req.body?.lastName,
+      profileImage: data?.profileImage,
+      mobile: req.body?.mobile,
+      password: req.body?.password,
+      confirmPassword: req.body?.confirmPassword
+    };
+
+    if(updateInfo.password !== updateInfo.confirmPassword){
+      return createError({message: 'password or confirmPassword invalid',statusCode: 400})
+    }
+    updateInfo.password = await hashService.hash(updateInfo.password)
+    console.log('updateInfo',updateInfo)
+   
+    delete updateInfo.password;
+    delete updateInfo.confirmPassword;
+    await userService.updatePersonalInformationById(+req.user.id,updateInfo);
+    console.log('updateInfo',updateInfo)
+    res.status(200).json({ message: "update personal information complete!!!." });
+  } catch (error) {
+    next(error)
+  } finally {
+    console.log(req.files.profileImage[0].path);
+    if (req.files.coverImage) {
+      fs.unlink(req.files.profileImage[0].path);
+    }
+  }
+}
 
 userController.createEvent = async (req, res, next) => {
   try {

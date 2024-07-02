@@ -2,7 +2,7 @@ const express = require("express");
 const userController = require("../controllers/user-controller");
 const { isUser } = require("../middlewares/isUser");
 const upload = require("../middlewares/upload");
-const { validateCoverImage, validateUpdateProfileOrProfileImage, userReportValidator } = require("../middlewares/validator");
+const { validateCoverImage, validateUpdateProfileOrProfileImage, userReportValidator, commentValidator } = require("../middlewares/validator");
 const { authenticate } = require("../middlewares/authenticate");
 
 const userRouter = express.Router();
@@ -20,6 +20,7 @@ userRouter.get("/event/:eventId", userController.afterClickOnTheEventCard);
 userRouter.get("/:storeProfileId",userController.storeProfile)
 userRouter.put("/follow/:storeProfileId",userController.followAndUnFollowStoreProfile)
 userRouter.post("/report/:senderId",upload.single("reportImage"),userReportValidator,userController.userReport)
+userRouter.post("/comment/:storeProfileId",commentValidator,userController.userCreateComment)
 
 // seller 
   //create

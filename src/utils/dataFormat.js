@@ -126,13 +126,25 @@ dataFormat.userEventId = (event, otherEvents, userId) => {
 };
 
 dataFormat.authEventId = (eventDetails, otherEvents) => {
+  const {
+    id,
+    name,
+    images,
+    startDate,
+    endDate,
+    location,
+    VoucherList,
+    storeProfile,
+    Interest,
+    EventItem,
+  } = eventDetails;
   const formattedEventDetails = {
-    id: eventDetails.id,
-    eventName: eventDetails.name,
-    eventImage: eventDetails.images,
-    eventStartDate: eventDetails.startDate,
-    eventEndDate: eventDetails.endDate,
-    eventLocation: eventDetails.location,
+    id,
+    eventName: name,
+    eventImage: images,
+    eventStartDate: startDate,
+    eventEndDate: endDate,
+    eventLocation: location,
     voucherItem: VoucherList.length
       ? {
           voucherCode: VoucherList[0].code,
@@ -142,27 +154,33 @@ dataFormat.authEventId = (eventDetails, otherEvents) => {
           userVoucherStatus: [],
         }
       : [],
-    sellerId: eventDetails.storeProfile.user.id,
-    sellerFirstName: eventDetails.storeProfile.user.firstName,
-    sellerDisplayName: eventDetails.storeProfile.user.displayName,
-    storeCoverImage: eventDetails.storeProfile.coverImage,
-    storeDescription: eventDetails.storeProfile.description,
+    sellerId: storeProfile.user.id,
+    sellerFirstName: storeProfile.user.firstName,
+    sellerDisplayName: storeProfile.user.displayName,
+    storeCoverImage: storeProfile.coverImage,
+    storeDescription: storeProfile.description,
     interest: false,
-    eventList: eventDetails.EventItem.map((item) => ({
-      productId: item.id,
-      productName: item.products.name,
-      productImage: item.products.image,
-      productDescription: item.products.description,
-      price: item.price,
-    })),
+    eventList: EventItem.map((item) => {
+      const { id, products, price } = item;
+      return {
+        productId: id,
+        productName: products.name,
+        productImage: products.image,
+        productDescription: products.description,
+        price: price,
+      };
+    }),
 
-    eventOther: otherEvents.map((event) => ({
-      id: event.id,
-      eventStartDate: event.startDate,
-      eventEndDate: event.endDate,
-      eventLocation: event.location,
-      interest: false,
-    })),
+    eventOther: otherEvents.map((event) => {
+      const { id, startDate, endDate, location, Interest } = event;
+      return {
+        id: id,
+        eventStartDate: startDate,
+        eventEndDate: endDate,
+        eventLocation: location,
+        interest: false,
+      };
+    }),
   };
 
   return formattedEventDetails;

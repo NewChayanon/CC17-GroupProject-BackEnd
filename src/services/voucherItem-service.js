@@ -24,4 +24,19 @@ voucherItemService.createVoucherItemByVoucherListIdAndStoreProfileIdAndUserId =
       data: { voucherListId, storeProfileId, userId },
     });
 
+voucherItemService.findManyVoucherItemByUserId = (userId) =>
+  prisma.voucherItem.findMany({
+    where: { userId },
+    include: {
+      storeProfile: { select: { name: true } },
+      voucherList: {
+        select: {
+          condition: true,
+          code:true,
+          event: { select: { name: true, startDate: true, endDate: true } },
+        },
+      },
+    },
+  });
+
 module.exports = voucherItemService;

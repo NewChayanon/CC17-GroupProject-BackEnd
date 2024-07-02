@@ -17,10 +17,13 @@ userRouter.patch('/statusMessage/:userId', isUser,userController.statusMessage)
 userRouter.get("/notification", userController.getNotificationPublic);
 userRouter.get('/favorite',userController.fetchAllFavorite)
 userRouter.get("/event/:eventId", userController.afterClickOnTheEventCard);
-userRouter.get("/:storeProfileId",userController.storeProfile)
+userRouter.get("/storeProfile/:storeProfileId",userController.storeProfile);
 userRouter.put("/follow/:storeProfileId",userController.followAndUnFollowStoreProfile)
-userRouter.post("/report/:senderId",upload.single("reportImage"),userReportValidator,userController.userReport)
+userRouter.post("/report/:storeProfileId",upload.single("reportImage"),userReportValidator,userController.userReport)
 userRouter.post("/comment/:storeProfileId",commentValidator,userController.userCreateComment)
+userRouter.get("/coupon-list",userController.fetchAllCoupon)
+
+
 
 // seller 
   //create

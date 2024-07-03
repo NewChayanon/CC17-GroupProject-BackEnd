@@ -14,6 +14,7 @@ const uploadService = require("../services/upload-service");
 const reportService = require("../services/report-service");
 const hashService = require("../services/hash-services");
 const commentService = require("../services/comment-service");
+const productService = require("../services/product-service");
 
 const userController = {};
 
@@ -370,6 +371,21 @@ userController.updateProfileAndProfileImage = async (req, res, next) => {
   }
 };
 
+userController.getAllProductByStoreProfileId = async (req,res,next)=> {
+  try {
+    const userId = req.user.id
+    console.log('allProductUserId',userId)
+    const storeProfileId = await storeProfileService.findStoreProfileByUserId(userId);
+    console.log("storeProfileId", storeProfileId.id);
+
+    const findAllProduct = await productService.getAllProductByStoreProfileId(storeProfileId.id)
+    console.log('findAllProduct',findAllProduct)
+    res.status(200).json(findAllProduct)
+  } catch (error) {
+    next(error)
+  }
+}
+
 userController.createEvent = async (req, res, next) => {
   try {
     const userInfo = req.user.id;
@@ -415,6 +431,66 @@ userController.createEvent = async (req, res, next) => {
     }
   }
 };
+
+userController.addMoreProduct = async(req,res,next) =>{
+  try {
+    const productUserId = req.user.id
+    console.log('userIdProduct',productUserId)
+    const findUserIdInStoreProfile =
+      await storeProfileService.findStoreProfileByUserId(productUserId);
+    console.log("findUserIdInStoreProfileId", findUserIdInStoreProfile.id);
+
+
+    const promises = [];
+    if (req.files.image) {
+      const result = uploadService
+        .upload(req.files.image[0].path)
+        .then((url) => ({ url, key: "image" }));
+      promises.push(result);
+    }
+    const result = await Promise.all(promises);
+    console.log("result", result);
+    const input = result.reduce((acc, item) => {
+      acc[item.key] = item.url;
+      return acc;
+    }, {});
+
+    const data = {
+      storeProfileId : findUserIdInStoreProfile.id,
+      name: req.body.name,
+      description: req.body.description,
+      image: input.image
+    }
+
+    const createProduct = await productService.createProduct(data)
+    console.log('createProduct',createProduct)
+    res.status(200).json({ message: "add more product in my store complete !!!" });
+  } catch (error) {
+    next(error)
+  }finally {
+    console.log(req.files.image[0].path);
+    if (req.files.image) {
+      fs.unlink(req.files.image[0].path);
+    }
+  }
+}
+
+userController.deleteSomeProduct = async (req,res,next) =>{
+  try {
+    const productId = +req.params.productId
+    console.log('productId',productId)
+    const findProduct = await productService.getProductById(productId);
+    console.log('findProduct',findProduct)
+    if(!findProduct) {
+      return createError({message: "product not found"})
+    }
+    const deleteProduct = await productService.deleteProductById(findProduct.id)
+    console.log('deleteProduct',deleteProduct)
+    res.status(200).json({message: "delete product complete"})
+  } catch (error) {
+    next(error)
+  }
+}
 
 userController.storeProfile = async (req, res, next) => {
   try {

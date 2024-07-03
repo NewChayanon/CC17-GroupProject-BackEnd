@@ -41,6 +41,14 @@ userRouter.post('/createStoreProfile',
   validateCoverImage,
   userController.createStore)
 
+userRouter.post('/createProduct', 
+  upload.fields([{name: 'image', maxCount:1}]),
+  validateCoverImage,
+  userController.addMoreProduct)
+
+// get
+userRouter.get('/getAllProduct/:storeProfileId', userController.getAllProductByStoreProfileId)
+
   //update
 userRouter.patch('/updateCoverImage',
   upload.fields([{name: 'coverImage', maxCount:1}]),
@@ -52,5 +60,8 @@ userRouter.patch('/changeInfo',authenticate,isUser,
 upload.fields([{name: 'profileImage', maxCount:1}]),
 validateUpdateProfileOrProfileImage,
 userController.updateProfileAndProfileImage)
+
+//delete
+userRouter.delete('/deleteProduct/:productId', userController.deleteSomeProduct)
 
 module.exports = userRouter;

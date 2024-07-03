@@ -115,6 +115,16 @@ const userData = [
     profileImage: "https://picsum.photos/200",
     role: "SELLER",
   }, //seller-12
+  {
+    email: "test12@mail.com",
+    password,
+    firstName: "test11",
+    lastName: "test11",
+    mobile: "1212121212",
+    displayName: "test11",
+    profileImage: "https://picsum.photos/200",
+    role: "SELLER",
+  }, //seller-13
 ];
 const storeProfile = [
   {
@@ -137,6 +147,15 @@ const storeProfile = [
   },
   {
     userId: 12,
+    name: "mangosteen",
+    coverImage: "https://picsum.photos/400",
+    sellerDescription:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit maiores, quisquam error ex sit natus debitis ratione distinctio saepe, harum, facere laborum deleniti autem dolorem asperiores consequuntur accusamus eveniet incidunt! Ea a unde tenetur sint neque blanditiis architecto fugit aliquid, exercitationem, odit reprehenderit, vitae nobis quo? Error distinctio dolores nam.",
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit maiores, quisquam error ex sit natus debitis ratione distinctio saepe, harum, facere laborum deleniti autem dolorem asperiores consequuntur accusamus eveniet incidunt! Ea a unde tenetur sint neque blanditiis architecto fugit aliquid, exercitationem, odit reprehenderit, vitae nobis quo? Error distinctio dolores nam.",
+  },
+  {
+    userId: 13,
     name: "mangosteen",
     coverImage: "https://picsum.photos/400",
     sellerDescription:

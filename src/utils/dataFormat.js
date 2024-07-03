@@ -283,19 +283,7 @@ dataFormat.couponList = (allCoupon) =>
     })
   );
 
-dataFormat.StoreMainPage = (
-  storeProfile,
-  [
-    {
-      _count: { storeProfileId: followers },
-    },
-  ],
-  [
-    {
-      _count: { storeProfileId: vouchers },
-    },
-  ]
-) => {
+dataFormat.StoreMainPage = (storeProfile, countFollower, countVoucher) => {
   const { id, coverImage, name: storeName, Events, user } = storeProfile;
   const { profileImage, firstName, lastName } = user;
   const events = Events?.length;
@@ -316,7 +304,7 @@ dataFormat.StoreMainPage = (
         acc.eventNow.push({ id, startDate, endDate, openTime, locationName });
       }
       if (!isActive) {
-        acc.UpcomingEvent.push({
+        acc.upComingEvent.push({
           id,
           startDate,
           endDate,
@@ -338,9 +326,11 @@ dataFormat.StoreMainPage = (
       firstName,
       lastName,
       storeName,
-      followers,
+      followers:
+        countFollower.length !== 0 ? countFollower[0]._count.storeProfileId : 0,
       events,
-      vouchers,
+      vouchers:
+        countVoucher.length !== 0 ? countVoucher[0]._count.storeProfileId : 0,
       eventNow,
       upComingEvent,
     },

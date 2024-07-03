@@ -283,4 +283,58 @@ dataFormat.couponList = (allCoupon) =>
     })
   );
 
+dataFormat.StoreMainPage = (storeProfile, countFollower, countVoucher) => {
+  const { id, coverImage, name: storeName, Events, user } = storeProfile;
+  const { profileImage, firstName, lastName } = user;
+  const events = Events?.length;
+  const myEvent = Events.map(
+    ({ id, images, startDate, endDate, locationName }) => ({
+      id,
+      eventImage: images,
+      eventStartDate: startDate,
+      eventEndDate: endDate,
+      storeName,
+      locationName,
+    })
+  );
+
+  const { eventNow, upComingEvent } = Events.reduce(
+    (acc, { id, startDate, endDate, openTime, locationName, isActive }) => {
+      if (isActive) {
+        acc.eventNow.push({ id, startDate, endDate, openTime, locationName });
+      }
+      if (!isActive) {
+        acc.upComingEvent.push({
+          id,
+          startDate,
+          endDate,
+          openTime,
+          locationName,
+        });
+      }
+      return acc;
+    },
+    { eventNow: [], upComingEvent: [] }
+  );
+
+  return {
+    myEvent,
+    myStoreProfile: {
+      id,
+      storeProfileImage: coverImage,
+      userCoverImage: profileImage,
+      firstName,
+      lastName,
+      storeName,
+      followers:
+        countFollower.length !== 0 ? countFollower[0]._count.storeProfileId : 0,
+      events,
+      vouchers:
+        countVoucher.length !== 0 ? countVoucher[0]._count.storeProfileId : 0,
+      eventNow,
+      upComingEvent,
+    },
+  };
+};
+
 module.exports = dataFormat;

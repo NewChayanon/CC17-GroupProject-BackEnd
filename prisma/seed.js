@@ -115,6 +115,16 @@ const userData = [
     profileImage: "https://picsum.photos/200",
     role: "SELLER",
   }, //seller-12
+  {
+    email: "test12@mail.com",
+    password,
+    firstName: "test11",
+    lastName: "test11",
+    mobile: "1212121212",
+    displayName: "test11",
+    profileImage: "https://picsum.photos/200",
+    role: "SELLER",
+  }, //seller-13
 ];
 const storeProfile = [
   {
@@ -144,6 +154,15 @@ const storeProfile = [
     description:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit maiores, quisquam error ex sit natus debitis ratione distinctio saepe, harum, facere laborum deleniti autem dolorem asperiores consequuntur accusamus eveniet incidunt! Ea a unde tenetur sint neque blanditiis architecto fugit aliquid, exercitationem, odit reprehenderit, vitae nobis quo? Error distinctio dolores nam.",
   },
+  {
+    userId: 13,
+    name: "mangosteen",
+    coverImage: "https://picsum.photos/400",
+    sellerDescription:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit maiores, quisquam error ex sit natus debitis ratione distinctio saepe, harum, facere laborum deleniti autem dolorem asperiores consequuntur accusamus eveniet incidunt! Ea a unde tenetur sint neque blanditiis architecto fugit aliquid, exercitationem, odit reprehenderit, vitae nobis quo? Error distinctio dolores nam.",
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit maiores, quisquam error ex sit natus debitis ratione distinctio saepe, harum, facere laborum deleniti autem dolorem asperiores consequuntur accusamus eveniet incidunt! Ea a unde tenetur sint neque blanditiis architecto fugit aliquid, exercitationem, odit reprehenderit, vitae nobis quo? Error distinctio dolores nam.",
+  },
 ];
 const event = [
   {
@@ -156,6 +175,7 @@ const event = [
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit maiores, quisquam error ex sit natus debitis ratione distinctio saepe, harum, facere laborum deleniti autem dolorem asperiores consequuntur accusamus eveniet incidunt! Ea a unde tenetur sint neque blanditiis architecto fugit aliquid, exercitationem, odit reprehenderit, vitae nobis quo? Error distinctio dolores nam.",
     startDate: "24/06/2024",
     endDate: "25/06/2024",
+    openTime:"10:00AM - 18:00PM",
     isActive: true,
   },
   {
@@ -168,6 +188,7 @@ const event = [
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit maiores, quisquam error ex sit natus debitis ratione distinctio saepe, harum, facere laborum deleniti autem dolorem asperiores consequuntur accusamus eveniet incidunt! Ea a unde tenetur sint neque blanditiis architecto fugit aliquid, exercitationem, odit reprehenderit, vitae nobis quo? Error distinctio dolores nam.",
     startDate: "24/06/2024",
     endDate: "25/06/2024",
+    openTime:"10:00AM - 18:00PM",
     isActive: true,
   },
   {
@@ -180,6 +201,7 @@ const event = [
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit maiores, quisquam error ex sit natus debitis ratione distinctio saepe, harum, facere laborum deleniti autem dolorem asperiores consequuntur accusamus eveniet incidunt! Ea a unde tenetur sint neque blanditiis architecto fugit aliquid, exercitationem, odit reprehenderit, vitae nobis quo? Error distinctio dolores nam.",
     startDate: "24/06/2024",
     endDate: "25/06/2024",
+    openTime:"10:00AM - 18:00PM",
     isActive: true,
   },
   {
@@ -192,6 +214,7 @@ const event = [
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit maiores, quisquam error ex sit natus debitis ratione distinctio saepe, harum, facere laborum deleniti autem dolorem asperiores consequuntur accusamus eveniet incidunt! Ea a unde tenetur sint neque blanditiis architecto fugit aliquid, exercitationem, odit reprehenderit, vitae nobis quo? Error distinctio dolores nam.",
     startDate: "24/06/2024",
     endDate: "25/06/2024",
+    openTime:"10:00AM - 18:00PM",
     isActive: true,
   },
   {
@@ -204,7 +227,21 @@ const event = [
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit maiores, quisquam error ex sit natus debitis ratione distinctio saepe, harum, facere laborum deleniti autem dolorem asperiores consequuntur accusamus eveniet incidunt! Ea a unde tenetur sint neque blanditiis architecto fugit aliquid, exercitationem, odit reprehenderit, vitae nobis quo? Error distinctio dolores nam.",
     startDate: "24/06/2024",
     endDate: "25/06/2024",
+    openTime:"10:00AM - 18:00PM",
     isActive: true,
+  },
+  {
+    storeProfileId: 1,
+    name: "bananaEvent",
+    images: "https://picsum.photos/400",
+    location: "13.757544971580751,100.53668712303082",
+    locationName: "ก๋วยเตี๋ยวลูกชิ้นปลาแปะเตียง",
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit maiores, quisquam error ex sit natus debitis ratione distinctio saepe, harum, facere laborum deleniti autem dolorem asperiores consequuntur accusamus eveniet incidunt! Ea a unde tenetur sint neque blanditiis architecto fugit aliquid, exercitationem, odit reprehenderit, vitae nobis quo? Error distinctio dolores nam.",
+    startDate: "24/06/2024",
+    endDate: "25/06/2024",
+    openTime:"10:00AM - 18:00PM",
+    isActive: false,
   },
 ];
 const interest = [
@@ -260,6 +297,7 @@ const voucherList = [
     condition: "test",
     totalAmount: 5,
     discount: 10,
+    image: "https://picsum.photos/200",
   },
   {
     eventId: 2,
@@ -267,6 +305,7 @@ const voucherList = [
     condition: "test",
     totalAmount: 20,
     discount: 10,
+    image: "https://picsum.photos/200",
   },
   {
     eventId: 3,
@@ -274,6 +313,7 @@ const voucherList = [
     condition: "test",
     totalAmount: 7,
     discount: 10,
+    image: "https://picsum.photos/200",
   },
   {
     eventId: 4,
@@ -281,6 +321,7 @@ const voucherList = [
     condition: "test",
     totalAmount: 20,
     discount: 10,
+    image: "https://picsum.photos/200",
   },
 ];
 const voucherItem = [

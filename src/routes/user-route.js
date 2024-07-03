@@ -4,6 +4,7 @@ const { isUser } = require("../middlewares/isUser");
 const upload = require("../middlewares/upload");
 const { validateCoverImage, validateUpdateProfileOrProfileImage, userReportValidator, commentValidator } = require("../middlewares/validator");
 const { authenticate } = require("../middlewares/authenticate");
+const { isSeller } = require("../middlewares/isSeller");
 
 const userRouter = express.Router();
 // buyer
@@ -52,5 +53,7 @@ userRouter.patch('/changeInfo',authenticate,isUser,
 upload.fields([{name: 'profileImage', maxCount:1}]),
 validateUpdateProfileOrProfileImage,
 userController.updateProfileAndProfileImage)
+
+userRouter.get("/store-main-page",isSeller,userController.fetchStoreMainPage)
 
 module.exports = userRouter;

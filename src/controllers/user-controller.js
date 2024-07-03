@@ -580,4 +580,21 @@ userController.userUseVoucher = async (req, res, next) => {
   }
 };
 
+userController.fetchStoreMainPage = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    const myEvent = await storeProfileService.findStoreProfileByUserId(userId);
+    const countFollower = await followService.groupByFollowByStoreProfileId(
+      myEvent.id
+    );
+    const countVoucher = await voucherItemService.groupByVoucherItemByStoreId([
+      myEvent.id,
+    ]);
+    const data = dataFormat.StoreMainPage(myEvent, countFollower, countVoucher);
+    res.json(data);
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = userController;

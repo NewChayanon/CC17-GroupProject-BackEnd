@@ -96,6 +96,7 @@ model Events {
   description    String  @db.Text
   startDate      String
   endDate        String
+  openTime       String
   isActive       Boolean @default(false)
   isDelete       Boolean @default(false)
 
@@ -111,7 +112,7 @@ model Comment {
   storeProfileId Int
   userId         Int
   topic          String   @db.Text
-  comment        String?  @db.Text
+  comment        String   @db.Text
   rate           Rate
   isVerify       Boolean  @default(false)
   createdAt      DateTime @default(now()) @db.Timestamp(0)
@@ -137,6 +138,7 @@ model VoucherList {
   condition   String @db.Text
   totalAmount Int
   discount    Int
+  image       String
 
   event Events @relation(fields: [eventId], references: [id])
 

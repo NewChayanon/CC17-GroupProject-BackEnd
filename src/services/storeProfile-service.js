@@ -6,23 +6,23 @@ storeProfileService.findManyStoreProfileByStoreProfileId = (storeProfileId) =>
   prisma.storeProfile.findMany({
     where: { OR: storeProfileId },
     include: { Follow: true, Events: true, VoucherItem: true, user: true },
-});
-
+  });
 
 //seller
- // find
+// find
 
-storeProfileService.findStoreProfileByUserId = (userId) => prisma.storeProfile.findFirst({
-  where:{userId:userId}
-  })
+storeProfileService.findStoreProfileByUserId = (userId) =>
+  prisma.storeProfile.findFirst({
+    where: { userId: userId },
+    include: {
+      Events: true,
+      user: { select: { profileImage: true, firstName: true, lastName: true } },
+    },
+  });
 
-
- // create
-storeProfileService.createStoreProfile = (data) =>prisma.storeProfile.create({data});
-
-
-
-
+// create
+storeProfileService.createStoreProfile = (data) =>
+  prisma.storeProfile.create({ data });
 
 storeProfileService.findStoreProfileByStoreProfileId = (id) =>
   prisma.storeProfile.findFirst({

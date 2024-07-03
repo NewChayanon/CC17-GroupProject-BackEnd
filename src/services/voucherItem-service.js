@@ -32,11 +32,17 @@ voucherItemService.findManyVoucherItemByUserId = (userId) =>
       voucherList: {
         select: {
           condition: true,
-          code:true,
+          code: true,
           event: { select: { name: true, startDate: true, endDate: true } },
         },
       },
     },
   });
+
+voucherItemService.updateVoucherItemByIdAndUserId = (where, data) =>
+  prisma.voucherItem.update({ where, data });
+
+voucherItemService.findVoucherItemByUserIdAndVoucherItemId = (where) =>
+  prisma.voucherItem.findUnique({ where });
 
 module.exports = voucherItemService;

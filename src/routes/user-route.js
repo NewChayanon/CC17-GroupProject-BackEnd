@@ -22,6 +22,7 @@ userRouter.put("/follow/:storeProfileId",userController.followAndUnFollowStorePr
 userRouter.post("/report/:storeProfileId",upload.single("reportImage"),userReportValidator,userController.userReport)
 userRouter.post("/comment/:storeProfileId",commentValidator,userController.userCreateComment)
 userRouter.get("/coupon-list",userController.fetchAllCoupon)
+userRouter.patch("/use/:voucherItemId",userController.userUseVoucher)
 
 
 

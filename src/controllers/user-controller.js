@@ -263,11 +263,14 @@ userController.createStore = async (req, res, next) => {
       name: req.body.name,
       coverImage: data.coverImage,
       sellerDescription: req.body.sellerDescription,
-
-    }
-    const createStoreProfile = await storeProfileService.createStoreProfile(input);
-    const convertToSeller = await userService.updateStatus(userId, role= "SELLER")
-
+    };
+    const createStoreProfile = await storeProfileService.createStoreProfile(
+      input
+    );
+    const convertToSeller = await userService.updateStatus(
+      userId,
+      (role = "SELLER")
+    );
 
     console.log("createStoreProfile", createStoreProfile);
 
@@ -369,24 +372,26 @@ userController.updateProfileAndProfileImage = async (req, res, next) => {
 
 userController.createEvent = async (req, res, next) => {
   try {
-    const userInfo = req.user.id
-    console.log('userInfo',userInfo)
-    const findUserIdInStoreProfile = await storeProfileService.findStoreProfileByUserId(userInfo)
-    console.log('findUserIdInStoreProfile',findUserIdInStoreProfile)
-    console.log('findUserIdInStoreProfileId',findUserIdInStoreProfile.id)
- 
- 
+    const userInfo = req.user.id;
+    console.log("userInfo", userInfo);
+    const findUserIdInStoreProfile =
+      await storeProfileService.findStoreProfileByUserId(userInfo);
+    console.log("findUserIdInStoreProfile", findUserIdInStoreProfile);
+    console.log("findUserIdInStoreProfileId", findUserIdInStoreProfile.id);
+
     const promises = [];
-    if(req.files.images){
-      const result = uploadService.upload(req.files.images[0].path).then(url =>({url, key: 'images'}))
-      promises.push(result)
+    if (req.files.images) {
+      const result = uploadService
+        .upload(req.files.images[0].path)
+        .then((url) => ({ url, key: "images" }));
+      promises.push(result);
     }
-    const result = await Promise.all(promises)
-    console.log('result',result)
-    const input = result.reduce((acc,item)=>{
-      acc[item.key]= item.url
-      return acc
-    },{})
+    const result = await Promise.all(promises);
+    console.log("result", result);
+    const input = result.reduce((acc, item) => {
+      acc[item.key] = item.url;
+      return acc;
+    }, {});
 
     const data = {
       storeProfileId: findUserIdInStoreProfile.id,
@@ -395,19 +400,18 @@ userController.createEvent = async (req, res, next) => {
       location: req.body.location,
       locationName: req.body.locationName,
       description: req.body.description,
-      startDate : req.body.startDate,
-      endDate : req.body.endDate
-
-    }
+      startDate: req.body.startDate,
+      endDate: req.body.endDate,
+    };
     const createEvent = await eventServices.createEventsByStoreProfileId(data);
     console.log("createEvent", createEvent);
     res.status(200).json({ message: "create event complete!!!." });
   } catch (error) {
     next(error);
-  }finally{
-    console.log(req.files.images[0].path)
-    if(req.files.images){
-      fs.unlink(req.files.images[0].path)
+  } finally {
+    console.log(req.files.images[0].path);
+    if (req.files.images) {
+      fs.unlink(req.files.images[0].path);
     }
   }
 };
@@ -470,7 +474,7 @@ userController.userReport = async (req, res, next) => {
     const userIdReporter = req.user.id;
     const reportImage = req.file.path;
     const { subject, message } = req.report;
-    
+
     if (!storeProfileReported) {
       return res.status(400).json({ msg: "StoreProfile is required." });
     }
@@ -546,6 +550,31 @@ userController.fetchAllCoupon = async (req, res, next) => {
     );
     const newAllCoupon = dataFormat.couponList(allCoupon);
     res.json(newAllCoupon);
+  } catch (err) {
+    next(err);
+  }
+};
+
+userController.userUseVoucher = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    const voucherItemId = +req.params.voucherItemId;
+
+    const haveVoucher =
+      await voucherItemService.findVoucherItemByUserIdAndVoucherItemId({
+        userId,
+        id: voucherItemId,
+      });
+    if (!haveVoucher) {
+      return res.status(400).json({ msg: "You don't have permission" });
+    }
+
+    const voucher = await voucherItemService.updateVoucherItemByIdAndUserId(
+      { id: voucherItemId, userId },
+      { status: "USED" }
+    );
+
+    res.json({ msg: "use coupon success" });
   } catch (err) {
     next(err);
   }

@@ -135,6 +135,9 @@ const storeProfile = [
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit maiores, quisquam error ex sit natus debitis ratione distinctio saepe, harum, facere laborum deleniti autem dolorem asperiores consequuntur accusamus eveniet incidunt! Ea a unde tenetur sint neque blanditiis architecto fugit aliquid, exercitationem, odit reprehenderit, vitae nobis quo? Error distinctio dolores nam.",
     description:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit maiores, quisquam error ex sit natus debitis ratione distinctio saepe, harum, facere laborum deleniti autem dolorem asperiores consequuntur accusamus eveniet incidunt! Ea a unde tenetur sint neque blanditiis architecto fugit aliquid, exercitationem, odit reprehenderit, vitae nobis quo? Error distinctio dolores nam.",
+    facebook: "https://picsum.photos/400",
+    instagram: "https://picsum.photos/400",
+    
   },
   {
     userId: 5,
@@ -144,6 +147,9 @@ const storeProfile = [
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit maiores, quisquam error ex sit natus debitis ratione distinctio saepe, harum, facere laborum deleniti autem dolorem asperiores consequuntur accusamus eveniet incidunt! Ea a unde tenetur sint neque blanditiis architecto fugit aliquid, exercitationem, odit reprehenderit, vitae nobis quo? Error distinctio dolores nam.",
     description:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit maiores, quisquam error ex sit natus debitis ratione distinctio saepe, harum, facere laborum deleniti autem dolorem asperiores consequuntur accusamus eveniet incidunt! Ea a unde tenetur sint neque blanditiis architecto fugit aliquid, exercitationem, odit reprehenderit, vitae nobis quo? Error distinctio dolores nam.",
+    facebook: "https://picsum.photos/400",
+    instagram: "https://picsum.photos/400",
+    line: "https://picsum.photos/400",
   },
   {
     userId: 12,
@@ -153,6 +159,9 @@ const storeProfile = [
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit maiores, quisquam error ex sit natus debitis ratione distinctio saepe, harum, facere laborum deleniti autem dolorem asperiores consequuntur accusamus eveniet incidunt! Ea a unde tenetur sint neque blanditiis architecto fugit aliquid, exercitationem, odit reprehenderit, vitae nobis quo? Error distinctio dolores nam.",
     description:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit maiores, quisquam error ex sit natus debitis ratione distinctio saepe, harum, facere laborum deleniti autem dolorem asperiores consequuntur accusamus eveniet incidunt! Ea a unde tenetur sint neque blanditiis architecto fugit aliquid, exercitationem, odit reprehenderit, vitae nobis quo? Error distinctio dolores nam.",
+    facebook: "https://picsum.photos/400",
+    instagram: "https://picsum.photos/400",
+    line: "https://picsum.photos/400",
   },
   {
     userId: 13,
@@ -162,6 +171,9 @@ const storeProfile = [
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit maiores, quisquam error ex sit natus debitis ratione distinctio saepe, harum, facere laborum deleniti autem dolorem asperiores consequuntur accusamus eveniet incidunt! Ea a unde tenetur sint neque blanditiis architecto fugit aliquid, exercitationem, odit reprehenderit, vitae nobis quo? Error distinctio dolores nam.",
     description:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit maiores, quisquam error ex sit natus debitis ratione distinctio saepe, harum, facere laborum deleniti autem dolorem asperiores consequuntur accusamus eveniet incidunt! Ea a unde tenetur sint neque blanditiis architecto fugit aliquid, exercitationem, odit reprehenderit, vitae nobis quo? Error distinctio dolores nam.",
+    facebook: "https://picsum.photos/400",
+    instagram: "https://picsum.photos/400",
+    line: "https://picsum.photos/400",
   },
 ];
 const event = [
@@ -175,7 +187,7 @@ const event = [
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit maiores, quisquam error ex sit natus debitis ratione distinctio saepe, harum, facere laborum deleniti autem dolorem asperiores consequuntur accusamus eveniet incidunt! Ea a unde tenetur sint neque blanditiis architecto fugit aliquid, exercitationem, odit reprehenderit, vitae nobis quo? Error distinctio dolores nam.",
     startDate: "24/06/2024",
     endDate: "25/06/2024",
-    openTime:"10:00AM - 18:00PM",
+    openTime: "10:00AM - 18:00PM",
     isActive: true,
   },
   {
@@ -188,7 +200,7 @@ const event = [
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit maiores, quisquam error ex sit natus debitis ratione distinctio saepe, harum, facere laborum deleniti autem dolorem asperiores consequuntur accusamus eveniet incidunt! Ea a unde tenetur sint neque blanditiis architecto fugit aliquid, exercitationem, odit reprehenderit, vitae nobis quo? Error distinctio dolores nam.",
     startDate: "24/06/2024",
     endDate: "25/06/2024",
-    openTime:"10:00AM - 18:00PM",
+    openTime: "10:00AM - 18:00PM",
     isActive: true,
   },
   {
@@ -201,7 +213,7 @@ const event = [
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit maiores, quisquam error ex sit natus debitis ratione distinctio saepe, harum, facere laborum deleniti autem dolorem asperiores consequuntur accusamus eveniet incidunt! Ea a unde tenetur sint neque blanditiis architecto fugit aliquid, exercitationem, odit reprehenderit, vitae nobis quo? Error distinctio dolores nam.",
     startDate: "24/06/2024",
     endDate: "25/06/2024",
-    openTime:"10:00AM - 18:00PM",
+    openTime: "10:00AM - 18:00PM",
     isActive: true,
   },
   {
@@ -214,7 +226,7 @@ const event = [
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit maiores, quisquam error ex sit natus debitis ratione distinctio saepe, harum, facere laborum deleniti autem dolorem asperiores consequuntur accusamus eveniet incidunt! Ea a unde tenetur sint neque blanditiis architecto fugit aliquid, exercitationem, odit reprehenderit, vitae nobis quo? Error distinctio dolores nam.",
     startDate: "24/06/2024",
     endDate: "25/06/2024",
-    openTime:"10:00AM - 18:00PM",
+    openTime: "10:00AM - 18:00PM",
     isActive: true,
   },
   {
@@ -227,7 +239,7 @@ const event = [
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit maiores, quisquam error ex sit natus debitis ratione distinctio saepe, harum, facere laborum deleniti autem dolorem asperiores consequuntur accusamus eveniet incidunt! Ea a unde tenetur sint neque blanditiis architecto fugit aliquid, exercitationem, odit reprehenderit, vitae nobis quo? Error distinctio dolores nam.",
     startDate: "24/06/2024",
     endDate: "25/06/2024",
-    openTime:"10:00AM - 18:00PM",
+    openTime: "10:00AM - 18:00PM",
     isActive: true,
   },
   {
@@ -240,7 +252,7 @@ const event = [
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit maiores, quisquam error ex sit natus debitis ratione distinctio saepe, harum, facere laborum deleniti autem dolorem asperiores consequuntur accusamus eveniet incidunt! Ea a unde tenetur sint neque blanditiis architecto fugit aliquid, exercitationem, odit reprehenderit, vitae nobis quo? Error distinctio dolores nam.",
     startDate: "24/06/2024",
     endDate: "25/06/2024",
-    openTime:"10:00AM - 18:00PM",
+    openTime: "10:00AM - 18:00PM",
     isActive: false,
   },
 ];

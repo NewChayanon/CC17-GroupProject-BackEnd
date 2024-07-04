@@ -284,9 +284,18 @@ dataFormat.couponList = (allCoupon) =>
   );
 
 dataFormat.StoreMainPage = (storeProfile, countFollower, countVoucher) => {
-  const { id, coverImage, name: storeName, Events, user } = storeProfile;
+  const {
+    id,
+    coverImage,
+    name: storeName,
+    Events=[],
+    user,
+    facebook=[],
+    instagram=[],
+    line=[],
+  } = storeProfile;
   const { profileImage, firstName, lastName } = user;
-  const events = Events?.length;
+  const events = Events.length;
   const myEvent = Events.map(
     ({ id, images, startDate, endDate, locationName, location }) => ({
       eventId: id,
@@ -337,6 +346,9 @@ dataFormat.StoreMainPage = (storeProfile, countFollower, countVoucher) => {
       events,
       vouchers:
         countVoucher.length !== 0 ? countVoucher[0]._count.storeProfileId : 0,
+      facebook,
+      instagram,
+      line,
       eventNow,
       upComingEvent,
     },

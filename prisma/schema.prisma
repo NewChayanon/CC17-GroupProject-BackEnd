@@ -43,6 +43,9 @@ model StoreProfile {
   coverImage        String
   sellerDescription String   @db.Text
   description       String   @db.Text
+  facebook          String?
+  instagram         String?
+  line              String?
   createdAt         DateTime @default(now()) @db.Timestamp(0)
   updatedAt         DateTime @updatedAt @db.Timestamp(0)
 

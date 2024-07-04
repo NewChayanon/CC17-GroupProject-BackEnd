@@ -57,7 +57,7 @@ userRouter.patch('/updateCoverImage',
   userController.updateCoverImage
 );
 
-userRouter.patch('/changeInfo',authenticate,isUser,
+userRouter.patch('/change-info',authenticate,isUser,
 upload.fields([{name: 'profileImage', maxCount:1}]),
 validateUpdateProfileOrProfileImage,
 userController.updateProfileAndProfileImage)

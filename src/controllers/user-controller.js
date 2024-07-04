@@ -263,6 +263,7 @@ userController.createStore = async (req, res, next) => {
       name: req.body.name,
       coverImage: data.coverImage,
       sellerDescription: req.body.sellerDescription,
+      description: req.body.description
     };
     const createStoreProfile = await storeProfileService.createStoreProfile(
       input
@@ -274,7 +275,7 @@ userController.createStore = async (req, res, next) => {
 
     console.log("createStoreProfile", createStoreProfile);
 
-    res.status(200).json({ message: "create store complete!!!." });
+    res.status(200).json(createStoreProfile);
   } catch (error) {
     next(error);
   } finally {
@@ -420,7 +421,7 @@ userController.createEvent = async (req, res, next) => {
     };
     const createEvent = await eventServices.createEventsByStoreProfileId(data);
     console.log("createEvent", createEvent);
-    res.status(200).json({ message: "create event complete!!!." });
+    res.status(200).json(createEvent);
   } catch (error) {
     next(error);
   } finally {
@@ -463,7 +464,7 @@ userController.addMoreProduct = async(req,res,next) =>{
 
     const createProduct = await productService.createProduct(data)
     console.log('createProduct',createProduct)
-    res.status(200).json({ message: "add more product in my store complete !!!" });
+    res.status(200).json(createProduct);
   } catch (error) {
     next(error)
   }finally {

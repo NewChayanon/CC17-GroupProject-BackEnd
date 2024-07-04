@@ -33,9 +33,8 @@ userController.findEventListOfUser = async (req, res, next) => {
   try {
     const user = req.user;
     const userInterest = await interestService.findInterestByUserId(user.id);
-    console.log(userInterest);
-    // res-frontEnd => [{id,eventName,eventImage,eventStartDate,eventEndDate,sellerId,sellerFirstName,sellerCoverImage}]
-    const eventInterest = refactorService.eventInterest(userInterest);
+
+    const eventInterest = dataFormat.eventInterest(userInterest,user.id);
     res.json(eventInterest);
   } catch (err) {
     next(err);

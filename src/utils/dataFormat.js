@@ -272,7 +272,7 @@ dataFormat.couponList = (allCoupon) =>
         },
       },
     }) => ({
-      id,
+      voucherItemId: id,
       storeName,
       eventName,
       voucherCondition,
@@ -288,29 +288,35 @@ dataFormat.StoreMainPage = (storeProfile, countFollower, countVoucher) => {
   const { profileImage, firstName, lastName } = user;
   const events = Events?.length;
   const myEvent = Events.map(
-    ({ id, images, startDate, endDate, locationName }) => ({
-      id,
+    ({ id, images, startDate, endDate, locationName, location }) => ({
+      eventId: id,
       eventImage: images,
       eventStartDate: startDate,
       eventEndDate: endDate,
       storeName,
       locationName,
+      location,
     })
   );
 
   const { eventNow, upComingEvent } = Events.reduce(
-    (acc, { id, startDate, endDate, openTime, locationName, isActive }) => {
+    (
+      acc,
+      { id, name, startDate, endDate, openTime, locationName, isActive }
+    ) => {
+      const eventDetails = {
+        eventId: id,
+        startDate,
+        endDate,
+        openTime,
+        locationName,
+        eventName: name,
+      };
       if (isActive) {
-        acc.eventNow.push({ id, startDate, endDate, openTime, locationName });
+        acc.eventNow.push(eventDetails);
       }
       if (!isActive) {
-        acc.upComingEvent.push({
-          id,
-          startDate,
-          endDate,
-          openTime,
-          locationName,
-        });
+        acc.upComingEvent.push(eventDetails);
       }
       return acc;
     },
@@ -320,7 +326,7 @@ dataFormat.StoreMainPage = (storeProfile, countFollower, countVoucher) => {
   return {
     myEvent,
     myStoreProfile: {
-      id,
+      storeProfileId: id,
       storeProfileImage: coverImage,
       userCoverImage: profileImage,
       firstName,
@@ -335,6 +341,54 @@ dataFormat.StoreMainPage = (storeProfile, countFollower, countVoucher) => {
       upComingEvent,
     },
   };
+};
+
+dataFormat.eventInterest = (data, userId) => {
+  return data.map((el) => {
+    const { event } = el;
+    const {
+      storeProfile,
+      VoucherList,
+      id,
+      name,
+      images,
+      startDate,
+      endDate,
+      openTime,
+      locationName,
+    } = event;
+    const { user, name: storeProfileName, id: sellerId } = storeProfile;
+    const { firstName: sellerFirstName, profileImage: sellerCoverImage } = user;
+
+    let getVoucher = [];
+    if (VoucherList[0]) {
+      const voucherItem = VoucherList[0].VoucherItem.find(
+        (item) => item.userId === userId
+      );
+      if (voucherItem) {
+        getVoucher = voucherItem.status;
+      }
+      if (!voucherItem) {
+        getVoucher = "UN-COLLECTED";
+      }
+    }
+
+    return {
+      storeProfileName,
+      interestId: el.id,
+      eventId: id,
+      eventName: name,
+      eventImage: images,
+      eventStartDate: startDate,
+      eventEndDate: endDate,
+      openTime,
+      locationName,
+      sellerId,
+      sellerFirstName,
+      sellerCoverImage,
+      getVoucher,
+    };
+  });
 };
 
 module.exports = dataFormat;

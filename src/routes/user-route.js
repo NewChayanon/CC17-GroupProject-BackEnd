@@ -48,7 +48,9 @@ userRouter.post('/create-product',
   userController.addMoreProduct)
 
 // get
+
 userRouter.get('/get-all-product/:storeProfileId', userController.getAllProductByStoreProfileId)
+userRouter.get("/store-main-page/:eventId",isSeller,userController.viewDetailYellowCard)
 
   //update
 userRouter.patch('/update-coverImage',

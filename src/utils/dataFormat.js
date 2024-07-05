@@ -100,13 +100,14 @@ dataFormat.userEventId = (event, otherEvents, userId) => {
     storeDescription: storeProfile.description,
     interest: Interest.length !== 0,
     eventList: EventItem.map((item) => {
-      const { id, products, price } = item;
+      const { id, products } = item;
       return {
         productId: id,
         productName: products.name,
         productImage: products.image,
         productDescription: products.description,
-        price,
+        price: products.price,
+        unit: products.unit,
       };
     }),
     // statusCoupon,
@@ -161,13 +162,14 @@ dataFormat.authEventId = (eventDetails, otherEvents) => {
     storeDescription: storeProfile.description,
     interest: false,
     eventList: EventItem.map((item) => {
-      const { id, products, price } = item;
+      const { id, products } = item;
       return {
         productId: id,
         productName: products.name,
         productImage: products.image,
         productDescription: products.description,
-        price: price,
+        price: products.price,
+        unit: products.unit,
       };
     }),
 
@@ -288,11 +290,11 @@ dataFormat.StoreMainPage = (storeProfile, countFollower, countVoucher) => {
     id,
     coverImage,
     name: storeName,
-    Events=[],
+    Events = [],
     user,
-    facebook=[],
-    instagram=[],
-    line=[],
+    facebook = [],
+    instagram = [],
+    line = [],
   } = storeProfile;
   const { profileImage, firstName, lastName } = user;
   const events = Events.length;
@@ -401,6 +403,74 @@ dataFormat.eventInterest = (data, userId) => {
       getVoucher,
     };
   });
+};
+
+dataFormat.detailYellowCard = (event) => {
+  const {
+    id: eventId,
+    name: eventName,
+    storeProfile,
+    startDate: eventStartDate,
+    endDate: eventEndDate,
+    openTime,
+    locationName: eventLocationName,
+    location: eventLocation,
+    description: eventDescription,
+    images: eventImage,
+    VoucherList,
+    EventItem = [],
+  } = event;
+  const { name: storeProfileName } = storeProfile;
+
+  const haveVoucher = VoucherList.length !== 0;
+  const promotion = haveVoucher
+    ? [{
+        description: VoucherList[0].description,
+        condition: VoucherList[0].condition,
+        image: VoucherList[0].image,
+        code: VoucherList[0].code,
+        voucherListDiscount: VoucherList[0].discount
+      }]
+    : [];
+
+    const voucherListDiscount = promotion.length > 0 ? promotion[0].voucherListDiscount : [];
+
+  const product = EventItem.map(
+    ({
+      products: {
+        id: productId,
+        image: productImage,
+        name: productName,
+        description: productDescription,
+        price: productPrice,
+        unit: productUnit,
+      },
+    }) => {
+      return {
+        productId,
+        productImage,
+        productName,
+        productDescription,
+        productPrice,
+        productUnit,
+        voucherListDiscount,
+      };
+    }
+  );
+  return {
+    eventId,
+    eventName,
+    storeProfileName,
+    eventStartDate,
+    eventEndDate,
+    openTime,
+    eventLocationName,
+    eventLocation,
+    eventDescription,
+    eventImage,
+    promotion,
+    product,
+  };
 };
 
 module.exports = dataFormat;

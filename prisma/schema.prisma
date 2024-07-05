@@ -83,6 +83,8 @@ model Product {
   name           String
   description    String
   image          String
+  price          Int
+  unit           String
 
   storesProfile StoreProfile @relation(fields: [storeProfileId], references: [id])
 
@@ -128,7 +130,6 @@ model EventItem {
   id        Int @id @default(autoincrement())
   eventId   Int
   productId Int
-  price     Int
 
   event    Events  @relation(fields: [eventId], references: [id])
   products Product @relation(fields: [productId], references: [id])
@@ -138,6 +139,7 @@ model VoucherList {
   id          Int    @id @default(autoincrement())
   eventId     Int
   code        String @db.VarChar(20)
+  description String @db.Text
   condition   String @db.Text
   totalAmount Int
   discount    Int

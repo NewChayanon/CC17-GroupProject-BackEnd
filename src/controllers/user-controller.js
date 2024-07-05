@@ -673,4 +673,25 @@ userController.fetchStoreMainPage = async (req, res, next) => {
   }
 };
 
+
+userController.viewDetailYellowCard =async (req,res,next) =>{
+  try {
+    const userId = req.user.id
+    const eventId = +req.params.eventId
+    const storeProfile = await storeProfileService.findStoreProfileByUserId(userId)
+    if (!storeProfile) {
+      return res.status(400).json({msg:"StoreProfile invalid"})
+    }
+    const haveEvent = await eventServices.findUniqueEventByIdAndStoreProfileId(eventId,storeProfile.id)
+    if (!haveEvent) {
+      return res.status(400).json({msg:"EventId invalid"})
+    }
+    const event = await eventServices.findEventByEventId(eventId)
+    const dataFormatEvent = await dataFormat.detailYellowCard(event)
+    res.json(dataFormatEvent)
+  } catch (err) {
+    next(err)
+  }
+}
+
 module.exports = userController;

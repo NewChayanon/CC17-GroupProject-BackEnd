@@ -15,12 +15,10 @@ const reportService = require("../services/report-service");
 const hashService = require("../services/hash-services");
 const commentService = require("../services/comment-service");
 const productService = require("../services/product-service");
-<<<<<<< HEAD
+const eventItemService = require("../services/eventItem-service");
+
 const { log } = require("console");
 const { object } = require("joi");
-=======
-const eventItemService = require("../services/eventItem-service");
->>>>>>> dev
 
 const userController = {};
 
@@ -726,7 +724,6 @@ userController.fetchStoreMainPage = async (req, res, next) => {
   }
 };
 
-<<<<<<< HEAD
 userController.createMessageToBuyers = async (req,res,next)=>{
   try {
     const userId = +req.user.id
@@ -762,7 +759,6 @@ userController.createMessageToBuyers = async (req,res,next)=>{
     next(error)
   }
 }
-=======
 userController.viewDetailYellowCard = async (req, res, next) => {
   try {
     const userId = req.user.id;
@@ -854,6 +850,5 @@ userController.addItemToEvent = async (req, res, next) => {
     next(err);
   }
 };
->>>>>>> dev
 
 module.exports = userController;

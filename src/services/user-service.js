@@ -32,6 +32,8 @@ userService.updatePersonalInformationById = (id,data) => prisma.users.update({
   data:data
 })
 
+userService.createNotification = (data) => prisma.inboxMessageUser.createMany({data})
+
 //future
 
 // userService.checkUserGetNotificationStatusByUserId = (userId) => prisma.users.findUnique({

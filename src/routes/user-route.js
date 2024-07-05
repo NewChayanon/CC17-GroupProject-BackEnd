@@ -30,22 +30,25 @@ userRouter.patch("/use/:voucherItemId",userController.userUseVoucher)
 
 // seller 
   //create
-userRouter.post('/create-event', 
+userRouter.post('/create-event',
   upload.fields([{name: 'images', maxCount:1}]),
   validateCoverImage,
-  userController.createEvent)
-
-
+  userController.createEvent
+);
 
 userRouter.post('/create-storeProfile',
   upload.fields([{name: 'coverImage', maxCount:1}]),
   validateCoverImage,
-  userController.createStore)
+  userController.createStore
+);
 
 userRouter.post('/create-product', 
   upload.fields([{name: 'image', maxCount:1}]),
   validateCoverImage,
-  userController.addMoreProduct)
+  userController.addMoreProduct
+);
+
+userRouter.post('/new-message',isSeller,userController.createMessageToBuyers)
 
 userRouter.post("/add-item/:eventId/:productId",isSeller,userController.addItemToEvent)
 
@@ -62,10 +65,11 @@ userRouter.patch('/update-coverImage',
   userController.updateCoverImage
 );
 
-userRouter.patch('/change-info',authenticate,isUser,
-upload.fields([{name: 'profileImage', maxCount:1}]),
-validateUpdateProfileOrProfileImage,
-userController.updateProfileAndProfileImage)
+userRouter.patch('/change-info',isUser,
+  upload.fields([{name: 'profileImage', maxCount:1}]),
+  validateUpdateProfileOrProfileImage,
+  userController.updateProfileAndProfileImage
+);
 
 userRouter.patch('/edit-product/:productId',
   upload.fields([{name: 'image', maxCount:1}]),

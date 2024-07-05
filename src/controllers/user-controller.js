@@ -371,6 +371,50 @@ userController.updateProfileAndProfileImage = async (req, res, next) => {
   }
 };
 
+userController.editProduct = async (req,res,next) =>{
+  try {
+    const productId = +req.params.productId
+    const productUserId = req.user.id
+    console.log('userIdProduct',productUserId)
+    const findUserIdInStoreProfile =
+      await storeProfileService.findStoreProfileByUserId(productUserId);
+    console.log("findUserIdInStoreProfileId", findUserIdInStoreProfile.id);
+
+
+    const promises = [];
+    if (req.files.image) {
+      const result = uploadService
+        .upload(req.files.image[0].path)
+        .then((url) => ({ url, key: "image" }));
+      promises.push(result);
+    }
+    const result = await Promise.all(promises);
+    console.log("result", result);
+    const input = result.reduce((acc, item) => {
+      acc[item.key] = item.url;
+      return acc;
+    }, {});
+
+    const data = {
+      // storeProfileId : findUserIdInStoreProfile.id,
+      name: req.body.name,
+      description: req.body.description,
+      image: input.image
+    }
+
+    const editProduct = await productService.updateProduct(productId,data)
+    res.status(201).json(editProduct)
+    
+  } catch (error) {
+    next(error)
+  }finally {
+    console.log(req.files.image[0].path);
+    if (req.files.image) {
+      fs.unlink(req.files.image[0].path);
+    }
+  }
+}
+
 userController.getAllProductByStoreProfileId = async (req,res,next)=> {
   try {
     const userId = req.user.id
@@ -456,7 +500,7 @@ userController.addMoreProduct = async(req,res,next) =>{
     }, {});
 
     const data = {
-      storeProfileId : findUserIdInStoreProfile.id,
+      // storeProfileId : findUserIdInStoreProfile.id,
       name: req.body.name,
       description: req.body.description,
       image: input.image

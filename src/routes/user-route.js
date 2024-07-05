@@ -37,22 +37,23 @@ userRouter.post('/create-event',
 
 
 
-userRouter.post('/createStoreProfile',
+userRouter.post('/create-storeProfile',
   upload.fields([{name: 'coverImage', maxCount:1}]),
   validateCoverImage,
   userController.createStore)
 
-userRouter.post('/createProduct', 
+userRouter.post('/create-product', 
   upload.fields([{name: 'image', maxCount:1}]),
   validateCoverImage,
   userController.addMoreProduct)
 
 // get
-userRouter.get('/getAllProduct/:storeProfileId', userController.getAllProductByStoreProfileId)
+
+userRouter.get('/get-all-product/:storeProfileId', userController.getAllProductByStoreProfileId)
 userRouter.get("/store-main-page/:eventId",isSeller,userController.viewDetailYellowCard)
 
   //update
-userRouter.patch('/updateCoverImage',
+userRouter.patch('/update-coverImage',
   upload.fields([{name: 'coverImage', maxCount:1}]),
   validateCoverImage,
   userController.updateCoverImage
@@ -63,9 +64,13 @@ upload.fields([{name: 'profileImage', maxCount:1}]),
 validateUpdateProfileOrProfileImage,
 userController.updateProfileAndProfileImage)
 
+userRouter.patch('/edit-product/:productId',
+  upload.fields([{name: 'image', maxCount:1}]),
+  validateCoverImage,
+  userController.editProduct)
 
 //delete
-userRouter.delete('/deleteProduct/:productId', userController.deleteSomeProduct)
+userRouter.delete('/delete-product/:productId', userController.deleteSomeProduct)
 
 userRouter.get("/store-main-page",isSeller,userController.fetchStoreMainPage)
 

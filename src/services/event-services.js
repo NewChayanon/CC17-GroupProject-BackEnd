@@ -50,6 +50,16 @@ eventServices.groupByEventByStoreId = (storeProfileId) =>
 
 eventServices.createEventsByStoreProfileId = (data) => prisma.events.create({data})
 
+eventServices.findEventsByStoreProfileId = (storeProfileId) => prisma.events.findMany({
+  where: {storeProfileId:storeProfileId},
+  include:{
+    Interest:{select:{eventId: true}}
+  }
+})
+ 
+      
+
+
 
 
 

@@ -15,6 +15,8 @@ const reportService = require("../services/report-service");
 const hashService = require("../services/hash-services");
 const commentService = require("../services/comment-service");
 const productService = require("../services/product-service");
+const { log } = require("console");
+const { object } = require("joi");
 
 const userController = {};
 
@@ -364,9 +366,9 @@ userController.updateProfileAndProfileImage = async (req, res, next) => {
   } catch (error) {
     next(error);
   } finally {
-    console.log(req.files.profileImage[0].path);
+    // console.log(req.files?.profileImage[0].path);
     if (req.files.coverImage) {
-      fs.unlink(req.files.profileImage[0].path);
+      fs.unlink(req.files?.profileImage[0].path);
     }
   }
 };
@@ -716,5 +718,41 @@ userController.fetchStoreMainPage = async (req, res, next) => {
     next(err);
   }
 };
+
+userController.createMessageToBuyers = async (req,res,next)=>{
+  try {
+    const userId = +req.user.id
+    const store = await storeProfileService.findStoreProfileByUserId(userId)
+    const follow = await followService.findManyUserIdFollowerByStoreProfileId(store.id)
+    const event = await eventServices.findEventsByStoreProfileId(store.id)
+
+    let eventId = []
+    event.map((el)=> eventId.push(el.id))
+
+    const userInterest = await interestService.findUserInterestByEventId(eventId)
+    // console.log('userInterest',userInterest)
+
+    const followerAndInterest = [...follow,...userInterest]
+    // console.log('followerAndInterest',followerAndInterest)
+
+    const receive = followerAndInterest.reduce((acc,el) =>{
+      const check = acc.find((rs)=>rs===el.userId);
+      if(!check){
+        acc.push(el.userId)
+      }
+      return acc
+    },[])
+
+    const input = req.body
+    const data = receive.map((id)=> ({...input, userIdSender: userId, userIdReceiver:id}))
+    console.log('data',data)
+      
+    const result = await userService.createNotification(data)
+    console.log('result',result)
+    res.status(200).json(data)
+  } catch (error) {
+    next(error)
+  }
+}
 
 module.exports = userController;

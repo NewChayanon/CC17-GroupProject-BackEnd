@@ -24,4 +24,10 @@ interestService.deleteInterestById = (id) =>
 interestService.createInterestByUserIdAndEventId = (userId, eventId) =>
   prisma.interest.create({ data: { userId, eventId } });
 
+interestService.findUserInterestByEventId = (eventId) => prisma.interest.findMany({
+  where:{eventId: {in: eventId}},
+  
+  
+})
+
 module.exports = interestService;

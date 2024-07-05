@@ -23,4 +23,7 @@ followService.groupByFollowByStoreProfileId = (storeProfileId) =>
     _count: { storeProfileId: true },
   });
 
+followService.findManyUserIdFollowerByStoreProfileId = (storeProfileId) => 
+  prisma.follow.findMany({where:{storeProfileId}})
+
 module.exports = followService;

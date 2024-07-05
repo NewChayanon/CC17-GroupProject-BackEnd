@@ -13,7 +13,7 @@ productService.getAllProductByStoreProfileId = (storeProfileId) => prisma.produc
 productService.createProduct = (data) => prisma.product.create({data})
 
 //update
-productService.updateProductById = (id) => prisma.product.update({where:{id}})
+productService.updateProduct = (id,data) => prisma.product.update({where:{id},data:data})
 
 // delete
 productService.deleteProductById = (productId) => prisma.product.delete({where:{id:productId}})

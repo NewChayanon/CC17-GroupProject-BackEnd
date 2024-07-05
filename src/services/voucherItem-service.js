@@ -45,4 +45,7 @@ voucherItemService.updateVoucherItemByIdAndUserId = (where, data) =>
 voucherItemService.findVoucherItemByUserIdAndVoucherItemId = (where) =>
   prisma.voucherItem.findUnique({ where });
 
+voucherItemService.deleteManyVoucherItemByVoucherListId = (voucherListId) =>
+  prisma.voucherItem.deleteMany({ where: { voucherListId } });
+
 module.exports = voucherItemService;

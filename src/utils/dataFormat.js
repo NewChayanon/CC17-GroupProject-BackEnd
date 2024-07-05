@@ -424,16 +424,19 @@ dataFormat.detailYellowCard = (event) => {
 
   const haveVoucher = VoucherList.length !== 0;
   const promotion = haveVoucher
-    ? [{
-        description: VoucherList[0].description,
-        condition: VoucherList[0].condition,
-        image: VoucherList[0].image,
-        code: VoucherList[0].code,
-        voucherListDiscount: VoucherList[0].discount
-      }]
+    ? [
+        {
+          description: VoucherList[0].description,
+          condition: VoucherList[0].condition,
+          image: VoucherList[0].image,
+          code: VoucherList[0].code,
+          voucherListDiscount: VoucherList[0].discount,
+        },
+      ]
     : [];
 
-    const voucherListDiscount = promotion.length > 0 ? promotion[0].voucherListDiscount : [];
+  const voucherListDiscount =
+    promotion.length > 0 ? promotion[0].voucherListDiscount : [];
 
   const product = EventItem.map(
     ({
@@ -473,15 +476,27 @@ dataFormat.detailYellowCard = (event) => {
   };
 };
 
-dataFormat.myProduct = (product) => product.map(({id,image,name,description,price,unit})=>{
+dataFormat.myProduct = (product) =>
+  product.map(({ id, image, name, description, price, unit }) => {
+    return {
+      productId: id,
+      productImage: image,
+      productName: name,
+      productDescription: description,
+      productPrice: price,
+      productUnit: unit,
+    };
+  });
+
+dataFormat.addProduct = ({ products }) => {
   return {
-    productId:id,
-    productImage:image,
-    productName:name,
-    productDescription:description,
-    productPrice:price,
-    productUnit:unit
-  }
-})
+    productId: products.id,
+    productImage: products.image,
+    productName: products.name,
+    productDescription: products.description,
+    productPrice: products.price,
+    productUnit: products.unit,
+  };
+};
 
 module.exports = dataFormat;

@@ -47,6 +47,8 @@ userRouter.post('/create-product',
   validateCoverImage,
   userController.addMoreProduct)
 
+userRouter.post("/add-item/:eventId/:productId",isSeller,userController.addItemToEvent)
+
 // get
 userRouter.get('/get-all-product/:storeProfileId', userController.getAllProductByStoreProfileId)
 userRouter.get("/store-main-page",isSeller,userController.fetchStoreMainPage)

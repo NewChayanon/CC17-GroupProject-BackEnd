@@ -11,3 +11,7 @@ exports.userComment = Joi.object({
   rate: Joi.string().required(),
   isVerify:Joi.boolean()
 });
+
+exports.sellerEditDiscount = Joi.object({
+  discount: Joi.number().required()
+})

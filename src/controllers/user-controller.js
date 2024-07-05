@@ -19,6 +19,7 @@ const eventItemService = require("../services/eventItem-service");
 
 const { log } = require("console");
 const { object } = require("joi");
+const voucherListService = require("../services/voucherList-service");
 
 const userController = {};
 
@@ -724,41 +725,49 @@ userController.fetchStoreMainPage = async (req, res, next) => {
   }
 };
 
-userController.createMessageToBuyers = async (req,res,next)=>{
+userController.createMessageToBuyers = async (req, res, next) => {
   try {
-    const userId = +req.user.id
-    const store = await storeProfileService.findStoreProfileByUserId(userId)
-    const follow = await followService.findManyUserIdFollowerByStoreProfileId(store.id)
-    const event = await eventServices.findEventsByStoreProfileId(store.id)
+    const userId = +req.user.id;
+    const store = await storeProfileService.findStoreProfileByUserId(userId);
+    const follow = await followService.findManyUserIdFollowerByStoreProfileId(
+      store.id
+    );
+    const event = await eventServices.findEventsByStoreProfileId(store.id);
 
-    let eventId = []
-    event.map((el)=> eventId.push(el.id))
+    let eventId = [];
+    event.map((el) => eventId.push(el.id));
 
-    const userInterest = await interestService.findUserInterestByEventId(eventId)
+    const userInterest = await interestService.findUserInterestByEventId(
+      eventId
+    );
     // console.log('userInterest',userInterest)
 
-    const followerAndInterest = [...follow,...userInterest]
+    const followerAndInterest = [...follow, ...userInterest];
     // console.log('followerAndInterest',followerAndInterest)
 
-    const receive = followerAndInterest.reduce((acc,el) =>{
-      const check = acc.find((rs)=>rs===el.userId);
-      if(!check){
-        acc.push(el.userId)
+    const receive = followerAndInterest.reduce((acc, el) => {
+      const check = acc.find((rs) => rs === el.userId);
+      if (!check) {
+        acc.push(el.userId);
       }
-      return acc
-    },[])
+      return acc;
+    }, []);
 
-    const input = req.body
-    const data = receive.map((id)=> ({...input, userIdSender: userId, userIdReceiver:id}))
-    console.log('data',data)
-      
-    const result = await userService.createNotification(data)
-    console.log('result',result)
-    res.status(200).json(data)
+    const input = req.body;
+    const data = receive.map((id) => ({
+      ...input,
+      userIdSender: userId,
+      userIdReceiver: id,
+    }));
+    console.log("data", data);
+
+    const result = await userService.createNotification(data);
+    console.log("result", result);
+    res.status(200).json(data);
   } catch (error) {
-    next(error)
+    next(error);
   }
-}
+};
 userController.viewDetailYellowCard = async (req, res, next) => {
   try {
     const userId = req.user.id;
@@ -844,8 +853,36 @@ userController.addItemToEvent = async (req, res, next) => {
     const item = await eventItemService.createEventItemByEventIdAndProductId(
       data
     );
-    const dataFormatAddProduct = dataFormat.addProduct(item)
+    const dataFormatAddProduct = dataFormat.addProduct(item);
     res.status(201).json(dataFormatAddProduct);
+  } catch (err) {
+    next(err);
+  }
+};
+
+userController.editDiscount = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    const eventId = +req.params.eventId;
+    const event = await eventServices.findEventByEventId(eventId);
+    if (!event) {
+      return res.status(404).json({msg:"Event not found!!!"})
+    }
+    const {storeProfile,VoucherList} = event
+    if (storeProfile.userId !== userId) {
+      return res
+      .status(403)
+      .json({ msg: "Editing of this event is not allowed." });
+    }
+    if (VoucherList.length === 0) {
+      return res.status(404).json({msg:"Event have not coupon."})
+    }
+    const [{id}] = VoucherList
+    const discounted = await voucherListService.updateDiscountByEventId(
+      id,
+      req.body
+    );
+    res.status(201).json(discounted);
   } catch (err) {
     next(err);
   }

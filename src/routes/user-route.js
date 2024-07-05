@@ -48,9 +48,10 @@ userRouter.post('/create-product',
   userController.addMoreProduct)
 
 // get
-
 userRouter.get('/get-all-product/:storeProfileId', userController.getAllProductByStoreProfileId)
+userRouter.get("/store-main-page",isSeller,userController.fetchStoreMainPage)
 userRouter.get("/store-main-page/:eventId",isSeller,userController.viewDetailYellowCard)
+userRouter.get("/my-product",isSeller,userController.sellerMyProduct)
 
   //update
 userRouter.patch('/update-coverImage',
@@ -72,7 +73,7 @@ userRouter.patch('/edit-product/:productId',
 //delete
 userRouter.delete('/delete-product/:productId', userController.deleteSomeProduct)
 
-userRouter.get("/store-main-page",isSeller,userController.fetchStoreMainPage)
+
 
 
 module.exports = userRouter;

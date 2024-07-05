@@ -473,4 +473,15 @@ dataFormat.detailYellowCard = (event) => {
   };
 };
 
+dataFormat.myProduct = (product) => product.map(({id,image,name,description,price,unit})=>{
+  return {
+    productId:id,
+    productImage:image,
+    productName:name,
+    productDescription:description,
+    productPrice:price,
+    productUnit:unit
+  }
+})
+
 module.exports = dataFormat;

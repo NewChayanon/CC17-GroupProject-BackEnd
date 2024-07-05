@@ -53,4 +53,7 @@ eventServices.createEventsByStoreProfileId = (data) =>
 eventServices.findUniqueEventByIdAndStoreProfileId = (id, storeProfileId) =>
   prisma.events.findUnique({ where: { id, storeProfileId } });
 
+eventServices.findFirstEventByEventIdAndStoreProfileId = (id, storeProfileId) =>
+  prisma.events.findFirst({ where: { id, storeProfileId } });
+
 module.exports = eventServices;

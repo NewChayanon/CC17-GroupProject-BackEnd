@@ -15,8 +15,12 @@ const reportService = require("../services/report-service");
 const hashService = require("../services/hash-services");
 const commentService = require("../services/comment-service");
 const productService = require("../services/product-service");
+<<<<<<< HEAD
 const { log } = require("console");
 const { object } = require("joi");
+=======
+const eventItemService = require("../services/eventItem-service");
+>>>>>>> dev
 
 const userController = {};
 
@@ -36,7 +40,7 @@ userController.findEventListOfUser = async (req, res, next) => {
     const user = req.user;
     const userInterest = await interestService.findInterestByUserId(user.id);
 
-    const eventInterest = dataFormat.eventInterest(userInterest,user.id);
+    const eventInterest = dataFormat.eventInterest(userInterest, user.id);
     res.json(eventInterest);
   } catch (err) {
     next(err);
@@ -265,7 +269,7 @@ userController.createStore = async (req, res, next) => {
       name: req.body.name,
       coverImage: data.coverImage,
       sellerDescription: req.body.sellerDescription,
-      description: req.body.description
+      description: req.body.description,
     };
     const createStoreProfile = await storeProfileService.createStoreProfile(
       input
@@ -373,15 +377,14 @@ userController.updateProfileAndProfileImage = async (req, res, next) => {
   }
 };
 
-userController.editProduct = async (req,res,next) =>{
+userController.editProduct = async (req, res, next) => {
   try {
-    const productId = +req.params.productId
-    const productUserId = req.user.id
-    console.log('userIdProduct',productUserId)
+    const productId = +req.params.productId;
+    const productUserId = req.user.id;
+    console.log("userIdProduct", productUserId);
     const findUserIdInStoreProfile =
       await storeProfileService.findStoreProfileByUserId(productUserId);
     console.log("findUserIdInStoreProfileId", findUserIdInStoreProfile.id);
-
 
     const promises = [];
     if (req.files.image) {
@@ -401,36 +404,39 @@ userController.editProduct = async (req,res,next) =>{
       // storeProfileId : findUserIdInStoreProfile.id,
       name: req.body.name,
       description: req.body.description,
-      image: input.image
-    }
+      image: input.image,
+    };
 
-    const editProduct = await productService.updateProduct(productId,data)
-    res.status(201).json(editProduct)
-    
+    const editProduct = await productService.updateProduct(productId, data);
+    res.status(201).json(editProduct);
   } catch (error) {
-    next(error)
-  }finally {
+    next(error);
+  } finally {
     console.log(req.files.image[0].path);
     if (req.files.image) {
       fs.unlink(req.files.image[0].path);
     }
   }
-}
+};
 
-userController.getAllProductByStoreProfileId = async (req,res,next)=> {
+userController.getAllProductByStoreProfileId = async (req, res, next) => {
   try {
-    const userId = req.user.id
-    console.log('allProductUserId',userId)
-    const storeProfileId = await storeProfileService.findStoreProfileByUserId(userId);
+    const userId = req.user.id;
+    console.log("allProductUserId", userId);
+    const storeProfileId = await storeProfileService.findStoreProfileByUserId(
+      userId
+    );
     console.log("storeProfileId", storeProfileId.id);
 
-    const findAllProduct = await productService.getAllProductByStoreProfileId(storeProfileId.id)
-    console.log('findAllProduct',findAllProduct)
-    res.status(200).json(findAllProduct)
+    const findAllProduct = await productService.getAllProductByStoreProfileId(
+      storeProfileId.id
+    );
+    console.log("findAllProduct", findAllProduct);
+    res.status(200).json(findAllProduct);
   } catch (error) {
-    next(error)
+    next(error);
   }
-}
+};
 
 userController.createEvent = async (req, res, next) => {
   try {
@@ -478,14 +484,13 @@ userController.createEvent = async (req, res, next) => {
   }
 };
 
-userController.addMoreProduct = async(req,res,next) =>{
+userController.addMoreProduct = async (req, res, next) => {
   try {
-    const productUserId = req.user.id
-    console.log('userIdProduct',productUserId)
+    const productUserId = req.user.id;
+    console.log("userIdProduct", productUserId);
     const findUserIdInStoreProfile =
       await storeProfileService.findStoreProfileByUserId(productUserId);
     console.log("findUserIdInStoreProfileId", findUserIdInStoreProfile.id);
-
 
     const promises = [];
     if (req.files.image) {
@@ -505,38 +510,40 @@ userController.addMoreProduct = async(req,res,next) =>{
       // storeProfileId : findUserIdInStoreProfile.id,
       name: req.body.name,
       description: req.body.description,
-      image: input.image
-    }
+      image: input.image,
+    };
 
-    const createProduct = await productService.createProduct(data)
-    console.log('createProduct',createProduct)
+    const createProduct = await productService.createProduct(data);
+    console.log("createProduct", createProduct);
     res.status(200).json(createProduct);
   } catch (error) {
-    next(error)
-  }finally {
+    next(error);
+  } finally {
     console.log(req.files.image[0].path);
     if (req.files.image) {
       fs.unlink(req.files.image[0].path);
     }
   }
-}
+};
 
-userController.deleteSomeProduct = async (req,res,next) =>{
+userController.deleteSomeProduct = async (req, res, next) => {
   try {
-    const productId = +req.params.productId
-    console.log('productId',productId)
+    const productId = +req.params.productId;
+    console.log("productId", productId);
     const findProduct = await productService.getProductById(productId);
-    console.log('findProduct',findProduct)
-    if(!findProduct) {
-      return createError({message: "product not found"})
+    console.log("findProduct", findProduct);
+    if (!findProduct) {
+      return createError({ message: "product not found" });
     }
-    const deleteProduct = await productService.deleteProductById(findProduct.id)
-    console.log('deleteProduct',deleteProduct)
-    res.status(200).json({message: "delete product complete"})
+    const deleteProduct = await productService.deleteProductById(
+      findProduct.id
+    );
+    console.log("deleteProduct", deleteProduct);
+    res.status(200).json({ message: "delete product complete" });
   } catch (error) {
-    next(error)
+    next(error);
   }
-}
+};
 
 userController.storeProfile = async (req, res, next) => {
   try {
@@ -719,6 +726,7 @@ userController.fetchStoreMainPage = async (req, res, next) => {
   }
 };
 
+<<<<<<< HEAD
 userController.createMessageToBuyers = async (req,res,next)=>{
   try {
     const userId = +req.user.id
@@ -754,5 +762,98 @@ userController.createMessageToBuyers = async (req,res,next)=>{
     next(error)
   }
 }
+=======
+userController.viewDetailYellowCard = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    const eventId = +req.params.eventId;
+    const storeProfile = await storeProfileService.findStoreProfileByUserId(
+      userId
+    );
+    if (!storeProfile) {
+      return res.status(400).json({ msg: "StoreProfile invalid" });
+    }
+    const haveEvent = await eventServices.findUniqueEventByIdAndStoreProfileId(
+      eventId,
+      storeProfile.id
+    );
+    if (!haveEvent) {
+      return res.status(400).json({ msg: "EventId invalid" });
+    }
+    const event = await eventServices.findEventByEventId(eventId);
+    const dataFormatEvent = await dataFormat.detailYellowCard(event);
+    res.json(dataFormatEvent);
+  } catch (err) {
+    next(err);
+  }
+};
+
+userController.sellerMyProduct = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    const storeProfile = await storeProfileService.findStoreProfileByUserId(
+      userId
+    );
+    if (!storeProfile) {
+      return res.status(400).json({ msg: "StoreProfile invalid" });
+    }
+    const myProduct = await productService.getAllProductByStoreProfileId(
+      storeProfile.id
+    );
+    const dataFormatMyProduct = dataFormat.myProduct(myProduct);
+    res.json(dataFormatMyProduct);
+  } catch (err) {
+    next(err);
+  }
+};
+
+userController.addItemToEvent = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    const eventId = +req.params.eventId;
+    const productId = +req.params.productId;
+    const data = { eventId, productId };
+    const storeProfile = await storeProfileService.findStoreProfileByUserId(
+      userId
+    );
+    if (!storeProfile) {
+      return res.status(400).json({ msg: "StoreProfile invalid" });
+    }
+    const haveEventInStore =
+      await eventServices.findFirstEventByEventIdAndStoreProfileId(
+        eventId,
+        storeProfile.id
+      );
+    if (!haveEventInStore) {
+      return res.status(400).json({ msg: "EventId invalid." });
+    }
+
+    const haveProductInEvent =
+      await eventItemService.findFirstByEventIdAndProductId(data);
+    if (haveProductInEvent) {
+      return res.status(400).json({ msg: "Have product in event." });
+    }
+
+    const haveProductInStore =
+      await productService.findFirstProductByProductIdAndStoreProfileId(
+        productId,
+        storeProfile.id
+      );
+    if (!haveProductInStore) {
+      return res
+        .status(400)
+        .json({ msg: "This product is not from this store." });
+    }
+
+    const item = await eventItemService.createEventItemByEventIdAndProductId(
+      data
+    );
+    const dataFormatAddProduct = dataFormat.addProduct(item)
+    res.status(201).json(dataFormatAddProduct);
+  } catch (err) {
+    next(err);
+  }
+};
+>>>>>>> dev
 
 module.exports = userController;

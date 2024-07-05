@@ -16,7 +16,7 @@ eventServices.findEventByEventIdAndUserId = (eventId, userId) =>
   prisma.events.findUnique({
     where: { id: eventId },
     include: {
-      VoucherList: {include:{VoucherItem:true}},
+      VoucherList: { include: { VoucherItem: true } },
       EventItem: { include: { products: true } },
       storeProfile: { include: { user: true } },
       Interest: { where: { AND: [{ userId }, { eventId }] } },
@@ -47,7 +47,10 @@ eventServices.groupByEventByStoreId = (storeProfileId) =>
     _count: { storeProfileId: true },
   });
 
+eventServices.createEventsByStoreProfileId = (data) =>
+  prisma.events.create({ data });
 
+<<<<<<< HEAD
 eventServices.createEventsByStoreProfileId = (data) => prisma.events.create({data})
 
 eventServices.findEventsByStoreProfileId = (storeProfileId) => prisma.events.findMany({
@@ -61,6 +64,12 @@ eventServices.findEventsByStoreProfileId = (storeProfileId) => prisma.events.fin
 
 
 
+=======
+eventServices.findUniqueEventByIdAndStoreProfileId = (id, storeProfileId) =>
+  prisma.events.findUnique({ where: { id, storeProfileId } });
+>>>>>>> dev
 
+eventServices.findFirstEventByEventIdAndStoreProfileId = (id, storeProfileId) =>
+  prisma.events.findFirst({ where: { id, storeProfileId } });
 
 module.exports = eventServices;

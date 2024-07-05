@@ -137,7 +137,6 @@ const storeProfile = [
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit maiores, quisquam error ex sit natus debitis ratione distinctio saepe, harum, facere laborum deleniti autem dolorem asperiores consequuntur accusamus eveniet incidunt! Ea a unde tenetur sint neque blanditiis architecto fugit aliquid, exercitationem, odit reprehenderit, vitae nobis quo? Error distinctio dolores nam.",
     facebook: "https://picsum.photos/400",
     instagram: "https://picsum.photos/400",
-    
   },
   {
     userId: 5,
@@ -284,28 +283,35 @@ const product = [
     name: "Durian",
     description: "Durian",
     image: "https://picsum.photos/200",
+    price: 200,
+    unit: "KG",
   },
   {
     storeProfileId: 1,
     name: "mangosteen",
     description: "mangosteen",
     image: "https://picsum.photos/200",
+    price: 200,
+    unit: "KG",
   },
   {
     storeProfileId: 1,
     name: "longan",
     description: "longan",
     image: "https://picsum.photos/200",
+    price: 200,
+    unit: "KG",
   },
 ];
 const eventItem = [
-  { eventId: 1, productId: 1, price: 100 },
-  { eventId: 1, productId: 2, price: 100 },
+  { eventId: 1, productId: 1 },
+  { eventId: 1, productId: 2 },
 ];
 const voucherList = [
   {
     eventId: 1,
     code: "25JUN50P",
+    description:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit maiores, quisquam error ex sit natus debitis ratione distinctio saepe, harum, facere laborum deleniti autem dolorem asperiores consequuntur accusamus eveniet incidunt!",
     condition: "test",
     totalAmount: 5,
     discount: 10,
@@ -314,6 +320,7 @@ const voucherList = [
   {
     eventId: 2,
     code: "25JUN50P",
+    description:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit maiores, quisquam error ex sit natus debitis ratione distinctio saepe, harum, facere laborum deleniti autem dolorem asperiores consequuntur accusamus eveniet incidunt!",
     condition: "test",
     totalAmount: 20,
     discount: 10,
@@ -322,6 +329,7 @@ const voucherList = [
   {
     eventId: 3,
     code: "25JUN50P",
+    description:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit maiores, quisquam error ex sit natus debitis ratione distinctio saepe, harum, facere laborum deleniti autem dolorem asperiores consequuntur accusamus eveniet incidunt!",
     condition: "test",
     totalAmount: 7,
     discount: 10,
@@ -330,6 +338,7 @@ const voucherList = [
   {
     eventId: 4,
     code: "25JUN50P",
+    description:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit maiores, quisquam error ex sit natus debitis ratione distinctio saepe, harum, facere laborum deleniti autem dolorem asperiores consequuntur accusamus eveniet incidunt!",
     condition: "test",
     totalAmount: 20,
     discount: 10,

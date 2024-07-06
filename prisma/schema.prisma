@@ -41,8 +41,8 @@ model StoreProfile {
   userId            Int      @unique
   name              String
   coverImage        String
-  sellerDescription String   @db.Text
-  description       String   @db.Text
+  sellerDescription String?   @db.Text
+  description       String?   @db.Text
   facebook          String?
   instagram         String?
   line              String?

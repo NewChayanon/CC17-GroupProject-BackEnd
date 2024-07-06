@@ -537,4 +537,27 @@ dataFormat.storeReview = (allReview) =>
     isVerify,
   }));
 
+dataFormat.sellerCoupon = (allCoupon) =>
+  allCoupon.map(
+    ({
+      id: voucherItemId,
+      event: {
+        name: eventName,
+        startDate: eventStartDate,
+        endDate: eventEndDate,
+        storeProfile: { name: storeName },
+      },
+      condition: voucherCondition,
+      code: voucherCode,
+    }) => ({
+      voucherItemId,
+      storeName,
+      eventName,
+      voucherCondition,
+      eventStartDate,
+      eventEndDate,
+      voucherCode,
+    })
+  );
+
 module.exports = dataFormat;

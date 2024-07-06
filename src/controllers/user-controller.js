@@ -981,7 +981,24 @@ userController.storeReview = async (req, res, next) => {
       await commentService.findManyCommentAndUserByStoreProfileId(
         storeProfileId
       );
-      const response = dataFormat.storeReview(allReview)
+    const response = dataFormat.storeReview(allReview);
+    res.json(response);
+  } catch (err) {
+    next(err);
+  }
+};
+
+userController.sellerCoupon = async (req, res, next) => {
+  try {
+    const eventId = req.seller.eventId;
+    const allCoupon =
+      await voucherListService.findManyVoucherListAndEventAndStoreProfileByEventId(
+        eventId
+      );
+      if (allCoupon.length === 0) {
+        return res.json([])
+      }
+      const response = dataFormat.sellerCoupon(allCoupon)
     res.json(response);
   } catch (err) {
     next(err);

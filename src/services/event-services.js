@@ -58,6 +58,7 @@ eventServices.findEventsByStoreProfileId = (storeProfileId) =>
     where: { storeProfileId: storeProfileId },
     include: {
       Interest: { select: { eventId: true } },
+      storeProfile: { select: { name: true } },
     },
   });
 

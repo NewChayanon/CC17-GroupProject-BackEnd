@@ -898,16 +898,38 @@ userController.sellerRemoveEvent = async (req, res, next) => {
         .status(403)
         .json({ msg: "Not Authorized to Delete This Event" });
     }
-    
-    const deleteInterest = await interestService.deleteManyInterestByEventId(eventId)
-    const deleteEventItem = await eventItemService.deleteManyEventItemByEventId(eventId)
-    const haveVoucherList = await voucherListService.findFirstVoucherListByEventId(eventId)
+
+    const deleteInterest = await interestService.deleteManyInterestByEventId(
+      eventId
+    );
+    const deleteEventItem = await eventItemService.deleteManyEventItemByEventId(
+      eventId
+    );
+    const haveVoucherList =
+      await voucherListService.findFirstVoucherListByEventId(eventId);
     if (haveVoucherList) {
-      const deleteVoucherItem = await voucherItemService.deleteManyVoucherItemByVoucherListId(haveVoucherList.id)
-      const deleteVoucherList = await voucherListService.deleteManyVoucherListByEventId(eventId)
+      const deleteVoucherItem =
+        await voucherItemService.deleteManyVoucherItemByVoucherListId(
+          haveVoucherList.id
+        );
+      const deleteVoucherList =
+        await voucherListService.deleteManyVoucherListByEventId(eventId);
     }
-    const deleteEvent = await eventServices.deleteEventById(eventId)
+    const deleteEvent = await eventServices.deleteEventById(eventId);
     res.status(204);
+  } catch (err) {
+    next(err);
+  }
+};
+
+userController.eventOfSeller = async (req, res, next) => {
+  try {
+    const storeProfileId = req.seller.storeProfileId;
+    const allMyEvent = await eventServices.findEventsByStoreProfileId(
+      storeProfileId
+    );
+    const dataFormatMyevent = dataFormat.myEvent(allMyEvent);
+    res.json(dataFormatMyevent);
   } catch (err) {
     next(err);
   }

@@ -500,4 +500,29 @@ dataFormat.addProduct = ({ products }) => {
   };
 };
 
+dataFormat.myEvent = (myEvent) =>
+  myEvent.map(
+    ({
+      id,
+      name,
+      storeProfile,
+      startDate,
+      endDate,
+      openTime,
+      locationName,
+      location,
+    }) => {
+      return {
+        eventId: id,
+        eventName: name,
+        storeProfileName: storeProfile.name,
+        eventStartDate: startDate,
+        eventEndDate: endDate,
+        openTime,
+        locationName,
+        location,
+      };
+    }
+  );
+
 module.exports = dataFormat;

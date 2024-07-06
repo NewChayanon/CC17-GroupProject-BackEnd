@@ -48,4 +48,7 @@ voucherItemService.findVoucherItemByUserIdAndVoucherItemId = (where) =>
 voucherItemService.deleteManyVoucherItemByVoucherListId = (voucherListId) =>
   prisma.voucherItem.deleteMany({ where: { voucherListId } });
 
+voucherItemService.findUserIdAtVoucherItemByStoreProfileId = (storeProfileId)=>
+  prisma.voucherItem.findMany({where:{storeProfileId}})
+
 module.exports = voucherItemService;

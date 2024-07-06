@@ -728,10 +728,11 @@ userController.fetchStoreMainPage = async (req, res, next) => {
 userController.createMessageToBuyers = async (req, res, next) => {
   try {
     const userId = +req.user.id;
+    // follower
     const store = await storeProfileService.findStoreProfileByUserId(userId);
-    const follow = await followService.findManyUserIdFollowerByStoreProfileId(
-      store.id
-    );
+    const userFollow = await followService.findManyUserIdFollowerByStoreProfileId(store.id);
+
+    // interested
     const event = await eventServices.findEventsByStoreProfileId(store.id);
 
     let eventId = [];
@@ -742,16 +743,25 @@ userController.createMessageToBuyers = async (req, res, next) => {
     );
     // console.log('userInterest',userInterest)
 
-    const followerAndInterest = [...follow, ...userInterest];
-    // console.log('followerAndInterest',followerAndInterest)
+    // get coupon
+    const userCoupon = await voucherItemService.findUserIdAtVoucherItemByStoreProfileId(store.id)
+    // console.log('coupon',userCoupon)
 
-    const receive = followerAndInterest.reduce((acc, el) => {
+    const followerAndInterestAndCoupon = [...userFollow, ...userInterest,...userCoupon];
+    console.log('followerAndInterestAndCoupon',followerAndInterestAndCoupon)
+
+    const receive = followerAndInterestAndCoupon.reduce((acc, el) => {
       const check = acc.find((rs) => rs === el.userId);
       if (!check) {
         acc.push(el.userId);
       }
       return acc;
     }, []);
+
+    console.log('receive',receive)
+
+    
+
 
     const input = req.body;
     const data = receive.map((id) => ({

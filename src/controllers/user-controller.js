@@ -935,4 +935,27 @@ userController.eventOfSeller = async (req, res, next) => {
   }
 };
 
+userController.editProfileImageInStoreProfilePage = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    const userProfileImage = req.file.path;
+    const image = await uploadService.upload(userProfileImage);
+    const data = { profileImage: image };
+    const updateProfileImaged = await userService.updateUserByIdAndData(
+      userId,
+      data
+    );
+    const { id, profileImage } = updateProfileImaged;
+    const response = { userId: id, userProfileImage: profileImage };
+
+    res.status(201).json(response);
+  } catch (err) {
+    next(err);
+  } finally {
+    if (req.file.path) {
+      fs.unlink(req.file.path);
+    }
+  }
+};
+
 module.exports = userController;

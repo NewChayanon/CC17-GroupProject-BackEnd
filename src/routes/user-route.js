@@ -8,6 +8,7 @@ const {
   userReportValidator,
   commentValidator,
   validateEditDiscount,
+  singleProfileImageValidator,
 } = require("../middlewares/validator");
 const { authenticate } = require("../middlewares/authenticate");
 const { isSeller } = require("../middlewares/isSeller");
@@ -90,7 +91,7 @@ userRouter.get(
   userController.viewDetailYellowCard
 );
 userRouter.get("/my-product", isSeller, userController.sellerMyProduct);
-userRouter.get("/my-event",isSeller,userController.eventOfSeller)
+userRouter.get("/my-event", isSeller, userController.eventOfSeller);
 
 //update
 userRouter.patch(
@@ -121,17 +122,23 @@ userRouter.patch(
   validateEditDiscount,
   userController.editDiscount
 );
-
-userRouter.delete(
-  "/remove-event/:eventId",
+userRouter.patch(
+  "/store-profile-page/edit-user-profile-image",
   isSeller,
-  userController.sellerRemoveEvent
+  upload.single("userProfileImage"),
+  singleProfileImageValidator,
+  userController.editProfileImageInStoreProfilePage
 );
 
 //delete
 userRouter.delete(
   "/delete-product/:productId",
   userController.deleteSomeProduct
+);
+userRouter.delete(
+  "/remove-event/:eventId",
+  isSeller,
+  userController.sellerRemoveEvent
 );
 
 module.exports = userRouter;

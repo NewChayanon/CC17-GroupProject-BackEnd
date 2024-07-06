@@ -90,6 +90,7 @@ userRouter.get(
   userController.viewDetailYellowCard
 );
 userRouter.get("/my-product", isSeller, userController.sellerMyProduct);
+userRouter.get("/my-event",isSeller,userController.eventOfSeller)
 
 //update
 userRouter.patch(

@@ -525,4 +525,16 @@ dataFormat.myEvent = (myEvent) =>
     }
   );
 
+dataFormat.storeReview = (allReview) =>
+  allReview.map(({ id, topic, rate, comment, user, createdAt, isVerify }) => ({
+    commentId: id,
+    topic,
+    rate,
+    comment,
+    commenterFirstName: user.firstName,
+    commenterLastName: user.lastName,
+    createdAt,
+    isVerify,
+  }));
+
 module.exports = dataFormat;

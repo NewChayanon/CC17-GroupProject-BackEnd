@@ -1,3 +1,8 @@
+exports.filterLocationWithinRange = (allEventIsActive, userLocation, range) =>
+  allEventIsActive.filter(
+    (el) => distanceLocationCal(userLocation, el.location) < range
+  );
+
 const distanceLocationCal = (userLocation, eventLocation) => {
   const [lat1, lon1] = userLocation.split(",").map(parseFloat);
   const [lat2, lon2] = eventLocation.split(",").map(parseFloat);
@@ -24,5 +29,3 @@ const distanceLocationCal = (userLocation, eventLocation) => {
 
 // Converts numeric degrees to radians
 const toRad = (value) => (value * Math.PI) / 180;
-
-module.exports = distanceLocationCal;

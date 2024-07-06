@@ -1,15 +1,8 @@
-const distanceLocationCal = require("../utils/distanceLocation");
+const { distanceLocationCal } = require("../utils/calculate");
+
 
 const refactorService = {};
 
 
-refactorService.filterLocationWithinRange = (
-  allEventIsActive,
-  userLocation,
-  range
-) =>
-  allEventIsActive.filter(
-    (el) => distanceLocationCal(userLocation, el.location) < range
-  );
 
 module.exports = refactorService;

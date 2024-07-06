@@ -9,6 +9,7 @@ const {
   commentValidator,
   validateEditDiscount,
   singleProfileImageValidator,
+  editAboutSellerAndStoreValidator,
 } = require("../middlewares/validator");
 const { authenticate } = require("../middlewares/authenticate");
 const { isSeller } = require("../middlewares/isSeller");
@@ -128,6 +129,12 @@ userRouter.patch(
   upload.single("userProfileImage"),
   singleProfileImageValidator,
   userController.editProfileImageInStoreProfilePage
+);
+userRouter.patch(
+  "/edit-description-store",
+  isSeller,
+  editAboutSellerAndStoreValidator,
+  userController.editDescriptionStore
 );
 
 //delete

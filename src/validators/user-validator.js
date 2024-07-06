@@ -9,9 +9,14 @@ exports.userComment = Joi.object({
   topic: Joi.string().required(),
   comment: Joi.string().required(),
   rate: Joi.string().required(),
-  isVerify:Joi.boolean()
+  isVerify: Joi.boolean(),
 });
 
 exports.sellerEditDiscount = Joi.object({
-  discount: Joi.number().required()
-})
+  discount: Joi.number().required(),
+});
+
+exports.aboutSeller = Joi.object({
+  sellerDescription: Joi.string(),
+  description: Joi.string(),
+});

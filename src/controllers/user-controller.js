@@ -875,7 +875,7 @@ userController.editDiscount = async (req, res, next) => {
         .json({ msg: "Editing of this event is not allowed." });
     }
     if (VoucherList.length === 0) {
-      return res.status(404).json({ msg: "Event have not coupon." });
+      return res.status(404).json({ msg: "Event not having a coupon." });
     }
     const [{ id }] = VoucherList;
     const discounted = await voucherListService.updateDiscountByEventId(
@@ -955,6 +955,22 @@ userController.editProfileImageInStoreProfilePage = async (req, res, next) => {
     if (req.file.path) {
       fs.unlink(req.file.path);
     }
+  }
+};
+
+userController.editDescriptionStore = async (req, res, next) => {
+  try {
+    const storeProfileId = req.seller.storeProfileId;
+    const data = req.seller.aboutSeller;
+    const { id, sellerDescription, description } =
+      await storeProfileService.updateStoreProfileByIdAndData(
+        storeProfileId,
+        data
+      );
+    const response = { storeProfileId: id, sellerDescription, description };
+    res.status(201).json(response);
+  } catch (err) {
+    next(err);
   }
 };
 

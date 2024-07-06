@@ -41,4 +41,8 @@ storeProfileService.findStoreProfileByStoreProfileId = (id) =>
 storeProfileService.findStoreProfileById = (id) =>
   prisma.storeProfile.findFirst({ where: { id } });
 
+// update
+storeProfileService.updateStoreProfileByIdAndData = (id, data) =>
+  prisma.storeProfile.update({ where: { id }, data });
+
 module.exports = storeProfileService;

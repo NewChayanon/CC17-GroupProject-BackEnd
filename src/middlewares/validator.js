@@ -1,6 +1,6 @@
 const createError = require("../utils/createError");
 const { registerSchema, loginSchema } = require("../validators/auth-validator");
-const { userReport, userComment, sellerEditDiscount } = require("../validators/user-validator");
+const { userReport, userComment, sellerEditDiscount, aboutSeller } = require("../validators/user-validator");
 
 exports.registerValidator = (req,res,next)=>{
   console.log(req.body)
@@ -63,4 +63,13 @@ exports.validateEditDiscount = (req,res,next)=>{
 exports.singleProfileImageValidator = (req,res,next)=>{
   if(!req.file) return createError({message: 'at least one of profile', statusCode: 400})
   next()
+}
+
+exports.editAboutSellerAndStoreValidator = (req,res,next)=>{
+  const {value,error} = aboutSeller.validate(req.body)
+  if (error) {
+    return res.status(400).json({ message: error.details[0].message });
+  }
+  req.seller.aboutSeller = value;
+  next();
 }

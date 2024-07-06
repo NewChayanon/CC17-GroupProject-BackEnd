@@ -93,7 +93,8 @@ userRouter.get(
 );
 userRouter.get("/my-product", isSeller, userController.sellerMyProduct);
 userRouter.get("/my-event", isSeller, userController.eventOfSeller);
-userRouter.get("/store-review",isSeller,userController.storeReview)
+userRouter.get("/store-review", isSeller, userController.storeReview);
+userRouter.get("/seller-coupon",isSeller,userController.sellerCoupon)
 
 //update
 userRouter.patch(

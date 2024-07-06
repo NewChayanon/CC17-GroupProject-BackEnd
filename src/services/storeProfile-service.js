@@ -38,6 +38,7 @@ storeProfileService.findStoreProfileByStoreProfileId = (id) =>
     },
   });
 
-storeProfileService.findStoreProfileById = (id) => prisma.storeProfile.findFirst({where:{id}})
+storeProfileService.findStoreProfileById = (id) =>
+  prisma.storeProfile.findFirst({ where: { id } });
 
 module.exports = storeProfileService;

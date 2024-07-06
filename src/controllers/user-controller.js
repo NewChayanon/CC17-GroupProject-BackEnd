@@ -866,23 +866,48 @@ userController.editDiscount = async (req, res, next) => {
     const eventId = +req.params.eventId;
     const event = await eventServices.findEventByEventId(eventId);
     if (!event) {
-      return res.status(404).json({msg:"Event not found!!!"})
+      return res.status(404).json({ msg: "Event not found!!!" });
     }
-    const {storeProfile,VoucherList} = event
+    const { storeProfile, VoucherList } = event;
     if (storeProfile.userId !== userId) {
       return res
-      .status(403)
-      .json({ msg: "Editing of this event is not allowed." });
+        .status(403)
+        .json({ msg: "Editing of this event is not allowed." });
     }
     if (VoucherList.length === 0) {
-      return res.status(404).json({msg:"Event have not coupon."})
+      return res.status(404).json({ msg: "Event have not coupon." });
     }
-    const [{id}] = VoucherList
+    const [{ id }] = VoucherList;
     const discounted = await voucherListService.updateDiscountByEventId(
       id,
       req.body
     );
     res.status(201).json(discounted);
+  } catch (err) {
+    next(err);
+  }
+};
+
+userController.sellerRemoveEvent = async (req, res, next) => {
+  try {
+    const eventOfSeller = req.seller.eventId;
+    const eventId = +req.params.eventId;
+    const event = eventOfSeller.find((el) => el === eventId);
+    if (!event) {
+      return res
+        .status(403)
+        .json({ msg: "Not Authorized to Delete This Event" });
+    }
+    
+    const deleteInterest = await interestService.deleteManyInterestByEventId(eventId)
+    const deleteEventItem = await eventItemService.deleteManyEventItemByEventId(eventId)
+    const haveVoucherList = await voucherListService.findFirstVoucherListByEventId(eventId)
+    if (haveVoucherList) {
+      const deleteVoucherItem = await voucherItemService.deleteManyVoucherItemByVoucherListId(haveVoucherList.id)
+      const deleteVoucherList = await voucherListService.deleteManyVoucherListByEventId(eventId)
+    }
+    const deleteEvent = await eventServices.deleteEventById(eventId)
+    res.status(204);
   } catch (err) {
     next(err);
   }

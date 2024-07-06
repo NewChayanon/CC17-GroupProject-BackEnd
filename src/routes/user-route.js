@@ -121,6 +121,12 @@ userRouter.patch(
   userController.editDiscount
 );
 
+userRouter.delete(
+  "/remove-event/:eventId",
+  isSeller,
+  userController.sellerRemoveEvent
+);
+
 //delete
 userRouter.delete(
   "/delete-product/:productId",

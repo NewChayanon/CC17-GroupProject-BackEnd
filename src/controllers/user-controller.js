@@ -995,13 +995,37 @@ userController.sellerCoupon = async (req, res, next) => {
       await voucherListService.findManyVoucherListAndEventAndStoreProfileByEventId(
         eventId
       );
-      if (allCoupon.length === 0) {
-        return res.json([])
-      }
-      const response = dataFormat.sellerCoupon(allCoupon)
+    if (allCoupon.length === 0) {
+      return res.json([]);
+    }
+    const response = dataFormat.sellerCoupon(allCoupon);
     res.json(response);
   } catch (err) {
     next(err);
+  }
+};
+
+userController.editEvent = async (req, res, next) => {
+  try {
+    const eventId = +req.params.eventId;
+    const myEventId = req.seller.eventId;
+    const data = req.body;
+    const event = myEventId.find((el) => el === eventId);
+    if (!event) {
+      return res.status(403).json({ msg: "Not Authorized to Edit This Event" });
+    }
+    if (req.file) {
+      data.images = await uploadService.upload(req.file.path);
+    }
+    const response = await eventServices.updateEventByIdAndData(eventId, data);
+
+    res.status(201).json(response);
+  } catch (err) {
+    next(err);
+  } finally {
+    if (req.file?.path) {
+      fs.unlink(req.file.path);
+    }
   }
 };
 

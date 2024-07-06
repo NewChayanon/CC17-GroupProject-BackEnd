@@ -20,3 +20,11 @@ exports.aboutSeller = Joi.object({
   sellerDescription: Joi.string(),
   description: Joi.string(),
 });
+
+exports.editEvent = Joi.object({
+  name: Joi.string(),
+  description: Joi.string(),
+  location: Joi.string(),
+  startDate: Joi.date().min("now"),
+  endDate: Joi.date().min("now"),
+});

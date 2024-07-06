@@ -974,4 +974,18 @@ userController.editDescriptionStore = async (req, res, next) => {
   }
 };
 
+userController.storeReview = async (req, res, next) => {
+  try {
+    const storeProfileId = req.seller.storeProfileId;
+    const allReview =
+      await commentService.findManyCommentAndUserByStoreProfileId(
+        storeProfileId
+      );
+      const response = dataFormat.storeReview(allReview)
+    res.json(response);
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = userController;

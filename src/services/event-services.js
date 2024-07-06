@@ -50,23 +50,23 @@ eventServices.groupByEventByStoreId = (storeProfileId) =>
 eventServices.createEventsByStoreProfileId = (data) =>
   prisma.events.create({ data });
 
-eventServices.createEventsByStoreProfileId = (data) => prisma.events.create({data})
+eventServices.createEventsByStoreProfileId = (data) =>
+  prisma.events.create({ data });
 
-eventServices.findEventsByStoreProfileId = (storeProfileId) => prisma.events.findMany({
-  where: {storeProfileId:storeProfileId},
-  include:{
-    Interest:{select:{eventId: true}}
-  }
-})
- 
-      
-
-
+eventServices.findEventsByStoreProfileId = (storeProfileId) =>
+  prisma.events.findMany({
+    where: { storeProfileId: storeProfileId },
+    include: {
+      Interest: { select: { eventId: true } },
+    },
+  });
 
 eventServices.findUniqueEventByIdAndStoreProfileId = (id, storeProfileId) =>
   prisma.events.findUnique({ where: { id, storeProfileId } });
 
 eventServices.findFirstEventByEventIdAndStoreProfileId = (id, storeProfileId) =>
   prisma.events.findFirst({ where: { id, storeProfileId } });
+
+eventServices.deleteEventById = (id) => prisma.events.delete({ where: { id } });
 
 module.exports = eventServices;

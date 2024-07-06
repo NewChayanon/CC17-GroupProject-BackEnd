@@ -103,7 +103,6 @@ model Events {
   endDate        String
   openTime       String
   isActive       Boolean @default(false)
-  isDelete       Boolean @default(false)
 
   storeProfile StoreProfile @relation(fields: [storeProfileId], references: [id])
 

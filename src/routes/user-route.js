@@ -10,6 +10,8 @@ const {
   validateEditDiscount,
   singleProfileImageValidator,
   editAboutSellerAndStoreValidator,
+  singleCoverImageValidator,
+  editEventValidator,
 } = require("../middlewares/validator");
 const { authenticate } = require("../middlewares/authenticate");
 const { isSeller } = require("../middlewares/isSeller");
@@ -94,7 +96,7 @@ userRouter.get(
 userRouter.get("/my-product", isSeller, userController.sellerMyProduct);
 userRouter.get("/my-event", isSeller, userController.eventOfSeller);
 userRouter.get("/store-review", isSeller, userController.storeReview);
-userRouter.get("/seller-coupon",isSeller,userController.sellerCoupon)
+userRouter.get("/seller-coupon", isSeller, userController.sellerCoupon);
 
 //update
 userRouter.patch(
@@ -137,6 +139,13 @@ userRouter.patch(
   isSeller,
   editAboutSellerAndStoreValidator,
   userController.editDescriptionStore
+);
+userRouter.patch(
+  "/edit-event/:eventId",
+  isSeller,
+  upload.single("eventImage"),
+  editEventValidator,
+  userController.editEvent
 );
 
 //delete

@@ -68,6 +68,10 @@ eventServices.findUniqueEventByIdAndStoreProfileId = (id, storeProfileId) =>
 eventServices.findFirstEventByEventIdAndStoreProfileId = (id, storeProfileId) =>
   prisma.events.findFirst({ where: { id, storeProfileId } });
 
+// update
+eventServices.updateEventByIdAndData = (id, data) =>
+  prisma.events.update({ where: { id }, data });
+
 eventServices.deleteEventById = (id) => prisma.events.delete({ where: { id } });
 
 module.exports = eventServices;

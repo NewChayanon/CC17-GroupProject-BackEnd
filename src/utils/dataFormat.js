@@ -45,11 +45,12 @@ dataFormat.selectStoreProfileId = (seller) =>
 
 dataFormat.allFavoriteList = (allFavorite, allStoreProfileIdInFavorite) => {
   const allFavoriteList = allFavorite.map((el) => ({
-    id: el.id,
+    followId: el.id,
   }));
 
   const updatedFavoriteList = allStoreProfileIdInFavorite.map((el, index) => ({
     ...allFavoriteList[index],
+    storeProfileId: el.id,
     storeImage: el.coverImage,
     storeName: el.name,
     followers: el.Follow.length,

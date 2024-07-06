@@ -2,12 +2,12 @@ const authService = require("../services/auth-services");
 const hashService = require("../services/hash-services");
 const createError = require("../utils/createError");
 const jwtService = require("../services/jwt-services");
-const distanceLocationCal = require("../utils/distanceLocation");
 const eventServices = require("../services/event-services");
 const refactorService = require("../services/refactor-services");
 const dataFormat = require("../utils/dataFormat");
 const voucherItemService = require("../services/voucherItem-service");
 const storeProfileService = require("../services/storeProfile-service");
+const { filterLocationWithinRange } = require("../utils/calculate");
 
 const authController = {};
 
@@ -55,11 +55,11 @@ authController.login = async (req, res, next) => {
 
 authController.sellerNearMe = async (req, res, next) => {
   try {
-    const userLocation = "13.758343972739715,100.5349746040127";
+    const userLocation = req.body.userLocation;
     const range = 13; //km.
     const allEventIsActive = await eventServices.findAllEventByIsActive();
 
-    const seller = refactorService.filterLocationWithinRange(
+    const seller = filterLocationWithinRange(
       allEventIsActive,
       userLocation,
       range
@@ -89,7 +89,7 @@ authController.afterClickOnTheEventCard = async (req, res, next) => {
     const eventId = +req.params.eventId;
     const findEventById = await eventServices.findEventByEventId(eventId);
     if (!findEventById) {
-      return res.status(400).json({msg:"Event invalid."})
+      return res.status(400).json({ msg: "Event invalid." });
     }
     const findEventOther = await eventServices.findManyEventByStoreId(
       findEventById.storeProfile.id,
@@ -108,13 +108,16 @@ authController.afterClickOnTheEventCard = async (req, res, next) => {
 
 authController.storeProfile = async (req, res, next) => {
   try {
-    const storeProfileId = +req.params.storeProfileId
-    const infoStoreProfile = await storeProfileService.findStoreProfileByStoreProfileId(storeProfileId)
+    const storeProfileId = +req.params.storeProfileId;
+    const infoStoreProfile =
+      await storeProfileService.findStoreProfileByStoreProfileId(
+        storeProfileId
+      );
     if (!infoStoreProfile) {
-      return res.status(400).json({msg:"Store profile invalid."})
+      return res.status(400).json({ msg: "Store profile invalid." });
     }
-    const result = dataFormat.authStoreProfileId(infoStoreProfile)
-    res.json(result)
+    const result = dataFormat.authStoreProfileId(infoStoreProfile);
+    res.json(result);
   } catch (err) {
     next(err);
   }

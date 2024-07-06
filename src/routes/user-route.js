@@ -114,7 +114,12 @@ userRouter.patch(
   userController.editProduct
 );
 
-userRouter.patch("/edit-discount/:eventId", isSeller, validateEditDiscount,userController.editDiscount);
+userRouter.patch(
+  "/edit-discount/:eventId",
+  isSeller,
+  validateEditDiscount,
+  userController.editDiscount
+);
 
 //delete
 userRouter.delete(

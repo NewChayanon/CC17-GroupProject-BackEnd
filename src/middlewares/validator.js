@@ -59,3 +59,8 @@ exports.validateEditDiscount = (req,res,next)=>{
   req.voucherList = value;
   next();
 }
+
+exports.singleProfileImageValidator = (req,res,next)=>{
+  if(!req.file) return createError({message: 'at least one of profile', statusCode: 400})
+  next()
+}

@@ -55,7 +55,7 @@ authController.login = async (req, res, next) => {
 
 authController.sellerNearMe = async (req, res, next) => {
   try {
-    const userLocation = req.body.userLocation;
+    const userLocation = req.query.userLocation;
     const range = 13; //km.
     const allEventIsActive = await eventServices.findAllEventByIsActive();
 

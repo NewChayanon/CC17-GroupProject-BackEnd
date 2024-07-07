@@ -21,6 +21,10 @@ voucherListService.findManyVoucherListAndEventAndStoreProfileByEventId = (
     },
   });
 
+  // create
+voucherListService.createVoucherListByData = (data) =>
+  prisma.voucherList.create({ data });
+
 // update
 voucherListService.updateDiscountByEventId = (id, data) =>
   prisma.voucherList.update({ where: { id }, data });

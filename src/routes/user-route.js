@@ -12,31 +12,28 @@ const {
   editAboutSellerAndStoreValidator,
   singleCoverImageValidator,
   editEventValidator,
+  CoverImageOfCreateEventValidator,
+  createEventValidator,
+  imagesOfCreateEventValidator,
 } = require("../middlewares/validator");
 const { authenticate } = require("../middlewares/authenticate");
 const { isSeller } = require("../middlewares/isSeller");
 
 const userRouter = express.Router();
+
 // buyer
+// GET
 userRouter.get("/me", userController.getMe);
 userRouter.get("/event", userController.findEventListOfUser);
-userRouter.put("/interested/:eventId", userController.interested);
 userRouter.get("/inbox", userController.fetchAllInbox);
-userRouter.delete("/remove/:inboxId", userController.removeMessageInbox);
-userRouter.post("/keep-coupon/:eventId", userController.keepCoupon);
-userRouter.patch(
-  "/statusMessage/:userId",
-  isUser,
-  userController.statusMessage
-);
 userRouter.get("/notification", userController.getNotificationPublic);
 userRouter.get("/favorite", userController.fetchAllFavorite);
 userRouter.get("/event/:eventId", userController.afterClickOnTheEventCard);
 userRouter.get("/storeProfile/:storeProfileId", userController.storeProfile);
-userRouter.put(
-  "/follow/:storeProfileId",
-  userController.followAndUnFollowStoreProfile
-);
+userRouter.get("/coupon-list", userController.fetchAllCoupon);
+
+// POST
+userRouter.post("/keep-coupon/:eventId", userController.keepCoupon);
 userRouter.post(
   "/report/:storeProfileId",
   upload.single("reportImage"),
@@ -48,34 +45,49 @@ userRouter.post(
   commentValidator,
   userController.userCreateComment
 );
-userRouter.get("/coupon-list", userController.fetchAllCoupon);
-userRouter.patch("/use/:voucherItemId", userController.userUseVoucher);
 
-// seller
-//create
-userRouter.post(
-  "/create-event",
-  upload.fields([{ name: "images", maxCount: 1 }]),
-  validateCoverImage,
-  userController.createEvent
+// PUT / PATCH
+userRouter.patch(
+  "/statusMessage/:userId",
+  isUser,
+  userController.statusMessage
+);
+userRouter.patch("/use/:voucherItemId", userController.userUseVoucher);
+userRouter.put("/interested/:eventId", userController.interested);
+userRouter.put(
+  "/follow/:storeProfileId",
+  userController.followAndUnFollowStoreProfile
 );
 
+// DELETE
+userRouter.delete("/remove/:inboxId", userController.removeMessageInbox);
+
+// seller
+// create
+userRouter.post(
+  "/create-event",
+  isSeller,
+  upload.fields([
+    { name: "eventImage", maxCount: 1 },
+    { name: "voucherImage", maxCount: 1 },
+  ]),
+  imagesOfCreateEventValidator,
+  createEventValidator,
+  userController.createEvent
+);
 userRouter.post(
   "/create-storeProfile",
   upload.fields([{ name: "coverImage", maxCount: 1 }]),
   validateCoverImage,
   userController.createStore
 );
-
 userRouter.post(
   "/create-product",
   upload.fields([{ name: "image", maxCount: 1 }]),
   validateCoverImage,
   userController.addMoreProduct
 );
-
 userRouter.post("/new-message", isSeller, userController.createMessageToBuyers);
-
 userRouter.post(
   "/add-item/:eventId/:productId",
   isSeller,

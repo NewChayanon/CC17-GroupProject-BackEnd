@@ -13,7 +13,11 @@ exports.isSeller = async (req, res, next) => {
       acc.push(id);
       return acc;
     }, []);
-    const seller = { storeProfileId: storeProfile.id, eventId };
+    const productId = storeProfile.Product.reduce((acc, { id }) => {
+      acc.push(id);
+      return acc;
+    }, []);
+    const seller = { storeProfileId: storeProfile.id, eventId, productId };
     req.seller = seller;
     next();
   } catch (err) {

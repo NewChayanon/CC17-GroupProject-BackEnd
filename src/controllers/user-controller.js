@@ -138,8 +138,10 @@ userController.getNotificationPublic = async (req, res, next) => {
 
   const publicNotification = await userService.getPublicNotification();
   console.log("publicNotification", publicNotification);
-  res.status(200).json(publicNotification);
-  console.log("result", result);
+  const sellerNotification = await inboxMessageUserService.findInboxMessageByUserIdReceiver(userId)
+  console.log('sellerNotification',sellerNotification)
+  const sellerAndPublicNotification = [...publicNotification, ...sellerNotification]
+  res.status(200).json(sellerAndPublicNotification);
 };
 
 userController.keepCoupon = async (req, res, next) => {
@@ -760,9 +762,6 @@ userController.createMessageToBuyers = async (req, res, next) => {
 
     console.log('receive',receive)
 
-    
-
-
     const input = req.body;
     const data = receive.map((id) => ({
       ...input,
@@ -778,6 +777,18 @@ userController.createMessageToBuyers = async (req, res, next) => {
     next(error);
   }
 };
+
+userController.getHistoryInbox = async (req,res,next)=>{
+  try {
+    const userId = req.user.id
+    const allMessage = await inboxMessageUserService.findInboxMessageByUserIdSender(userId)
+    // console.log('allMessage',allMessage)
+    res.status(200).json(allMessage)
+  } catch (error) {
+    next(error)
+  }
+};
+
 userController.viewDetailYellowCard = async (req, res, next) => {
   try {
     const userId = req.user.id;

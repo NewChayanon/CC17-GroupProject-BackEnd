@@ -521,7 +521,7 @@ userController.createEvent = async (req, res, next) => {
       await voucherListService.createVoucherListByData(dataVoucherList);
     }
 
-    res.status(200).json(req.seller);
+    res.status(201).json({msg:"create event success."});
   } catch (error) {
     next(error);
   } finally {
@@ -999,7 +999,7 @@ userController.sellerRemoveEvent = async (req, res, next) => {
         await voucherListService.deleteManyVoucherListByEventId(eventId);
     }
     const deleteEvent = await eventServices.deleteEventById(eventId);
-    res.status(204);
+    res.status(201).json({msg:"remove success"});
   } catch (err) {
     next(err);
   }

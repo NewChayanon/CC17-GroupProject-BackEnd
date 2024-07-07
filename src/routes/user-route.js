@@ -109,7 +109,11 @@ userRouter.get("/my-product", isSeller, userController.sellerMyProduct);
 userRouter.get("/my-event", isSeller, userController.eventOfSeller);
 userRouter.get("/store-review", isSeller, userController.storeReview);
 userRouter.get("/seller-coupon", isSeller, userController.sellerCoupon);
-userRouter.get('/seller-history-inbox', isSeller, userController.getHistoryInbox)
+userRouter.get(
+  "/seller-history-inbox",
+  isSeller,
+  userController.getHistoryInbox
+);
 
 //update
 userRouter.patch(
@@ -163,7 +167,8 @@ userRouter.patch(
 
 //delete
 userRouter.delete(
-  "/delete-product/:productId",
+  "/remove-product/:productId",
+  isSeller,
   userController.deleteSomeProduct
 );
 userRouter.delete(

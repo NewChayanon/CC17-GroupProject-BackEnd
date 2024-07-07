@@ -1,5 +1,5 @@
 const fs = require("fs/promises");
-const { storeProfile } = require("../models/prisma");
+const { storeProfile, eventItem } = require("../models/prisma");
 const eventServices = require("../services/event-services");
 const followService = require("../services/follow-service");
 const inboxMessageUserService = require("../services/inboxMessageUser-service");
@@ -138,9 +138,13 @@ userController.getNotificationPublic = async (req, res, next) => {
 
   const publicNotification = await userService.getPublicNotification();
   console.log("publicNotification", publicNotification);
-  const sellerNotification = await inboxMessageUserService.findInboxMessageByUserIdReceiver(userId)
-  console.log('sellerNotification',sellerNotification)
-  const sellerAndPublicNotification = [...publicNotification, ...sellerNotification]
+  const sellerNotification =
+    await inboxMessageUserService.findInboxMessageByUserIdReceiver(userId);
+  console.log("sellerNotification", sellerNotification);
+  const sellerAndPublicNotification = [
+    ...publicNotification,
+    ...sellerNotification,
+  ];
   res.status(200).json(sellerAndPublicNotification);
 };
 
@@ -445,15 +449,14 @@ userController.createEvent = async (req, res, next) => {
     const body = req.seller.createEvent;
     const { eventImage, voucherImage } = req.files;
 
-    let haveProduct = true
-    for(let item of body.eventItem){
+    let haveProduct = true;
+    for (let item of body.eventItem) {
       const check = productId.find((el) => el === item.productId);
       if (!check) {
-        haveProduct = false
-        break
+        haveProduct = false;
+        break;
       }
     }
-
 
     if (!haveProduct) {
       return res.status(400).json({ msg: "ProductId invalid." });
@@ -522,7 +525,7 @@ userController.createEvent = async (req, res, next) => {
       await voucherListService.createVoucherListByData(dataVoucherList);
     }
 
-    res.status(201).json({msg:"create event success."});
+    res.status(201).json({ msg: "create event success." });
   } catch (error) {
     next(error);
   } finally {
@@ -563,14 +566,14 @@ userController.addMoreProduct = async (req, res, next) => {
     }, {});
 
     const data = {
-      storeProfileId : findUserIdInStoreProfile.id,
+      storeProfileId: findUserIdInStoreProfile.id,
       name: req.body?.name,
       description: req.body?.description,
       image: input?.image,
       price: +req.body?.price,
-      unit: req.body?.unit
+      unit: req.body?.unit,
     };
-    console.log('first')
+    console.log("first");
 
     const createProduct = await productService.createProduct(data);
     console.log("createProduct", createProduct);
@@ -588,16 +591,15 @@ userController.addMoreProduct = async (req, res, next) => {
 userController.deleteSomeProduct = async (req, res, next) => {
   try {
     const productId = +req.params.productId;
-    console.log("productId", productId);
-    const findProduct = await productService.getProductById(productId);
-    console.log("findProduct", findProduct);
+    const myProduct = req.seller.productId;
+    const findProduct = myProduct.find((el) => el === productId);
+
     if (!findProduct) {
-      return createError({ message: "product not found" });
+      return createError({ message: "product not found", statusCode: 404 });
     }
-    const deleteProduct = await productService.deleteProductById(
-      findProduct.id
-    );
-    console.log("deleteProduct", deleteProduct);
+    await eventItemService.deleteManyEventItemByProductId(productId);
+    await productService.deleteProductById(productId);
+
     res.status(200).json({ message: "delete product complete" });
   } catch (error) {
     next(error);
@@ -788,7 +790,7 @@ userController.fetchStoreMainPage = async (req, res, next) => {
 userController.createMessageToBuyers = async (req, res, next) => {
   try {
     const userId = +req.user.id;
-    console.log('userId',userId)
+    console.log("userId", userId);
     // follower
     const store = await storeProfileService.findStoreProfileByUserId(userId);
     const userFollow =
@@ -827,12 +829,16 @@ userController.createMessageToBuyers = async (req, res, next) => {
       return acc;
     }, []);
 
-    const receiver = receive.filter(item => item !== userId)
-    console.log('receiver',receiver)
+    const receiver = receive.filter((item) => item !== userId);
+    console.log("receiver", receiver);
 
-    const input = req.body
-    console.log('input',input)
-    const data = receiver.map((id) => ({...input, userIdSender: userId, userIdReceiver: id}));
+    const input = req.body;
+    console.log("input", input);
+    const data = receiver.map((id) => ({
+      ...input,
+      userIdSender: userId,
+      userIdReceiver: id,
+    }));
     console.log("data", data);
 
     const result = await userService.createNotification(data);
@@ -843,14 +849,15 @@ userController.createMessageToBuyers = async (req, res, next) => {
   }
 };
 
-userController.getHistoryInbox = async (req,res,next)=>{
+userController.getHistoryInbox = async (req, res, next) => {
   try {
-    const userId = req.user.id
-    const allMessage = await inboxMessageUserService.findInboxMessageByUserIdSender(userId)
+    const userId = req.user.id;
+    const allMessage =
+      await inboxMessageUserService.findInboxMessageByUserIdSender(userId);
     // console.log('allMessage',allMessage)
-    res.status(200).json(allMessage)
+    res.status(200).json(allMessage);
   } catch (error) {
-    next(error)
+    next(error);
   }
 };
 
@@ -1002,7 +1009,7 @@ userController.sellerRemoveEvent = async (req, res, next) => {
         await voucherListService.deleteManyVoucherListByEventId(eventId);
     }
     const deleteEvent = await eventServices.deleteEventById(eventId);
-    res.status(201).json({msg:"remove success"});
+    res.status(201).json({ msg: "remove success" });
   } catch (err) {
     next(err);
   }

@@ -13,7 +13,10 @@ eventItemService.createEventItemByEventIdAndProductId = (data) =>
 eventItemService.createManyEventItemByData = (data) =>
   prisma.eventItem.createMany({ data });
 
+// delete
 eventItemService.deleteManyEventItemByEventId = (eventId) =>
   prisma.eventItem.deleteMany({ where: { eventId } });
+eventItemService.deleteManyEventItemByProductId = (productId) =>
+  prisma.eventItem.deleteMany({ where: { productId } });
 
 module.exports = eventItemService;

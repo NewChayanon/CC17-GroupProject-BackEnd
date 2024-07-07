@@ -16,6 +16,7 @@ storeProfileService.findStoreProfileByUserId = (userId) =>
     where: { userId: userId },
     include: {
       Events: true,
+      Product:true,
       user: { select: { profileImage: true, firstName: true, lastName: true } },
     },
   });

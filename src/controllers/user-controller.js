@@ -439,46 +439,100 @@ userController.getAllProductByStoreProfileId = async (req, res, next) => {
 
 userController.createEvent = async (req, res, next) => {
   try {
-    const userInfo = req.user.id;
-    console.log("userInfo", userInfo);
-    const findUserIdInStoreProfile =
-      await storeProfileService.findStoreProfileByUserId(userInfo);
-    console.log("findUserIdInStoreProfile", findUserIdInStoreProfile);
-    console.log("findUserIdInStoreProfileId", findUserIdInStoreProfile.id);
+    const { storeProfileId, productId } = req.seller;
+    const body = req.seller.createEvent;
+    const { eventImage, voucherImage } = req.files;
 
-    const promises = [];
-    if (req.files.images) {
-      const result = uploadService
-        .upload(req.files.images[0].path)
-        .then((url) => ({ url, key: "images" }));
-      promises.push(result);
+    let haveProduct = true
+    for(let item of body.eventItem){
+      const check = productId.find((el) => el === item.productId);
+      if (!check) {
+        haveProduct = false
+        break
+      }
     }
-    const result = await Promise.all(promises);
-    console.log("result", result);
-    const input = result.reduce((acc, item) => {
-      acc[item.key] = item.url;
-      return acc;
-    }, {});
 
-    const data = {
-      storeProfileId: findUserIdInStoreProfile.id,
-      name: req.body.name,
-      images: input.images,
-      location: req.body.location,
-      locationName: req.body.locationName,
-      description: req.body.description,
-      startDate: req.body.startDate,
-      endDate: req.body.endDate,
+    if (!haveProduct) {
+      return res.status(400).json({ msg: "ProductId invalid." });
+    }
+
+    if (!body || !eventImage) {
+      return res.status(400).json({ msg: "Create event invalid." });
+    }
+
+    const dataEvent = {
+      storeProfileId,
+      name: body.name,
+      description: body.description,
+      location: body.location,
+      locationName: body.locationName,
+      startDate: body.startDate,
+      endDate: body.endDate,
+      openTime: body.openTime,
     };
-    const createEvent = await eventServices.createEventsByStoreProfileId(data);
-    console.log("createEvent", createEvent);
-    res.status(200).json(createEvent);
+
+    const promise = [];
+    if (eventImage) {
+      const result = uploadService
+        .upload(eventImage[0].path)
+        .then((url) => ({ eventImage: url }));
+      promise.push(result);
+    }
+
+    const dataVoucherList = {};
+    if (voucherImage) {
+      const result = uploadService
+        .upload(voucherImage[0].path)
+        .then((url) => ({ voucherImage: url }));
+      promise.push(result);
+
+      Object.assign(dataVoucherList, {
+        code: body.voucher.code,
+        description: body.voucher.description,
+        condition: body.voucher.condition,
+        totalAmount: body.voucher.totalAmount,
+        discount: body.voucher.discount,
+      });
+    }
+
+    const images = await Promise.all(promise);
+
+    images.forEach((el) => {
+      if (el.eventImage) {
+        dataEvent.images = el.eventImage;
+      }
+      if (el.voucherImage) {
+        dataVoucherList.image = el.voucherImage;
+      }
+    });
+
+    const event = await eventServices.createEventsByStoreProfileId(dataEvent);
+
+    const dataEventItem = body.eventItem.map(({ productId }) => ({
+      eventId: event.id,
+      productId,
+    }));
+    await eventItemService.createManyEventItemByData(dataEventItem);
+
+    if (voucherImage) {
+      dataVoucherList.eventId = event.id;
+      await voucherListService.createVoucherListByData(dataVoucherList);
+    }
+
+    res.status(200).json(req.seller);
   } catch (error) {
     next(error);
   } finally {
-    console.log(req.files.images[0].path);
-    if (req.files.images) {
-      fs.unlink(req.files.images[0].path);
+    const { eventImage, voucherImage } = req.files;
+    if (eventImage) {
+      fs.unlink(eventImage[0].path, (err) => {
+        if (err) next(err);
+      });
+    }
+    if (voucherImage) {
+      fs.unlink(voucherImage[0].path, (err) => {
+        if (err) next(err);
+      });
     }
   }
 };
@@ -730,7 +784,8 @@ userController.createMessageToBuyers = async (req, res, next) => {
     const userId = +req.user.id;
     // follower
     const store = await storeProfileService.findStoreProfileByUserId(userId);
-    const userFollow = await followService.findManyUserIdFollowerByStoreProfileId(store.id);
+    const userFollow =
+      await followService.findManyUserIdFollowerByStoreProfileId(store.id);
 
     // interested
     const event = await eventServices.findEventsByStoreProfileId(store.id);
@@ -744,11 +799,18 @@ userController.createMessageToBuyers = async (req, res, next) => {
     // console.log('userInterest',userInterest)
 
     // get coupon
-    const userCoupon = await voucherItemService.findUserIdAtVoucherItemByStoreProfileId(store.id)
+    const userCoupon =
+      await voucherItemService.findUserIdAtVoucherItemByStoreProfileId(
+        store.id
+      );
     // console.log('coupon',userCoupon)
 
-    const followerAndInterestAndCoupon = [...userFollow, ...userInterest,...userCoupon];
-    console.log('followerAndInterestAndCoupon',followerAndInterestAndCoupon)
+    const followerAndInterestAndCoupon = [
+      ...userFollow,
+      ...userInterest,
+      ...userCoupon,
+    ];
+    console.log("followerAndInterestAndCoupon", followerAndInterestAndCoupon);
 
     const receive = followerAndInterestAndCoupon.reduce((acc, el) => {
       const check = acc.find((rs) => rs === el.userId);
@@ -758,10 +820,7 @@ userController.createMessageToBuyers = async (req, res, next) => {
       return acc;
     }, []);
 
-    console.log('receive',receive)
-
-    
-
+    console.log("receive", receive);
 
     const input = req.body;
     const data = receive.map((id) => ({

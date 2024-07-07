@@ -28,3 +28,24 @@ exports.editEvent = Joi.object({
   startDate: Joi.date().min("now"),
   endDate: Joi.date().min("now"),
 });
+
+exports.createEvent = Joi.object({
+  name: Joi.string().required(),
+  description: Joi.string().required(),
+  location: Joi.string().required(),
+  locationName: Joi.string().required(),
+  startDate: Joi.date().required(),
+  endDate: Joi.date().required(),
+  openTime: Joi.string().required(),
+  eventItem: Joi.array()
+    .items(Joi.object({ productId: Joi.number().required() }))
+    .required(),
+  voucher: Joi.object({
+    name: Joi.string().required(),
+    code: Joi.string().required(),
+    condition: Joi.string().required(),
+    totalAmount: Joi.number().required(),
+    description: Joi.string().required(),
+    discount: Joi.number().required(),
+  }),
+});

@@ -41,8 +41,8 @@ model StoreProfile {
   userId            Int      @unique
   name              String
   coverImage        String
-  sellerDescription String?   @db.Text
-  description       String?   @db.Text
+  sellerDescription String?  @db.Text
+  description       String?  @db.Text
   facebook          String?
   instagram         String?
   line              String?
@@ -92,17 +92,17 @@ model Product {
 }
 
 model Events {
-  id             Int     @id @default(autoincrement())
+  id             Int      @id @default(autoincrement())
   storeProfileId Int
-  name           String  @db.VarChar(100)
+  name           String   @db.VarChar(100)
   images         String
   location       String
   locationName   String
-  description    String  @db.Text
-  startDate      String
-  endDate        String
+  description    String   @db.Text
+  startDate      DateTime @db.Date 
+  endDate        DateTime @db.Date
   openTime       String
-  isActive       Boolean @default(false)
+  isActive       Boolean  @default(false)
 
   storeProfile StoreProfile @relation(fields: [storeProfileId], references: [id])
 

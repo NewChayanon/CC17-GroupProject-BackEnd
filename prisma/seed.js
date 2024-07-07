@@ -184,8 +184,8 @@ const event = [
     locationName: "อนุสาวรีย์ชัยสมรภูมิ",
     description:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit maiores, quisquam error ex sit natus debitis ratione distinctio saepe, harum, facere laborum deleniti autem dolorem asperiores consequuntur accusamus eveniet incidunt! Ea a unde tenetur sint neque blanditiis architecto fugit aliquid, exercitationem, odit reprehenderit, vitae nobis quo? Error distinctio dolores nam.",
-    startDate: "24/06/2024",
-    endDate: "25/06/2024",
+    startDate: "2024-07-07T00:00:00.000Z",
+    endDate: "2024-07-07T00:00:00.000Z",
     openTime: "10:00AM - 18:00PM",
     isActive: true,
   },
@@ -197,8 +197,8 @@ const event = [
     locationName: "ก๋วยเตี๋ยวลูกชิ้นปลาแปะเตียง",
     description:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit maiores, quisquam error ex sit natus debitis ratione distinctio saepe, harum, facere laborum deleniti autem dolorem asperiores consequuntur accusamus eveniet incidunt! Ea a unde tenetur sint neque blanditiis architecto fugit aliquid, exercitationem, odit reprehenderit, vitae nobis quo? Error distinctio dolores nam.",
-    startDate: "24/06/2024",
-    endDate: "25/06/2024",
+    startDate: "2024-07-07T00:00:00.000Z",
+    endDate: "2024-07-07T00:00:00.000Z",
     openTime: "10:00AM - 18:00PM",
     isActive: true,
   },
@@ -210,8 +210,8 @@ const event = [
     locationName: "มหาวิทยาลัยศรีปทุม",
     description:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit maiores, quisquam error ex sit natus debitis ratione distinctio saepe, harum, facere laborum deleniti autem dolorem asperiores consequuntur accusamus eveniet incidunt! Ea a unde tenetur sint neque blanditiis architecto fugit aliquid, exercitationem, odit reprehenderit, vitae nobis quo? Error distinctio dolores nam.",
-    startDate: "24/06/2024",
-    endDate: "25/06/2024",
+    startDate: "2024-07-07T00:00:00.000Z",
+    endDate: "2024-07-07T00:00:00.000Z",
     openTime: "10:00AM - 18:00PM",
     isActive: true,
   },
@@ -223,8 +223,8 @@ const event = [
     locationName: "มหาวิทยาลัยศรีปทุม",
     description:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit maiores, quisquam error ex sit natus debitis ratione distinctio saepe, harum, facere laborum deleniti autem dolorem asperiores consequuntur accusamus eveniet incidunt! Ea a unde tenetur sint neque blanditiis architecto fugit aliquid, exercitationem, odit reprehenderit, vitae nobis quo? Error distinctio dolores nam.",
-    startDate: "24/06/2024",
-    endDate: "25/06/2024",
+    startDate: "2024-07-07T00:00:00.000Z",
+    endDate: "2024-07-07T00:00:00.000Z",
     openTime: "10:00AM - 18:00PM",
     isActive: true,
   },
@@ -236,8 +236,8 @@ const event = [
     locationName: "ก๋วยเตี๋ยวลูกชิ้นปลาแปะเตียง",
     description:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit maiores, quisquam error ex sit natus debitis ratione distinctio saepe, harum, facere laborum deleniti autem dolorem asperiores consequuntur accusamus eveniet incidunt! Ea a unde tenetur sint neque blanditiis architecto fugit aliquid, exercitationem, odit reprehenderit, vitae nobis quo? Error distinctio dolores nam.",
-    startDate: "24/06/2024",
-    endDate: "25/06/2024",
+    startDate: "2024-07-07T00:00:00.000Z",
+    endDate: "2024-07-07T00:00:00.000Z",
     openTime: "10:00AM - 18:00PM",
     isActive: true,
   },
@@ -249,8 +249,8 @@ const event = [
     locationName: "ก๋วยเตี๋ยวลูกชิ้นปลาแปะเตียง",
     description:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit maiores, quisquam error ex sit natus debitis ratione distinctio saepe, harum, facere laborum deleniti autem dolorem asperiores consequuntur accusamus eveniet incidunt! Ea a unde tenetur sint neque blanditiis architecto fugit aliquid, exercitationem, odit reprehenderit, vitae nobis quo? Error distinctio dolores nam.",
-    startDate: "24/06/2024",
-    endDate: "25/06/2024",
+    startDate: "2024-07-07T00:00:00.000Z",
+    endDate: "2024-07-07T00:00:00.000Z",
     openTime: "10:00AM - 18:00PM",
     isActive: false,
   },
@@ -311,7 +311,8 @@ const voucherList = [
   {
     eventId: 1,
     code: "25JUN50P",
-    description:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit maiores, quisquam error ex sit natus debitis ratione distinctio saepe, harum, facere laborum deleniti autem dolorem asperiores consequuntur accusamus eveniet incidunt!",
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit maiores, quisquam error ex sit natus debitis ratione distinctio saepe, harum, facere laborum deleniti autem dolorem asperiores consequuntur accusamus eveniet incidunt!",
     condition: "test",
     totalAmount: 5,
     discount: 10,
@@ -320,7 +321,8 @@ const voucherList = [
   {
     eventId: 2,
     code: "25JUN50P",
-    description:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit maiores, quisquam error ex sit natus debitis ratione distinctio saepe, harum, facere laborum deleniti autem dolorem asperiores consequuntur accusamus eveniet incidunt!",
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit maiores, quisquam error ex sit natus debitis ratione distinctio saepe, harum, facere laborum deleniti autem dolorem asperiores consequuntur accusamus eveniet incidunt!",
     condition: "test",
     totalAmount: 20,
     discount: 10,
@@ -329,7 +331,8 @@ const voucherList = [
   {
     eventId: 3,
     code: "25JUN50P",
-    description:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit maiores, quisquam error ex sit natus debitis ratione distinctio saepe, harum, facere laborum deleniti autem dolorem asperiores consequuntur accusamus eveniet incidunt!",
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit maiores, quisquam error ex sit natus debitis ratione distinctio saepe, harum, facere laborum deleniti autem dolorem asperiores consequuntur accusamus eveniet incidunt!",
     condition: "test",
     totalAmount: 7,
     discount: 10,
@@ -338,7 +341,8 @@ const voucherList = [
   {
     eventId: 4,
     code: "25JUN50P",
-    description:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit maiores, quisquam error ex sit natus debitis ratione distinctio saepe, harum, facere laborum deleniti autem dolorem asperiores consequuntur accusamus eveniet incidunt!",
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit maiores, quisquam error ex sit natus debitis ratione distinctio saepe, harum, facere laborum deleniti autem dolorem asperiores consequuntur accusamus eveniet incidunt!",
     condition: "test",
     totalAmount: 20,
     discount: 10,

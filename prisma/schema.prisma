@@ -16,6 +16,7 @@ model Users {
   mobile        String?   @unique @db.VarChar(10)
   displayName   String?   @db.VarChar(50)
   gender        Gender?
+  dateOfBirth   DateTime?  
   googleLogin   String?
   profileImage  String?
   statusMessage Boolean   @default(false)

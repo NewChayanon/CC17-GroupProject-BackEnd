@@ -454,6 +454,7 @@ userController.createEvent = async (req, res, next) => {
       }
     }
 
+
     if (!haveProduct) {
       return res.status(400).json({ msg: "ProductId invalid." });
     }
@@ -562,11 +563,14 @@ userController.addMoreProduct = async (req, res, next) => {
     }, {});
 
     const data = {
-      // storeProfileId : findUserIdInStoreProfile.id,
-      name: req.body.name,
-      description: req.body.description,
-      image: input.image,
+      storeProfileId : findUserIdInStoreProfile.id,
+      name: req.body?.name,
+      description: req.body?.description,
+      image: input?.image,
+      price: +req.body?.price,
+      unit: req.body?.unit
     };
+    console.log('first')
 
     const createProduct = await productService.createProduct(data);
     console.log("createProduct", createProduct);
@@ -574,7 +578,7 @@ userController.addMoreProduct = async (req, res, next) => {
   } catch (error) {
     next(error);
   } finally {
-    console.log(req.files.image[0].path);
+    // console.log(req.files.image[0].path);
     if (req.files.image) {
       fs.unlink(req.files.image[0].path);
     }
@@ -784,6 +788,7 @@ userController.fetchStoreMainPage = async (req, res, next) => {
 userController.createMessageToBuyers = async (req, res, next) => {
   try {
     const userId = +req.user.id;
+    console.log('userId',userId)
     // follower
     const store = await storeProfileService.findStoreProfileByUserId(userId);
     const userFollow =
@@ -822,18 +827,16 @@ userController.createMessageToBuyers = async (req, res, next) => {
       return acc;
     }, []);
 
-    console.log("receive", receive);
+    const receiver = receive.filter(item => item !== userId)
+    console.log('receiver',receiver)
 
-    const input = req.body;
-    const data = receive.map((id) => ({
-      ...input,
-      userIdSender: userId,
-      userIdReceiver: id,
-    }));
+    const input = req.body
+    console.log('input',input)
+    const data = receiver.map((id) => ({...input, userIdSender: userId, userIdReceiver: id}));
     console.log("data", data);
 
     const result = await userService.createNotification(data);
-    console.log("result", result);
+    console.log("result", data);
     res.status(200).json(data);
   } catch (error) {
     next(error);

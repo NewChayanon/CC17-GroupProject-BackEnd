@@ -57,7 +57,7 @@ adminController.createNotification = async (req,res,next) =>{
     const result = await adminService.createMessage(data)
     console.log('data',data)
     console.log('result',result)
-    res.status(200).json({message: 'create successful'})
+    res.status(200).json(result)
   
   } catch (error) {
     next(error)

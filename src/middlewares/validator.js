@@ -53,11 +53,10 @@ exports.imagesOfCreateEventValidator = (req, res, next) => {
   next();
 };
 
-exports.validateUpdateProfileOrProfileImage = (req, res, next) => {
-  if (!req.files)
-    return createError({ message: "at least one of profile", statusCode: 400 });
-  next();
-};
+exports.validateUpdateProfileOrProfileImage = (req,res,next)=>{
+  if(!req.files) return createError({message: 'at least one of profile image', statusCode: 400})
+  next()
+}
 
 exports.userReportValidator = (req, res, next) => {
   if (!req.file) {

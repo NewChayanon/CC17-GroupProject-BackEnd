@@ -15,7 +15,7 @@ productService.findFirstProductByProductIdAndStoreProfileId = (id, storeProfileI
   prisma.product.findFirst({ where: { id, storeProfileId } });
 
 // create
-productService.createProduct = (data) => prisma.product.create({ data });
+productService.createProduct = (data) => prisma.product.create({data});
 
 //update
 productService.updateProduct = (id, data) =>

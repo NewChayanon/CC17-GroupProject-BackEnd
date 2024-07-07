@@ -25,7 +25,7 @@ exports.validateCoverImage = (req,res,next)=>{
 }
 
 exports.validateUpdateProfileOrProfileImage = (req,res,next)=>{
-  if(!req.files) return createError({message: 'at least one of profile', statusCode: 400})
+  if(!req.files) return createError({message: 'at least one of profile image', statusCode: 400})
   next()
 }
 

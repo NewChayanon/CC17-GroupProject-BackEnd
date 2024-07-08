@@ -53,6 +53,40 @@ authController.login = async (req, res, next) => {
   }
 };
 
+authController.searchBar = async (req, res, next) => {
+  try {
+    const searchBy = req.query.searchBy;
+    const searchKeyword = req.query.searchKeyword;
+    const when = req.query.when;
+
+    if (!searchBy || !searchKeyword || !when) {
+      return res
+        .status(400)
+        .json({ msg: "Please fill in complete information." });
+    }
+    let dataSearchBy = []
+    switch (searchBy) {
+      case "location":
+        break;
+      case "product":
+        break;
+      case "store":
+        const searchStore = await storeProfileService.findManyStoreProfileSelectIdAndName()
+        const filterStore = searchStore.filter(el => el.name.toUpperCase().includes(searchKeyword.toUpperCase()))
+        const storeProfileId = filterStore.map(el => el.id)
+        const dataSearchByStore = await eventServices.findManyEventAndStoreProfileAndUserAndFollowAndVoucherItemAndVoucherListInStoreProfileId(storeProfileId)
+        dataSearchBy.push(dataSearchByStore)
+        break;
+      }
+      
+    const response = dataFormat.searchBar(dataSearchBy)
+
+    res.json(response);
+  } catch (err) {
+    next(err);
+  }
+};
+
 authController.sellerNearMe = async (req, res, next) => {
   try {
     const userLocation = req.query.userLocation;
@@ -122,5 +156,7 @@ authController.storeProfile = async (req, res, next) => {
     next(err);
   }
 };
+
+
 
 module.exports = authController;

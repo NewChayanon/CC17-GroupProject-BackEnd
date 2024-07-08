@@ -312,6 +312,7 @@ const product = [
 const eventItem = [
   { eventId: 1, productId: 1 },
   { eventId: 1, productId: 2 },
+  { eventId: 5, productId: 1 },
 ];
 const voucherList = [
   {

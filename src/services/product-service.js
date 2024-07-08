@@ -5,7 +5,6 @@ const productService = {};
 // find
 productService.getProductById = (productId) =>
   prisma.product.findUnique({ where: { id: productId } });
-
 productService.getAllProductByStoreProfileId = async(storeProfileId) => {
   const dataFormat = await prisma.product.findMany({
     where: { storeProfileId: { in: [storeProfileId] } },
@@ -22,14 +21,14 @@ productService.getAllProductByStoreProfileId = async(storeProfileId) => {
       productUnit: unit}
   })
 }
-
 productService.findFirstProductByProductIdAndStoreProfileId = (
   id,
   storeProfileId
 ) => prisma.product.findFirst({ where: { id, storeProfileId } });
-
 productService.findManyProductByStoreProfileId = (storeProfileId) =>
   prisma.product.findMany({ where: { storeProfileId } });
+productService.findManyStoreProfileSelectIdAndName = () =>
+  prisma.product.findMany({ select: { id: true, name: true ,EventItem:true}});
 
 // create
 productService.createProduct = async(data) => {

@@ -170,6 +170,14 @@ model InboxMessageAdmin {
   createdAt    DateTime @default(now()) @db.Timestamp(0)
 
   users Users @relation(fields: [userIdSender], references: [id])
+  readMessage ReadMessageAdmin[]
+}
+
+model ReadMessageAdmin {
+  id          Int       @id @default(autoincrement())
+  adminId     Int
+  userIdRead  Int
+  read     InboxMessageAdmin @relation(fields: [adminId], references: [id]) 
 }
 
 model InboxMessageUser {
@@ -178,6 +186,7 @@ model InboxMessageUser {
   userIdReceiver Int?
   topic          String
   message        String   @db.Text
+  isRead         Boolean  @default(false)         
   createdAt      DateTime @default(now()) @db.Timestamp(0)
   userSender     Users    @relation("userSender", fields: [userIdSender], references: [id])
   userReceiver   Users?   @relation("userReceiver", fields: [userIdReceiver], references: [id])
@@ -194,6 +203,8 @@ model Report {
   storeProfile StoreProfile @relation(fields: [storeProfileReported], references: [id])
   user         Users        @relation(fields: [userIdReporter], references: [id])
 }
+
+
 
 enum Gender {
   MALE

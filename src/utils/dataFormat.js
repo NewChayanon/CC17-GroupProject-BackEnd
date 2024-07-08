@@ -653,9 +653,9 @@ dataFormat.myStoreProfile = ([
   myVoucherItem,
   myProduct,
 ]) => {
-  let followers = myFollower.length
-  let events = myEvent.length
-  let vouchers = myVoucherItem.length
+  let followers = myFollower.length;
+  let events = myEvent.length;
+  let vouchers = myVoucherItem.length;
   let product = [];
   if (myProduct.length !== 0) {
     product = myProduct.map((el) => ({
@@ -674,13 +674,23 @@ dataFormat.myStoreProfile = ([
     const { EventNow, UpComingEvent } = myEvent.reduce(
       (
         acc,
-        { id, name, startDate, endDate, openTime, locationName, isActive }
+        {
+          id,
+          name,
+          startDate,
+          endDate,
+          openTime,
+          closingTime,
+          locationName,
+          isActive,
+        }
       ) => {
         const eventDetails = {
           eventId: id,
           startDate,
           endDate,
           openTime,
+          closingTime,
           locationName,
           eventName: name,
         };
@@ -699,18 +709,18 @@ dataFormat.myStoreProfile = ([
   }
 
   return {
-    storeProfileId:myStoreProfile.id,
-    storeProfileImage:myStoreProfile.coverImage,
-    userProfileImage:mySeller.profileImage,
-    storeProfileName:myStoreProfile.name,
+    storeProfileId: myStoreProfile.id,
+    storeProfileImage: myStoreProfile.coverImage,
+    userProfileImage: mySeller.profileImage,
+    storeProfileName: myStoreProfile.name,
     followers,
     events,
     vouchers,
-    facebook:myStoreProfile.facebook,
-    instagram:myStoreProfile.instagram,
-    line:myStoreProfile.line,
-    storeProfileSellerDescription:myStoreProfile.sellerDescription,
-    storeProfileDescription:myStoreProfile.description,
+    facebook: myStoreProfile.facebook,
+    instagram: myStoreProfile.instagram,
+    line: myStoreProfile.line,
+    storeProfileSellerDescription: myStoreProfile.sellerDescription,
+    storeProfileDescription: myStoreProfile.description,
     product,
     eventNow,
     upComingEvent,

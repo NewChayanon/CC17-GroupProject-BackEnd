@@ -16,7 +16,7 @@ model Users {
   mobile        String?   @unique @db.VarChar(10)
   displayName   String?   @db.VarChar(50)
   gender        Gender?
-  dateOfBirth   DateTime?  
+  dateOfBirth   DateTime?
   googleLogin   String?
   profileImage  String?
   statusMessage Boolean   @default(false)
@@ -100,9 +100,10 @@ model Events {
   location       String
   locationName   String
   description    String   @db.Text
-  startDate      DateTime @db.Date 
+  startDate      DateTime @db.Date
   endDate        DateTime @db.Date
-  openTime       String
+  openTime       DateTime @db.Time(0)
+  closingTime    DateTime @db.Time(0)
   isActive       Boolean  @default(false)
 
   storeProfile StoreProfile @relation(fields: [storeProfileId], references: [id])

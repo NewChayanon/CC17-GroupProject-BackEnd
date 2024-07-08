@@ -2,14 +2,12 @@ const prisma = require("../models/prisma");
 
 const storeProfileService = {};
 
+// find
 storeProfileService.findManyStoreProfileByStoreProfileId = (storeProfileId) =>
   prisma.storeProfile.findMany({
     where: { OR: storeProfileId },
     include: { Follow: true, Events: true, VoucherItem: true, user: true },
   });
-
-//seller
-// find
 storeProfileService.findStoreProfileByUserId = (userId) =>
   prisma.storeProfile.findFirst({
     where: { userId: userId },
@@ -48,6 +46,9 @@ storeProfileService.findFirstStoreProfileAndUserAndFollowAndEventAndVoucherItemA
         Product: true,
       },
     });
+storeProfileService.findManyStoreProfileSelectIdAndName = () =>
+  prisma.storeProfile.findMany({ select: { id: true, name: true } });
+
 
 // create
 storeProfileService.createStoreProfile = (data) =>

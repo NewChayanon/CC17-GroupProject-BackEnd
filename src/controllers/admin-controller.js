@@ -1,3 +1,4 @@
+const prisma = require('../models/prisma');
 const adminService = require('../services/admin-service');
 const userService = require('../services/user-service');
 const adminController = {}
@@ -15,9 +16,14 @@ adminController.getAllUser = async(req,res,next) =>{
 
 adminController.getSeller = async(req,res,next) =>{
   try {
-    const seller = await adminService.getSeller()
+    const pages = +req.query.pages
+    const pageSize = +req.query.pageSize
+    const sortBy = req.query.sortBy
+    console.log('sortBy',sortBy)
+    const seller = await adminService.getSeller(pages,pageSize,sortBy)
     console.log('seller',seller)
-    res.status(201).json(seller)
+    const countSeller = await prisma.users.count({where:{role:"SELLER"}})
+    res.status(200).json({seller,countSeller})
   } catch (error) {
     next(error)
   }
@@ -25,9 +31,13 @@ adminController.getSeller = async(req,res,next) =>{
 
 adminController.getBuyer = async (req,res,next) =>{
   try {
-    const buyer = await adminService.getBuyer()
-    console.log('buyer',buyer)
-    res.status(201).json(buyer)
+    const pages = +req.query.pages
+    const pageSize = +req.query.pageSize
+    const sortBy = req.query.sortBy
+    console.log('sortBy',sortBy)
+    const buyer = await adminService.getBuyer(pages,pageSize,sortBy)
+    const countBuyer = await prisma.users.count({where:{role:"BUYER"}})
+    res.status(200).json({buyer,countBuyer})
   } catch (error) {
     next(error)
   }

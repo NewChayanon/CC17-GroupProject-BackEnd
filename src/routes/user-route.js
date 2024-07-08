@@ -71,7 +71,7 @@ userRouter.post(
   "/create-product",
   upload.fields([{ name: "image", maxCount: 1 }]),
   validateCoverImage,
-  userController.addMoreProduct
+  userController.createProduct
 );
 
 userRouter.post("/new-message", isSeller, userController.createMessageToBuyers);

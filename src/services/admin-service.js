@@ -1,95 +1,116 @@
-const prisma = require('../models/prisma')
+const prisma = require("../models/prisma");
 
-adminService = {}
+adminService = {};
 
 //find
-adminService.getAllBuyerAndSeller = () => prisma.users.findMany({
-  where:{
-    OR : [{role : "BUYER"},{role : "SELLER" }]
-  },
-  orderBy:{
-    createdAt: 'desc',
-    id: 'asc'
-  }
-});
+adminService.getAllBuyerAndSeller = () =>
+  prisma.users.findMany({
+    where: {
+      OR: [{ role: "BUYER" }, { role: "SELLER" }],
+    },
+  });
 
-adminService.getSeller = (data) => prisma.users.findMany({
-  where:{
-    OR : [{role : "SELLER" }]
-  },
-  orderBy:{
-    createdAt: 'desc',
-    id: 'asc'
-  },
-  skip:0,
-  take:10,
-  data
-});
+adminService.getSeller = (pages, pageSize, sortBy) =>
+  prisma.users.findMany({
+    where: {
+      role: "SELLER",
+    },
+    select: {
+      StoreProfile: {
+        select: { id: true },
+      },
+      id: true,
+      profileImage: true,
+      email: true,
+      displayName: true,
+      isBlocked: true,
+      updatedAt: true,
+    },
+    orderBy: sortBy === "createdAt" ? { createdAt: "desc" } : { id: "asc" },
+    skip: (pages - 1) * pageSize,
+    take: pageSize,
+  });
 
-adminService.getBuyer = (data) => prisma.users.findMany({
-  where:{
-    OR : [{role : "BUYER"}]
-  },
-  orderBy:{
-    createdAt: 'desc',
-    id: 'asc'
-  },
-  skip:0,
-  take:10,
-  data: data
-});
+adminService.getBuyer = async(pages, pageSize, sortBy) => {
+  const result = await prisma.users.findMany({
+    where: {
+      role: "BUYER",
+    },
+    select: {
+      StoreProfile: {
+        select: { id: true },
+      },
+      id: true,
+      profileImage: true,
+      displayName: true,
+      email: true,
+      isBlocked: true,
+      updatedAt: true,
+    },
+    orderBy: sortBy === "createdAt" ? { createdAt: "desc" } : { id: "asc" },
+    skip: (pages - 1) * pageSize,
+    take: pageSize,
+  });
+  return result.map((el)=>{
+    const {displayName, ...rest} = el
+    return {...rest, username :displayName}
+  })
+};
 
 //update
 
-adminService.updateBlock = (id, isBlocked) => prisma.users.update({
-  where:{
-    id: id
-  },
-  data:{
-    isBlocked: isBlocked
-  }
-});
-
+adminService.updateBlock = (id, isBlocked) =>
+  prisma.users.update({
+    where: {
+      id: id,
+    },
+    data: {
+      isBlocked: isBlocked,
+    },
+  });
 
 //notification
 
-  //create
+//create
 
-  adminService.createMessage = (data)=> prisma.inboxMessageAdmin.create({data})
+adminService.createMessage = (data) =>
+  prisma.inboxMessageAdmin.create({ data });
 
-  // find
-  adminService.getAllMessages = (topic,message) => prisma.inboxMessageAdmin.findMany({
-    where:{
+// find
+adminService.getAllMessages = (topic, message) =>
+  prisma.inboxMessageAdmin.findMany({
+    where: {
       topic: topic,
-      message: message
+      message: message,
     },
-    skip:0,
-    take:10
+    skip: 0,
+    take: 10,
   });
 
-  // update 
-  adminService.editMessages = (id,topic,message) => prisma.inboxMessageAdmin.update({
-    where:{
-      id:1
+// update
+adminService.editMessages = (id, topic, message) =>
+  prisma.inboxMessageAdmin.update({
+    where: {
+      id: 1,
     },
-    data:{
+    data: {
       topic: topic,
-      message: message
-   },
-    select:{
-      id: true
-   },
-    skip:0,
-    take:10
-  });
-
-  //delete
-  adminService.deleteMessageById = (id,data) => prisma.inboxMessageAdmin.delete({
-    where:{
-      id:id
+      message: message,
     },
-    data:data
+    select: {
+      id: true,
+    },
+    skip: 0,
+    take: 10,
   });
 
+//delete
+adminService.deleteMessageById = (id, data) =>
+  prisma.inboxMessageAdmin.delete({
+    where: {
+      id: id,
+    },
+    data: data,
+  });
 
 module.exports = adminService;

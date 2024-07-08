@@ -6,16 +6,40 @@ const productService = {};
 productService.getProductById = (productId) =>
   prisma.product.findUnique({ where: { id: productId } });
 
-productService.getAllProductByStoreProfileId = (storeProfileId) =>
-  prisma.product.findMany({
+productService.getAllProductByStoreProfileId = async(storeProfileId) => {
+  const dataFormat = await prisma.product.findMany({
     where: { storeProfileId: { in: [storeProfileId] } },
   });
+  return dataFormat.map((el)=>{
+    const {id, name, description, image, price, unit, ...rest} = el
+    return {
+      ...rest,
+      productId : id,
+      productName: name,
+      productDescription: description,
+      productImage: image,
+      productPrice: price,
+      productUnit: unit}
+  })
+}
 
-productService.findFirstProductByProductIdAndStoreProfileId = (id, storeProfileId) =>
-  prisma.product.findFirst({ where: { id, storeProfileId } });
+productService.findFirstProductByProductIdAndStoreProfileId = (
+  id,
+  storeProfileId
+) => prisma.product.findFirst({ where: { id, storeProfileId } });
 
 // create
-productService.createProduct = (data) => prisma.product.create({data});
+productService.createProduct = async(data) => {
+  const dataFormat = await prisma.product.create({ data });
+  return {
+    productId: dataFormat.id,
+    productName: dataFormat.name,
+    productDescription: dataFormat.description,
+    productImage: dataFormat.image,
+    productPrice: dataFormat.price,
+    productUnit: dataFormat.unit
+  }
+}
 
 //update
 productService.updateProduct = (id, data) =>

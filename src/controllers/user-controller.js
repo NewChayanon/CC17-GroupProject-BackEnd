@@ -1122,4 +1122,18 @@ userController.editEvent = async (req, res, next) => {
   }
 };
 
+userController.myFollower = async (req,res,next) => {
+  try {
+    const storeProfileId = req.seller.storeProfileId
+
+    const myFollower = await followService.findManyFollowAndUserAndStoreProfileAndEventByStoreProfileId(storeProfileId)
+
+    const dataFormatMyFollower = dataFormat.myFollower(myFollower)
+
+    return res.json(dataFormatMyFollower)
+  } catch (err) {
+    next(err)
+  }
+}
+
 module.exports = userController;

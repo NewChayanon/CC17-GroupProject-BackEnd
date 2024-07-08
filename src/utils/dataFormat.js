@@ -560,4 +560,72 @@ dataFormat.sellerCoupon = (allCoupon) =>
     })
   );
 
+dataFormat.myFollower = (myFollower) =>
+  myFollower.map((el) => {
+    const {user} = el;
+    const {id:userId,profileImage,displayName,firstName,lastName,StoreProfile}=user
+    const storeProfile = []
+    if(StoreProfile){
+      const {id:storeProfileId,coverImage,name,Follow,Events,VoucherItem,facebook,instagram,line}= StoreProfile
+      let followers = Follow ? Follow.length : 0;
+      let events = Events ? Events.length : 0;
+      let vouchers = VoucherItem ? VoucherItem.length : 0;
+      let eventNow = []
+      let upComingEvent = [];
+      if (Events) {
+        const { EventNow, UpComingEvent } = Events.reduce(
+          (
+            acc,
+            { id, name, startDate, endDate, openTime, locationName, isActive }
+          ) => {
+            const eventDetails = {
+              eventId: id,
+              startDate,
+              endDate,
+              openTime,
+              locationName,
+              eventName: name,
+            };
+            if (isActive) {
+              acc.EventNow.push(eventDetails);
+            }
+            if (!isActive) {
+              acc.UpComingEvent.push(eventDetails);
+            }
+            return acc;
+          },
+          { EventNow: [], UpComingEvent: [] }
+        );
+        eventNow = EventNow;
+        upComingEvent = UpComingEvent;
+      }
+      const myStoreProfile = {
+        storeProfileId,
+        storeProfileCoverImage: coverImage,
+        userProfileImage: profileImage,
+        userDisplayName: displayName,
+        userFirstName: firstName,
+        userLastName: lastName,
+        storeName: name,
+        followers,
+        events,
+        vouchers,
+        facebook,
+        instagram,
+        line,
+        eventNow,
+        upComingEvent,
+      };
+      storeProfile.push(myStoreProfile)
+    }
+    return {
+      userId,
+      userProfileImage:profileImage,
+      userDisplayName:displayName,
+      userFirstName:firstName,
+      userLastName:lastName,
+      storeProfile,
+    };
+  });
+
 module.exports = dataFormat;

@@ -114,6 +114,7 @@ userRouter.get(
   isSeller,
   userController.getHistoryInbox
 );
+userRouter.get("/seller-followers", isSeller, userController.myFollower);
 
 //update
 userRouter.patch(

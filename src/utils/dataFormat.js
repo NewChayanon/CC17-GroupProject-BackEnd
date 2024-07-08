@@ -562,15 +562,32 @@ dataFormat.sellerCoupon = (allCoupon) =>
 
 dataFormat.myFollower = (myFollower) =>
   myFollower.map((el) => {
-    const {user} = el;
-    const {id:userId,profileImage,displayName,firstName,lastName,StoreProfile}=user
-    const storeProfile = []
-    if(StoreProfile){
-      const {id:storeProfileId,coverImage,name,Follow,Events,VoucherItem,facebook,instagram,line}= StoreProfile
+    const { user } = el;
+    const {
+      id: userId,
+      profileImage,
+      displayName,
+      firstName,
+      lastName,
+      StoreProfile,
+    } = user;
+    const storeProfile = [];
+    if (StoreProfile) {
+      const {
+        id: storeProfileId,
+        coverImage,
+        name,
+        Follow,
+        Events,
+        VoucherItem,
+        facebook,
+        instagram,
+        line,
+      } = StoreProfile;
       let followers = Follow ? Follow.length : 0;
       let events = Events ? Events.length : 0;
       let vouchers = VoucherItem ? VoucherItem.length : 0;
-      let eventNow = []
+      let eventNow = [];
       let upComingEvent = [];
       if (Events) {
         const { EventNow, UpComingEvent } = Events.reduce(
@@ -616,16 +633,88 @@ dataFormat.myFollower = (myFollower) =>
         eventNow,
         upComingEvent,
       };
-      storeProfile.push(myStoreProfile)
+      storeProfile.push(myStoreProfile);
     }
     return {
       userId,
-      userProfileImage:profileImage,
-      userDisplayName:displayName,
-      userFirstName:firstName,
-      userLastName:lastName,
+      userProfileImage: profileImage,
+      userDisplayName: displayName,
+      userFirstName: firstName,
+      userLastName: lastName,
       storeProfile,
     };
   });
+
+dataFormat.myStoreProfile = ([
+  mySeller,
+  myStoreProfile,
+  myFollower,
+  myEvent,
+  myVoucherItem,
+  myProduct,
+]) => {
+  let followers = myFollower.length
+  let events = myEvent.length
+  let vouchers = myVoucherItem.length
+  let product = [];
+  if (myProduct.length !== 0) {
+    product = myProduct.map((el) => ({
+      productId: el.id,
+      productImage: el.image,
+      productName: el.name,
+      productDescription: el.description,
+      productPrice: el.price,
+      productUnit: el.unit,
+    }));
+  }
+
+  let eventNow = [];
+  let upComingEvent = [];
+  if (myEvent.length !== 0) {
+    const { EventNow, UpComingEvent } = myEvent.reduce(
+      (
+        acc,
+        { id, name, startDate, endDate, openTime, locationName, isActive }
+      ) => {
+        const eventDetails = {
+          eventId: id,
+          startDate,
+          endDate,
+          openTime,
+          locationName,
+          eventName: name,
+        };
+        if (isActive) {
+          acc.EventNow.push(eventDetails);
+        }
+        if (!isActive) {
+          acc.UpComingEvent.push(eventDetails);
+        }
+        return acc;
+      },
+      { EventNow: [], UpComingEvent: [] }
+    );
+    eventNow = EventNow;
+    upComingEvent = UpComingEvent;
+  }
+
+  return {
+    storeProfileId:myStoreProfile.id,
+    storeProfileImage:myStoreProfile.coverImage,
+    userProfileImage:mySeller.profileImage,
+    storeProfileName:myStoreProfile.name,
+    followers,
+    events,
+    vouchers,
+    facebook:myStoreProfile.facebook,
+    instagram:myStoreProfile.instagram,
+    line:myStoreProfile.line,
+    storeProfileSellerDescription:myStoreProfile.sellerDescription,
+    storeProfileDescription:myStoreProfile.description,
+    product,
+    eventNow,
+    upComingEvent,
+  };
+};
 
 module.exports = dataFormat;

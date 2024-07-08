@@ -2,6 +2,7 @@ const prisma = require("../models/prisma");
 
 const eventServices = {};
 
+// find
 eventServices.findEventByEventId = (eventId) =>
   prisma.events.findUnique({
     where: { id: eventId },
@@ -11,7 +12,6 @@ eventServices.findEventByEventId = (eventId) =>
       storeProfile: { include: { user: true } },
     },
   });
-
 eventServices.findEventByEventIdAndUserId = (eventId, userId) =>
   prisma.events.findUnique({
     where: { id: eventId },
@@ -22,13 +22,11 @@ eventServices.findEventByEventIdAndUserId = (eventId, userId) =>
       Interest: { where: { AND: [{ userId }, { eventId }] } },
     },
   });
-
 eventServices.findManyEventByStoreId = (storeId, eventId, userId) =>
   prisma.events.findMany({
     where: { AND: [{ storeProfileId: storeId }, { id: { not: eventId } }] },
     include: { Interest: { where: { userId: userId } } },
   });
-
 eventServices.findAllEventByIsActive = () =>
   prisma.events.findMany({
     where: { isActive: true },
@@ -39,20 +37,6 @@ eventServices.findAllEventByIsActive = () =>
       VoucherList: { include: { VoucherItem: true } },
     },
   });
-
-eventServices.groupByEventByStoreId = (storeProfileId) =>
-  prisma.events.groupBy({
-    by: ["storeProfileId"],
-    where: { storeProfileId: { in: storeProfileId } },
-    _count: { storeProfileId: true },
-  });
-
-eventServices.createEventsByStoreProfileId = (data) =>
-  prisma.events.create({ data });
-
-eventServices.createEventsByStoreProfileId = (data) =>
-  prisma.events.create({ data });
-
 eventServices.findEventsByStoreProfileId = (storeProfileId) =>
   prisma.events.findMany({
     where: { storeProfileId: storeProfileId },
@@ -61,17 +45,30 @@ eventServices.findEventsByStoreProfileId = (storeProfileId) =>
       storeProfile: { select: { name: true } },
     },
   });
-
 eventServices.findUniqueEventByIdAndStoreProfileId = (id, storeProfileId) =>
   prisma.events.findUnique({ where: { id, storeProfileId } });
-
 eventServices.findFirstEventByEventIdAndStoreProfileId = (id, storeProfileId) =>
   prisma.events.findFirst({ where: { id, storeProfileId } });
+eventServices.findManyEventByStoreProfileId = (storeProfileId) =>
+  prisma.events.findMany({ where: { storeProfileId } });
+
+// group by
+eventServices.groupByEventByStoreId = (storeProfileId) =>
+  prisma.events.groupBy({
+    by: ["storeProfileId"],
+    where: { storeProfileId: { in: storeProfileId } },
+    _count: { storeProfileId: true },
+  });
+
+// create
+eventServices.createEventsByStoreProfileId = (data) =>
+  prisma.events.create({ data });
 
 // update
 eventServices.updateEventByIdAndData = (id, data) =>
   prisma.events.update({ where: { id }, data });
 
+// delete
 eventServices.deleteEventById = (id) => prisma.events.delete({ where: { id } });
 
 module.exports = eventServices;

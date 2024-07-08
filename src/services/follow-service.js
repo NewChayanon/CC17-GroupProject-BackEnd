@@ -9,6 +9,8 @@ followService.findFollowByUserIdAndStoreProfileId = (userId, storeProfileId) =>
   prisma.follow.findFirst({ where: { AND: [{ userId }, { storeProfileId }] } });
 followService.findManyUserIdFollowerByStoreProfileId = (storeProfileId) =>
   prisma.follow.findMany({ where: { storeProfileId } });
+followService.findManyFollowByStoreProfileId = (storeProfileId) =>
+  prisma.follow.findMany({ where: { storeProfileId } });
 followService.findManyFollowAndUserAndStoreProfileAndEventByStoreProfileId = (
   storeProfileId
 ) =>
@@ -17,7 +19,7 @@ followService.findManyFollowAndUserAndStoreProfileAndEventByStoreProfileId = (
     include: {
       user: {
         select: {
-          id:true,
+          id: true,
           profileImage: true,
           displayName: true,
           firstName: true,

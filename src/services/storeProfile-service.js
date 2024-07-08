@@ -10,21 +10,17 @@ storeProfileService.findManyStoreProfileByStoreProfileId = (storeProfileId) =>
 
 //seller
 // find
-
 storeProfileService.findStoreProfileByUserId = (userId) =>
   prisma.storeProfile.findFirst({
     where: { userId: userId },
     include: {
       Events: true,
-      Product:true,
+      Product: true,
       user: { select: { profileImage: true, firstName: true, lastName: true } },
     },
   });
-
-// create
-storeProfileService.createStoreProfile = (data) =>
-  prisma.storeProfile.create({ data });
-
+storeProfileService.findStoreProfileById = (id) =>
+  prisma.storeProfile.findFirst({ where: { id } });
 storeProfileService.findStoreProfileByStoreProfileId = (id) =>
   prisma.storeProfile.findFirst({
     where: { id },
@@ -38,9 +34,24 @@ storeProfileService.findStoreProfileByStoreProfileId = (id) =>
       },
     },
   });
-
-storeProfileService.findStoreProfileById = (id) =>
+storeProfileService.findFirstStoreProfileById = (id) =>
   prisma.storeProfile.findFirst({ where: { id } });
+storeProfileService.findFirstStoreProfileAndUserAndFollowAndEventAndVoucherItemAndProductById =
+  (id) =>
+    prisma.storeProfile.findFirst({
+      where: { id },
+      include: {
+        user: true,
+        Follow: true,
+        Events: true,
+        VoucherItem: true,
+        Product: true,
+      },
+    });
+
+// create
+storeProfileService.createStoreProfile = (data) =>
+  prisma.storeProfile.create({ data });
 
 // update
 storeProfileService.updateStoreProfileByIdAndData = (id, data) =>

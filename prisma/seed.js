@@ -186,7 +186,8 @@ const event = [
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit maiores, quisquam error ex sit natus debitis ratione distinctio saepe, harum, facere laborum deleniti autem dolorem asperiores consequuntur accusamus eveniet incidunt! Ea a unde tenetur sint neque blanditiis architecto fugit aliquid, exercitationem, odit reprehenderit, vitae nobis quo? Error distinctio dolores nam.",
     startDate: "2024-07-07T00:00:00.000Z",
     endDate: "2024-07-07T00:00:00.000Z",
-    openTime: "10:00AM - 18:00PM",
+    openTime: "2024-07-07T09:00:00Z",
+    closingTime:"2024-07-07T18:00:00Z",
     isActive: true,
   },
   {
@@ -199,7 +200,8 @@ const event = [
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit maiores, quisquam error ex sit natus debitis ratione distinctio saepe, harum, facere laborum deleniti autem dolorem asperiores consequuntur accusamus eveniet incidunt! Ea a unde tenetur sint neque blanditiis architecto fugit aliquid, exercitationem, odit reprehenderit, vitae nobis quo? Error distinctio dolores nam.",
     startDate: "2024-07-07T00:00:00.000Z",
     endDate: "2024-07-07T00:00:00.000Z",
-    openTime: "10:00AM - 18:00PM",
+    openTime: "2024-07-07T09:00:00Z",
+    closingTime:"2024-07-07T18:00:00Z",
     isActive: true,
   },
   {
@@ -212,7 +214,8 @@ const event = [
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit maiores, quisquam error ex sit natus debitis ratione distinctio saepe, harum, facere laborum deleniti autem dolorem asperiores consequuntur accusamus eveniet incidunt! Ea a unde tenetur sint neque blanditiis architecto fugit aliquid, exercitationem, odit reprehenderit, vitae nobis quo? Error distinctio dolores nam.",
     startDate: "2024-07-07T00:00:00.000Z",
     endDate: "2024-07-07T00:00:00.000Z",
-    openTime: "10:00AM - 18:00PM",
+    openTime: "2024-07-07T09:00:00Z",
+    closingTime:"2024-07-07T18:00:00Z",
     isActive: true,
   },
   {
@@ -225,7 +228,8 @@ const event = [
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit maiores, quisquam error ex sit natus debitis ratione distinctio saepe, harum, facere laborum deleniti autem dolorem asperiores consequuntur accusamus eveniet incidunt! Ea a unde tenetur sint neque blanditiis architecto fugit aliquid, exercitationem, odit reprehenderit, vitae nobis quo? Error distinctio dolores nam.",
     startDate: "2024-07-07T00:00:00.000Z",
     endDate: "2024-07-07T00:00:00.000Z",
-    openTime: "10:00AM - 18:00PM",
+    openTime: "2024-07-07T09:00:00Z",
+    closingTime:"2024-07-07T18:00:00Z",
     isActive: true,
   },
   {
@@ -238,7 +242,8 @@ const event = [
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit maiores, quisquam error ex sit natus debitis ratione distinctio saepe, harum, facere laborum deleniti autem dolorem asperiores consequuntur accusamus eveniet incidunt! Ea a unde tenetur sint neque blanditiis architecto fugit aliquid, exercitationem, odit reprehenderit, vitae nobis quo? Error distinctio dolores nam.",
     startDate: "2024-07-07T00:00:00.000Z",
     endDate: "2024-07-07T00:00:00.000Z",
-    openTime: "10:00AM - 18:00PM",
+    openTime: "2024-07-07T09:00:00Z",
+    closingTime:"2024-07-07T18:00:00Z",
     isActive: true,
   },
   {
@@ -251,7 +256,8 @@ const event = [
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit maiores, quisquam error ex sit natus debitis ratione distinctio saepe, harum, facere laborum deleniti autem dolorem asperiores consequuntur accusamus eveniet incidunt! Ea a unde tenetur sint neque blanditiis architecto fugit aliquid, exercitationem, odit reprehenderit, vitae nobis quo? Error distinctio dolores nam.",
     startDate: "2024-07-07T00:00:00.000Z",
     endDate: "2024-07-07T00:00:00.000Z",
-    openTime: "10:00AM - 18:00PM",
+    openTime: "2024-07-07T09:00:00Z",
+    closingTime:"2024-07-07T18:00:00Z",
     isActive: false,
   },
 ];

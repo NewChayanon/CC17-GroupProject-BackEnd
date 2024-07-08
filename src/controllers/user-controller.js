@@ -107,6 +107,8 @@ userController.statusMessage = async (req, res, next) => {
   try {
     const userId = +req.params.userId;
     console.log("userId", userId);
+    const role = req.user.role
+    console.log(role)
     const data = await userService.findUserId(userId);
     console.log("data", data);
 
@@ -117,6 +119,7 @@ userController.statusMessage = async (req, res, next) => {
     }
     const statusMessage = await userService.updateStatus(
       userId,
+      role,
       !data.statusMessage
     );
     console.log("statusMessage", statusMessage);
@@ -543,7 +546,7 @@ userController.createEvent = async (req, res, next) => {
   }
 };
 
-userController.addMoreProduct = async (req, res, next) => {
+userController.createProduct = async (req, res, next) => {
   try {
     const productUserId = req.user.id;
     console.log("userIdProduct", productUserId);

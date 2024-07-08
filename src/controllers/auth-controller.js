@@ -8,6 +8,7 @@ const dataFormat = require("../utils/dataFormat");
 const voucherItemService = require("../services/voucherItem-service");
 const storeProfileService = require("../services/storeProfile-service");
 const { filterLocationWithinRange } = require("../utils/calculate");
+const productService = require("../services/product-service");
 
 const authController = {};
 
@@ -69,6 +70,17 @@ authController.searchBar = async (req, res, next) => {
       case "location":
         break;
       case "product":
+        const searchProduct = await productService.findManyStoreProfileSelectIdAndName()
+        const filterProduct = searchProduct.filter(el => el.name.toUpperCase().includes(searchKeyword.toUpperCase()))
+        const eventIdByProduct = []
+        filterProduct.map(el => el.EventItem.map(element=>{
+          const haveEventId = eventIdByProduct.find(eventId => eventId === element.eventId)
+          if (!haveEventId) {
+            eventIdByProduct.push(element.eventId)
+          }
+        }))
+        const dataSearchByProduct = await eventServices.findManyEventAndStoreProfileAndUserAndFollowAndVoucherItemAndVoucherListInId(eventIdByProduct)
+        dataSearchBy.push(dataSearchByProduct)
         break;
       case "store":
         const searchStore = await storeProfileService.findManyStoreProfileSelectIdAndName()

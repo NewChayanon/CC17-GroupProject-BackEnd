@@ -67,6 +67,22 @@ eventServices.findManyEventAndStoreProfileAndUserAndFollowAndVoucherItemAndVouch
         VoucherList: { include: { VoucherItem: true } },
       },
     });
+eventServices.findManyEventAndStoreProfileAndUserAndFollowAndVoucherItemAndVoucherListInId =
+  (id) =>
+    prisma.events.findMany({
+      where: { id: { in: id } },
+      include: {
+        storeProfile: {
+          include: {
+            user: true,
+            Follow: true,
+            Events: true,
+            VoucherItem: true,
+          },
+        },
+        VoucherList: { include: { VoucherItem: true } },
+      },
+    });
 
 // group by
 eventServices.groupByEventByStoreId = (storeProfileId) =>

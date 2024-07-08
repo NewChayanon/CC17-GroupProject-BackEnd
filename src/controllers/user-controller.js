@@ -430,17 +430,31 @@ userController.editProduct = async (req, res, next) => {
 userController.getAllProductByStoreProfileId = async (req, res, next) => {
   try {
     const userId = req.user.id;
-    console.log("allProductUserId", userId);
-    const storeProfileId = await storeProfileService.findStoreProfileByUserId(
-      userId
+    const storeProfileId = req.seller.storeProfileId;
+    const mySeller = userService.findUserId(userId);
+    const myStoreProfile =
+      storeProfileService.findFirstStoreProfileById(storeProfileId);
+    const myFollower =
+      followService.findManyFollowByStoreProfileId(storeProfileId);
+    const myEvent = eventServices.findManyEventByStoreProfileId(storeProfileId);
+    const myVoucherItem =
+      voucherItemService.findManyVoucherItemByStoreProfile(storeProfileId);
+    const myProduct =
+      productService.findManyProductByStoreProfileId(storeProfileId);
+    const promise = [];
+    promise.push(
+      mySeller,
+      myStoreProfile,
+      myFollower,
+      myEvent,
+      myVoucherItem,
+      myProduct
     );
-    console.log("storeProfileId", storeProfileId.id);
+    const data = await Promise.all(promise);
 
-    const findAllProduct = await productService.getAllProductByStoreProfileId(
-      storeProfileId.id
-    );
-    console.log("findAllProduct", findAllProduct);
-    res.status(200).json(findAllProduct);
+    const response = dataFormat.myStoreProfile(data);
+
+    res.status(200).json(response);
   } catch (error) {
     next(error);
   }
@@ -1125,18 +1139,21 @@ userController.editEvent = async (req, res, next) => {
   }
 };
 
-userController.myFollower = async (req,res,next) => {
+userController.myFollower = async (req, res, next) => {
   try {
-    const storeProfileId = req.seller.storeProfileId
+    const storeProfileId = req.seller.storeProfileId;
 
-    const myFollower = await followService.findManyFollowAndUserAndStoreProfileAndEventByStoreProfileId(storeProfileId)
+    const myFollower =
+      await followService.findManyFollowAndUserAndStoreProfileAndEventByStoreProfileId(
+        storeProfileId
+      );
 
-    const dataFormatMyFollower = dataFormat.myFollower(myFollower)
+    const dataFormatMyFollower = dataFormat.myFollower(myFollower);
 
-    return res.json(dataFormatMyFollower)
+    return res.json(dataFormatMyFollower);
   } catch (err) {
-    next(err)
+    next(err);
   }
-}
+};
 
 module.exports = userController;

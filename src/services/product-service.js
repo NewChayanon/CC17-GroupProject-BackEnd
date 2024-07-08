@@ -28,6 +28,9 @@ productService.findFirstProductByProductIdAndStoreProfileId = (
   storeProfileId
 ) => prisma.product.findFirst({ where: { id, storeProfileId } });
 
+productService.findManyProductByStoreProfileId = (storeProfileId) =>
+  prisma.product.findMany({ where: { storeProfileId } });
+
 // create
 productService.createProduct = async(data) => {
   const dataFormat = await prisma.product.create({ data });

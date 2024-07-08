@@ -96,7 +96,8 @@ userRouter.post(
 
 // get
 userRouter.get(
-  "/get-all-product/:storeProfileId",
+  "/my-store-profile",
+  isSeller,
   userController.getAllProductByStoreProfileId
 );
 userRouter.get("/store-main-page", isSeller, userController.fetchStoreMainPage);

@@ -16,6 +16,7 @@ const hashService = require("../services/hash-services");
 const commentService = require("../services/comment-service");
 const productService = require("../services/product-service");
 const eventItemService = require("../services/eventItem-service");
+const readMessageAdmin = require("../services/readMessageAdmin-service")
 
 const { log } = require("console");
 const { object } = require("joi");
@@ -143,11 +144,11 @@ userController.getNotificationPublic = async (req, res, next) => {
   console.log("publicNotification", publicNotification);
   const sellerNotification =
     await inboxMessageUserService.findInboxMessageByUserIdReceiver(userId);
-  console.log("sellerNotification", sellerNotification);
-  const sellerAndPublicNotification = [
-    ...publicNotification,
-    ...sellerNotification,
-  ];
+    const sellerAndPublicNotification = [
+      ...publicNotification,
+      ...sellerNotification,
+    ];
+    console.log("sellerAndPublicNotification", sellerAndPublicNotification);
   res.status(200).json(sellerAndPublicNotification);
 };
 
@@ -866,6 +867,36 @@ userController.createMessageToBuyers = async (req, res, next) => {
     next(error);
   }
 };
+
+userController.getReadMessageAdmin = async (req,res,next)=>{
+  try {
+    const userId = +req.user.id
+    console.log('userId',userId)
+    input = req.params?.adminId
+    console.log('input',input)
+
+    // const publicNotification = await userService.getPublicNotification();
+    // console.log(publicNotification);
+
+    const selectPublicNotification = await userService.selectPublicNotification(+input)
+    console.log('selectPublicNotification',selectPublicNotification);
+
+
+    data = {
+      adminId: +input,
+      userIdRead: userId
+    }
+
+    const userRead = await readMessageAdmin.createUserReadMessage(data)
+    if(userRead.userIdRead === userId){
+      return createError({message:"user read already"})
+    }
+    console.log('userRead',userRead)
+    res.status(200).json(userRead)
+  } catch (error) {
+    next(error)
+  }
+}
 
 userController.getHistoryInbox = async (req, res, next) => {
   try {

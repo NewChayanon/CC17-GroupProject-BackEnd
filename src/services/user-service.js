@@ -19,6 +19,9 @@ userService.updateStatus = (id, role, statusMessage) =>
 
 userService.getPublicNotification = () => prisma.inboxMessageAdmin.findMany();
 
+userService.selectPublicNotification = (id) => prisma.inboxMessageAdmin.findMany({where:{id}, select:{id: true}});
+
+
 userService.updateCoverImageById = (userId, data) =>
   prisma.storeProfile.update({
     where: {

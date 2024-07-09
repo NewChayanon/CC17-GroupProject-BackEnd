@@ -77,6 +77,10 @@ adminService.createMessage = (data) =>
   prisma.inboxMessageAdmin.create({ data });
 
 // find
+
+adminService.findMessage = (id) =>
+  prisma.inboxMessageAdmin.findUnique({where:{id}})
+
 adminService.getAllMessages = (topic, message) =>
   prisma.inboxMessageAdmin.findMany({
     where: {

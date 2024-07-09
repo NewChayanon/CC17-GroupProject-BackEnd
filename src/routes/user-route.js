@@ -94,6 +94,9 @@ userRouter.post(
   userController.addItemToEvent
 );
 
+userRouter.post("/read-message-admin/:adminId",userController.getReadMessageAdmin )
+
+
 // get
 userRouter.get(
   "/my-store-profile",

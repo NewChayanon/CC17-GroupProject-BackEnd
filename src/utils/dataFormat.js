@@ -345,13 +345,14 @@ dataFormat.StoreMainPage = (storeProfile, countFollower, countVoucher) => {
   const { eventNow, upComingEvent } = Events.reduce(
     (
       acc,
-      { id, name, startDate, endDate, openTime, locationName, isActive }
+      { id, name, startDate, endDate, openTime,closingTime, locationName, isActive }
     ) => {
       const eventDetails = {
         eventId: id,
         startDate,
         endDate,
         openTime,
+        closingTime,
         locationName,
         eventName: name,
       };
@@ -445,6 +446,7 @@ dataFormat.detailYellowCard = (event) => {
     startDate: eventStartDate,
     endDate: eventEndDate,
     openTime,
+    closingTime,
     locationName: eventLocationName,
     location: eventLocation,
     description: eventDescription,
@@ -499,6 +501,7 @@ dataFormat.detailYellowCard = (event) => {
     eventStartDate,
     eventEndDate,
     openTime,
+    closingTime,
     eventLocationName,
     eventLocation,
     eventDescription,
@@ -540,6 +543,7 @@ dataFormat.myEvent = (myEvent) =>
       startDate,
       endDate,
       openTime,
+      closingTime,
       locationName,
       location,
     }) => {
@@ -550,6 +554,7 @@ dataFormat.myEvent = (myEvent) =>
         eventStartDate: startDate,
         eventEndDate: endDate,
         openTime,
+        closingTime,
         locationName,
         location,
       };
@@ -624,13 +629,14 @@ dataFormat.myFollower = (myFollower) =>
         const { EventNow, UpComingEvent } = Events.reduce(
           (
             acc,
-            { id, name, startDate, endDate, openTime, locationName, isActive }
+            { id, name, startDate, endDate, openTime, closingTime, locationName, isActive }
           ) => {
             const eventDetails = {
               eventId: id,
               startDate,
               endDate,
               openTime,
+              closingTime,
               locationName,
               eventName: name,
             };

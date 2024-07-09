@@ -49,6 +49,8 @@ eventServices.findUniqueEventByIdAndStoreProfileId = (id, storeProfileId) =>
   prisma.events.findUnique({ where: { id, storeProfileId } });
 eventServices.findFirstEventByEventIdAndStoreProfileId = (id, storeProfileId) =>
   prisma.events.findFirst({ where: { id, storeProfileId } });
+eventServices.findFirstEventById = (id) =>
+  prisma.events.findFirst({ where: { id } });
 eventServices.findManyEventByStoreProfileId = (storeProfileId) =>
   prisma.events.findMany({ where: { storeProfileId } });
 eventServices.findManyEventAndStoreProfileAndUserAndFollowAndVoucherItemAndVoucherListInStoreProfileId =

@@ -10,7 +10,7 @@ const storeProfileService = require("../services/storeProfile-service");
 const { filterLocationWithinRange } = require("../utils/calculate");
 const productService = require("../services/product-service");
 const { locationValidator } = require("../middlewares/validator");
-const { eventWithinToday, eventWithinTomorrow } = require("../utils/searchByDate");
+const { eventWithinToday, eventWithinTomorrow, eventWithinRange } = require("../utils/searchByDate");
 
 
 const authController = {};
@@ -110,7 +110,6 @@ authController.searchBar = async (req, res, next) => {
       dateNow.setTime(dateNow.getTime() + thaiTimeOffset)
   
       let dataSearchByWhen = []
-      console.log(when)
       switch (when){
         case "today":
           dataSearchByWhen = dataSearchBy.filter(event=>eventWithinToday(event,dateNow))
@@ -118,12 +117,18 @@ authController.searchBar = async (req, res, next) => {
         case "tomorrow":
           dataSearchByWhen = dataSearchBy.filter(event=>eventWithinTomorrow(event,dateNow))
           break;
-        case "this week":
-          break;
+          case "this week":
+            const weekLater = new Date(dateNow)
+            weekLater.setDate(weekLater.getDate() + 7);
+            dataSearchByWhen = dataSearchBy.filter(event=>eventWithinRange(event,dateNow,weekLater))
+            break;
         case "this month":
+          const monthLater = new Date(dateNow)
+          monthLater.setMonth(monthLater.getMonth() + 1);
+          dataSearchByWhen = dataSearchBy.filter(event=>eventWithinRange(event,dateNow,monthLater))
           break;
       }
-// return res.json(dataSearchByWhen)
+      
     const response = dataFormat.searchBar(dataSearchByWhen)
 
     res.json(response);

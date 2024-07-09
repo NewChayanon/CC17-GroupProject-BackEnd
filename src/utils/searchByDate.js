@@ -22,3 +22,17 @@ exports.eventWithinTomorrow = (event, dateNow) => {
     formattedEndDate >= formattedDateTomorrow
   );
 };
+
+exports.eventWithinRange = (event, dateNow, dateRange) => {
+  const { startDate, endDate } = event;
+  const formattedStartDate = startDate.toISOString().split("T")[0];
+  const formattedEndDate = endDate.toISOString().split("T")[0];
+  const formattedDateNow = dateNow.toISOString().split("T")[0];
+  const formattedDateRange = dateRange.toISOString().split("T")[0];
+  // console.log(formattedStartDate,"",formattedDateNow,"",formattedEndDate,"",formattedDateRange,formattedStartDate <= formattedDateRange && formattedEndDate >= formattedDateNow)
+
+  return (
+    formattedStartDate <= formattedDateRange &&
+    formattedDateNow <= formattedEndDate
+  );
+};

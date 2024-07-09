@@ -137,6 +137,7 @@ const storeProfile = [
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit maiores, quisquam error ex sit natus debitis ratione distinctio saepe, harum, facere laborum deleniti autem dolorem asperiores consequuntur accusamus eveniet incidunt! Ea a unde tenetur sint neque blanditiis architecto fugit aliquid, exercitationem, odit reprehenderit, vitae nobis quo? Error distinctio dolores nam.",
     facebook: "https://picsum.photos/400",
     instagram: "https://picsum.photos/400",
+    storeProductType: "sssss",
   },
   {
     userId: 5,
@@ -149,6 +150,7 @@ const storeProfile = [
     facebook: "https://picsum.photos/400",
     instagram: "https://picsum.photos/400",
     line: "https://picsum.photos/400",
+    storeProductType: "sssss",
   },
   {
     userId: 12,
@@ -161,6 +163,7 @@ const storeProfile = [
     facebook: "https://picsum.photos/400",
     instagram: "https://picsum.photos/400",
     line: "https://picsum.photos/400",
+    storeProductType: "sssss",
   },
   {
     userId: 13,
@@ -173,6 +176,7 @@ const storeProfile = [
     facebook: "https://picsum.photos/400",
     instagram: "https://picsum.photos/400",
     line: "https://picsum.photos/400",
+    storeProductType: "sssss",
   },
 ];
 const event = [
@@ -187,7 +191,7 @@ const event = [
     startDate: "2024-07-07T00:00:00.000Z",
     endDate: "2024-07-07T00:00:00.000Z",
     openTime: "2024-07-07T09:00:00Z",
-    closingTime:"2024-07-07T18:00:00Z",
+    closingTime: "2024-07-07T18:00:00Z",
     isActive: true,
   },
   {
@@ -201,7 +205,7 @@ const event = [
     startDate: "2024-07-07T00:00:00.000Z",
     endDate: "2024-07-07T00:00:00.000Z",
     openTime: "2024-07-07T09:00:00Z",
-    closingTime:"2024-07-07T18:00:00Z",
+    closingTime: "2024-07-07T18:00:00Z",
     isActive: true,
   },
   {
@@ -215,7 +219,7 @@ const event = [
     startDate: "2024-07-07T00:00:00.000Z",
     endDate: "2024-07-07T00:00:00.000Z",
     openTime: "2024-07-07T09:00:00Z",
-    closingTime:"2024-07-07T18:00:00Z",
+    closingTime: "2024-07-07T18:00:00Z",
     isActive: true,
   },
   {
@@ -229,7 +233,7 @@ const event = [
     startDate: "2024-07-07T00:00:00.000Z",
     endDate: "2024-07-07T00:00:00.000Z",
     openTime: "2024-07-07T09:00:00Z",
-    closingTime:"2024-07-07T18:00:00Z",
+    closingTime: "2024-07-07T18:00:00Z",
     isActive: true,
   },
   {
@@ -243,7 +247,7 @@ const event = [
     startDate: "2024-07-07T00:00:00.000Z",
     endDate: "2024-07-07T00:00:00.000Z",
     openTime: "2024-07-07T09:00:00Z",
-    closingTime:"2024-07-07T18:00:00Z",
+    closingTime: "2024-07-07T18:00:00Z",
     isActive: true,
   },
   {
@@ -257,7 +261,7 @@ const event = [
     startDate: "2024-07-07T00:00:00.000Z",
     endDate: "2024-07-07T00:00:00.000Z",
     openTime: "2024-07-07T09:00:00Z",
-    closingTime:"2024-07-07T18:00:00Z",
+    closingTime: "2024-07-07T18:00:00Z",
     isActive: false,
   },
 ];

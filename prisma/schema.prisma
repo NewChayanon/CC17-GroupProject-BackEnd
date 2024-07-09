@@ -41,12 +41,13 @@ model StoreProfile {
   id                Int      @id @default(autoincrement())
   userId            Int      @unique
   name              String
-  coverImage        String
+  coverImage        String?
   sellerDescription String?  @db.Text
   description       String?  @db.Text
   facebook          String?
   instagram         String?
   line              String?
+  storeProductType  String?
   createdAt         DateTime @default(now()) @db.Timestamp(0)
   updatedAt         DateTime @updatedAt @db.Timestamp(0)
 
@@ -169,15 +170,15 @@ model InboxMessageAdmin {
   message      String   @db.Text
   createdAt    DateTime @default(now()) @db.Timestamp(0)
 
-  users Users @relation(fields: [userIdSender], references: [id])
+  users       Users              @relation(fields: [userIdSender], references: [id])
   readMessage ReadMessageAdmin[]
 }
 
 model ReadMessageAdmin {
-  id          Int       @id @default(autoincrement())
-  adminId     Int
-  userIdRead  Int
-  read     InboxMessageAdmin @relation(fields: [adminId], references: [id]) 
+  id         Int               @id @default(autoincrement())
+  adminId    Int
+  userIdRead Int
+  read       InboxMessageAdmin @relation(fields: [adminId], references: [id])
 }
 
 model InboxMessageUser {
@@ -186,7 +187,7 @@ model InboxMessageUser {
   userIdReceiver Int?
   topic          String
   message        String   @db.Text
-  isRead         Boolean  @default(false)         
+  isRead         Boolean  @default(false)
   createdAt      DateTime @default(now()) @db.Timestamp(0)
   userSender     Users    @relation("userSender", fields: [userIdSender], references: [id])
   userReceiver   Users?   @relation("userReceiver", fields: [userIdReceiver], references: [id])
@@ -203,8 +204,6 @@ model Report {
   storeProfile StoreProfile @relation(fields: [storeProfileReported], references: [id])
   user         Users        @relation(fields: [userIdReporter], references: [id])
 }
-
-
 
 enum Gender {
   MALE

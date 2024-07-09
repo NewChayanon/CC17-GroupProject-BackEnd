@@ -1,16 +1,10 @@
 const fs = require("fs/promises");
 const createError = require("../utils/createError");
 const { registerSchema, loginSchema } = require("../validators/auth-validator");
-const {
-  userReport,
-  userComment,
-  sellerEditDiscount,
-  aboutSeller,
-  editEvent,
-  createEvent,
-} = require("../validators/user-validator");
+const { userReport, userComment, sellerEditDiscount, aboutSeller, editEvent, createEvent,createStore } = require("../validators/user-validator");
 const { deleteImage } = require("../utils/deleteImages");
 const eventServices = require("../services/event-services");
+
 
 exports.registerValidator = (req, res, next) => {
   console.log(req.body);
@@ -46,9 +40,7 @@ exports.imagesOfCreateEventValidator = (req, res, next) => {
   if (req.files.voucherImage || req.body.voucher) {
     if (!req.files.voucherImage || !req.body.voucher) {
       deleteImage(req);
-      return res
-        .status(400)
-        .json({ msg: "Must include both a voucher image and voucher detail." });
+      return res.status(400).json({ msg: "Must include both a voucher image and voucher detail." });
     }
   }
   next();
@@ -95,8 +87,7 @@ exports.validateEditDiscount = (req, res, next) => {
 };
 
 exports.singleProfileImageValidator = (req, res, next) => {
-  if (!req.file)
-    return createError({ message: "at least one of profile", statusCode: 400 });
+  if (!req.file) return createError({ message: "at least one of profile", statusCode: 400 });
   next();
 };
 
@@ -124,25 +115,19 @@ exports.editEventValidator = async (req, res, next) => {
     const now = new Date(new Date().getTime() + thaiTimeOffset);
 
     if (req.body.startDate || req.body.endDate) {
-      const { startDate, endDate } = await eventServices.findFirstEventById(
-        +req.params.eventId
-      );
+      const { startDate, endDate } = await eventServices.findFirstEventById(+req.params.eventId);
 
       if (req.body.startDate) {
         const newStartDate = new Date(req.body.startDate);
 
         if (startDate < now || newStartDate < now) {
           deleteImage(req);
-          return res
-            .status(400)
-            .json({ msg: "Start date must be greater than the current date." });
+          return res.status(400).json({ msg: "Start date must be greater than the current date." });
         }
 
         if (req.body.endDate && new Date(req.body.endDate) < newStartDate) {
           deleteImage(req);
-          return res
-            .status(400)
-            .json({ msg: "End date must be greater than start date." });
+          return res.status(400).json({ msg: "End date must be greater than start date." });
         }
 
         if (!req.body.endDate && newStartDate > endDate) {
@@ -160,18 +145,14 @@ exports.editEventValidator = async (req, res, next) => {
     if (req.body.openTime || req.body.closingTime) {
       if (!req.body.openTime || !req.body.closingTime) {
         deleteImage(req);
-        return res
-          .status(400)
-          .json({ msg: "Required OpenTime Or ClosingTime." });
+        return res.status(400).json({ msg: "Required OpenTime Or ClosingTime." });
       }
       const openTime = req.body.openTime.split("T")[0];
       const closingTime = req.body.closingTime.split("T")[0];
 
       if (openTime !== closingTime) {
         deleteImage(req);
-        return res
-          .status(400)
-          .json({ msg: "OpenTime Or ClosingTime Invalid." });
+        return res.status(400).json({ msg: "OpenTime Or ClosingTime Invalid." });
       }
     }
 
@@ -227,3 +208,11 @@ exports.locationValidator = (location) => {
   return isLatitudeValid && isLongitudeValid;
 };
 
+exports.createStoreValidator = (req, res, next) => {
+  const { value, error } = createStore.validate(req.body);
+  if (error) {
+    return res.status(400).json({ message: error.details[0].message });
+  }
+  req.createStore = value;
+  next();
+};

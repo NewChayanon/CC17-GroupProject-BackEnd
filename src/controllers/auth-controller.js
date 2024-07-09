@@ -12,7 +12,6 @@ const productService = require("../services/product-service");
 const { locationValidator } = require("../middlewares/validator");
 const { eventWithinToday, eventWithinTomorrow, eventWithinRange } = require("../utils/searchByDate");
 
-
 const authController = {};
 
 authController.register = async (req, res, next) => {
@@ -22,8 +21,7 @@ authController.register = async (req, res, next) => {
     delete data.confirmPassword;
     console.log("data", data);
     const existUser = await authService.findUserByEmail(data.email);
-    if (existUser)
-      return createError({ message: "email already in use", statusCode: 400 });
+    if (existUser) return createError({ message: "email already in use", statusCode: 400 });
 
     data.password = await hashService.hash(data.password);
     await authService.createUser(data);
@@ -39,15 +37,13 @@ authController.login = async (req, res, next) => {
     // find email user
     const { email, password } = req.body;
     const existUser = await authService.findUserByEmail(email);
-    if (!existUser)
-      createError({ message: "Invalid credential", statusCode: 400 });
+    if (!existUser) createError({ message: "Invalid credential", statusCode: 400 });
     console.log("existUser", existUser.email);
 
     // find password user
     const isMatch = await hashService.compare(password, existUser.password);
     console.log("isMatch", isMatch);
-    if (!isMatch)
-      return createError({ message: "Invalid credential", statusCode: 400 });
+    if (!isMatch) return createError({ message: "Invalid credential", statusCode: 400 });
     delete existUser.password;
     const accessToken = jwtService.sign({ id: existUser.id });
     console.log("accessToken:", accessToken);
@@ -64,64 +60,62 @@ authController.searchBar = async (req, res, next) => {
     const when = req.query.when.toLowerCase();
 
     if (!searchBy || !searchKeyword || !when) {
-      return res
-        .status(400)
-        .json({ msg: "Please fill in complete information." });
+      return res.status(400).json({ msg: "Please fill in complete information." });
     }
 
-    let dataSearchBy = []
+    let dataSearchBy = [];
     switch (searchBy) {
       case "location":
-        const isLocation = locationValidator(searchKeyword)
+        const isLocation = locationValidator(searchKeyword);
         if (!isLocation) {
-          return res.json({msg:"Search keyword is not location"})
+          return res.json({ msg: "Search keyword is not location" });
         }
-        const searchEvent = await eventServices.findManyEventSelectIdAndLocation()
+        const searchEvent = await eventServices.findManyEventSelectIdAndLocation();
         const range = 10; //km.
-        const seller = filterLocationWithinRange(searchEvent,searchKeyword,range);
-        const eventIdByLocation = seller.map(el => el.id)
-        dataSearchBy = await eventServices.findManyEventAndStoreProfileAndUserAndFollowAndVoucherItemAndVoucherListInId(eventIdByLocation)
+        const seller = filterLocationWithinRange(searchEvent, searchKeyword, range);
+        const eventIdByLocation = seller.map((el) => el.id);
+        dataSearchBy = await eventServices.findManyEventAndStoreProfileAndUserAndFollowAndVoucherItemAndVoucherListInId(eventIdByLocation);
         break;
       case "product":
-        const searchProduct = await productService.findManyProductSelectIdAndName()
-        const filterProduct = searchProduct.filter(el => el.name.toUpperCase().includes(searchKeyword.toUpperCase()))
-        const eventIdByProduct = [...new Set(filterProduct.flatMap(el => el.EventItem.map(item => item.eventId)))];
-        console.log(eventIdByProduct)
-        dataSearchBy = await eventServices.findManyEventAndStoreProfileAndUserAndFollowAndVoucherItemAndVoucherListInId(eventIdByProduct)
+        const searchProduct = await productService.findManyProductSelectIdAndName();
+        const filterProduct = searchProduct.filter((el) => el.name.toUpperCase().includes(searchKeyword.toUpperCase()));
+        const eventIdByProduct = [...new Set(filterProduct.flatMap((el) => el.EventItem.map((item) => item.eventId)))];
+        console.log(eventIdByProduct);
+        dataSearchBy = await eventServices.findManyEventAndStoreProfileAndUserAndFollowAndVoucherItemAndVoucherListInId(eventIdByProduct);
         break;
       case "store":
-        const searchStore = await storeProfileService.findManyStoreProfileSelectIdAndName()
-        const filterStore = searchStore.filter(el => el.name.toUpperCase().includes(searchKeyword.toUpperCase()))
-        const storeProfileId = filterStore.map(el => el.id)
-        dataSearchBy = await eventServices.findManyEventAndStoreProfileAndUserAndFollowAndVoucherItemAndVoucherListInStoreProfileId(storeProfileId)
+        const searchStore = await storeProfileService.findManyStoreProfileSelectIdAndName();
+        const filterStore = searchStore.filter((el) => el.name.toUpperCase().includes(searchKeyword.toUpperCase()));
+        const storeProfileId = filterStore.map((el) => el.id);
+        dataSearchBy = await eventServices.findManyEventAndStoreProfileAndUserAndFollowAndVoucherItemAndVoucherListInStoreProfileId(storeProfileId);
         break;
-      }
-      
-      const thaiTimeOffset = 7 * 60 * 60 * 1000;
-      const dateNow = new Date()
-      dateNow.setTime(dateNow.getTime() + thaiTimeOffset)
-  
-      let dataSearchByWhen = []
-      switch (when){
-        case "today":
-          dataSearchByWhen = dataSearchBy.filter(event=>eventWithinToday(event,dateNow))
-          break;
-        case "tomorrow":
-          dataSearchByWhen = dataSearchBy.filter(event=>eventWithinTomorrow(event,dateNow))
-          break;
-          case "this week":
-            const weekLater = new Date(dateNow)
-            weekLater.setDate(weekLater.getDate() + 7);
-            dataSearchByWhen = dataSearchBy.filter(event=>eventWithinRange(event,dateNow,weekLater))
-            break;
-        case "this month":
-          const monthLater = new Date(dateNow)
-          monthLater.setMonth(monthLater.getMonth() + 1);
-          dataSearchByWhen = dataSearchBy.filter(event=>eventWithinRange(event,dateNow,monthLater))
-          break;
-      }
-      
-    const response = dataFormat.searchBar(dataSearchByWhen)
+    }
+
+    const thaiTimeOffset = 7 * 60 * 60 * 1000;
+    const dateNow = new Date();
+    dateNow.setTime(dateNow.getTime() + thaiTimeOffset);
+
+    let dataSearchByWhen = [];
+    switch (when) {
+      case "today":
+        dataSearchByWhen = dataSearchBy.filter((event) => eventWithinToday(event, dateNow));
+        break;
+      case "tomorrow":
+        dataSearchByWhen = dataSearchBy.filter((event) => eventWithinTomorrow(event, dateNow));
+        break;
+      case "this week":
+        const weekLater = new Date(dateNow);
+        weekLater.setDate(weekLater.getDate() + 7);
+        dataSearchByWhen = dataSearchBy.filter((event) => eventWithinRange(event, dateNow, weekLater));
+        break;
+      case "this month":
+        const monthLater = new Date(dateNow);
+        monthLater.setMonth(monthLater.getMonth() + 1);
+        dataSearchByWhen = dataSearchBy.filter((event) => eventWithinRange(event, dateNow, monthLater));
+        break;
+    }
+
+    const response = dataFormat.searchBar(dataSearchByWhen);
 
     res.json(response);
   } catch (err) {
@@ -135,25 +129,14 @@ authController.sellerNearMe = async (req, res, next) => {
     const range = 13; //km.
     const allEventIsActive = await eventServices.findAllEventByIsActive();
 
-    const seller = filterLocationWithinRange(
-      allEventIsActive,
-      userLocation,
-      range
-    );
+    const seller = filterLocationWithinRange(allEventIsActive, userLocation, range);
 
     const storeProfileId = dataFormat.selectStoreProfileId(seller);
 
-    const groupEvent = await eventServices.groupByEventByStoreId(
-      storeProfileId
-    );
-    const groupVoucherItem =
-      await voucherItemService.groupByVoucherItemByStoreId(storeProfileId);
+    const groupEvent = await eventServices.groupByEventByStoreId(storeProfileId);
+    const groupVoucherItem = await voucherItemService.groupByVoucherItemByStoreId(storeProfileId);
 
-    const sellerNewFormat = await dataFormat.sellerNearMe(
-      seller,
-      groupVoucherItem,
-      groupEvent
-    );
+    const sellerNewFormat = await dataFormat.sellerNearMe(seller, groupVoucherItem, groupEvent);
     res.json(sellerNewFormat);
   } catch (error) {
     next(error);
@@ -167,14 +150,8 @@ authController.afterClickOnTheEventCard = async (req, res, next) => {
     if (!findEventById) {
       return res.status(400).json({ msg: "Event invalid." });
     }
-    const findEventOther = await eventServices.findManyEventByStoreId(
-      findEventById.storeProfile.id,
-      eventId
-    );
-    const newFindEventById = dataFormat.authEventId(
-      findEventById,
-      findEventOther
-    );
+    const findEventOther = await eventServices.findManyEventByStoreId(findEventById.storeProfile.id, eventId);
+    const newFindEventById = dataFormat.authEventId(findEventById, findEventOther);
 
     res.json(newFindEventById);
   } catch (err) {
@@ -185,10 +162,7 @@ authController.afterClickOnTheEventCard = async (req, res, next) => {
 authController.storeProfile = async (req, res, next) => {
   try {
     const storeProfileId = +req.params.storeProfileId;
-    const infoStoreProfile =
-      await storeProfileService.findStoreProfileByStoreProfileId(
-        storeProfileId
-      );
+    const infoStoreProfile = await storeProfileService.findStoreProfileByStoreProfileId(storeProfileId);
     if (!infoStoreProfile) {
       return res.status(400).json({ msg: "Store profile invalid." });
     }
@@ -198,7 +172,5 @@ authController.storeProfile = async (req, res, next) => {
     next(err);
   }
 };
-
-
 
 module.exports = authController;

@@ -52,3 +52,8 @@ exports.createEvent = Joi.object({
     discount: Joi.number().required(),
   }),
 });
+
+exports.createStore = Joi.object({
+  name: Joi.string().required(),
+  storeProductType: Joi.string().required(),
+});

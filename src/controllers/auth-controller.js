@@ -10,6 +10,8 @@ const storeProfileService = require("../services/storeProfile-service");
 const { filterLocationWithinRange } = require("../utils/calculate");
 const productService = require("../services/product-service");
 const { locationValidator } = require("../middlewares/validator");
+const { eventWithinToday } = require("../utils/searchByDate");
+
 
 const authController = {};
 
@@ -57,15 +59,16 @@ authController.login = async (req, res, next) => {
 
 authController.searchBar = async (req, res, next) => {
   try {
-    const searchBy = req.query.searchBy;
+    const searchBy = req.query.searchBy.toLowerCase();
     const searchKeyword = req.query.searchKeyword;
-    const when = req.query.when;
+    const when = req.query.when.toLowerCase();
 
     if (!searchBy || !searchKeyword || !when) {
       return res
         .status(400)
         .json({ msg: "Please fill in complete information." });
     }
+
     let dataSearchBy = []
     switch (searchBy) {
       case "location":
@@ -78,7 +81,7 @@ authController.searchBar = async (req, res, next) => {
         const seller = filterLocationWithinRange(searchEvent,searchKeyword,range);
         const eventIdByLocation = seller.map(el => el.id)
         const dataSearchByLocation = await eventServices.findManyEventAndStoreProfileAndUserAndFollowAndVoucherItemAndVoucherListInId(eventIdByLocation)
-        dataSearchBy.push(dataSearchByLocation)
+        dataSearchBy = dataSearchByLocation
         break;
       case "product":
         const searchProduct = await productService.findManyProductSelectIdAndName()
@@ -91,18 +94,33 @@ authController.searchBar = async (req, res, next) => {
           }
         }))
         const dataSearchByProduct = await eventServices.findManyEventAndStoreProfileAndUserAndFollowAndVoucherItemAndVoucherListInId(eventIdByProduct)
-        dataSearchBy.push(dataSearchByProduct)
+        dataSearchBy = dataSearchByLocation
         break;
       case "store":
         const searchStore = await storeProfileService.findManyStoreProfileSelectIdAndName()
         const filterStore = searchStore.filter(el => el.name.toUpperCase().includes(searchKeyword.toUpperCase()))
         const storeProfileId = filterStore.map(el => el.id)
         const dataSearchByStore = await eventServices.findManyEventAndStoreProfileAndUserAndFollowAndVoucherItemAndVoucherListInStoreProfileId(storeProfileId)
-        dataSearchBy.push(dataSearchByStore)
+        dataSearchBy = dataSearchByLocation
         break;
       }
       
-    const response = dataFormat.searchBar(dataSearchBy)
+      const dateNow = new Date()
+      let dataSearchByWhen = []
+      console.log(when)
+      switch (when){
+        case "today":
+          dataSearchByWhen = dataSearchBy.filter(event=>eventWithinToday(event,dateNow))
+          break;
+        case "tomorrow":
+          break;
+        case "this week":
+          break;
+        case "this month":
+          break;
+      }
+
+    const response = dataFormat.searchBar(dataSearchByWhen)
 
     res.json(response);
   } catch (err) {

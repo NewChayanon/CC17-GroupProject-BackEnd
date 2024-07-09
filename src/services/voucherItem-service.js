@@ -3,11 +3,7 @@ const prisma = require("../models/prisma");
 const voucherItemService = {};
 
 // find
-voucherItemService.findVoucherItemByUserIdAnd = (
-  voucherListId,
-  storeProfileId,
-  userId
-) =>
+voucherItemService.findVoucherItemByUserIdAnd = (voucherListId, storeProfileId, userId) =>
   prisma.voucherItem.findFirst({
     where: { AND: [{ voucherListId }, { storeProfileId }, { userId }] },
   });
@@ -25,12 +21,9 @@ voucherItemService.findManyVoucherItemByUserId = (userId) =>
       },
     },
   });
-voucherItemService.findVoucherItemByUserIdAndVoucherItemId = (where) =>
-  prisma.voucherItem.findUnique({ where });
-voucherItemService.findUserIdAtVoucherItemByStoreProfileId = (storeProfileId) =>
-  prisma.voucherItem.findMany({ where: { storeProfileId } });
-voucherItemService.findManyVoucherItemByStoreProfile = (storeProfileId) =>
-  prisma.voucherItem.findMany({ where: { storeProfileId } });
+voucherItemService.findVoucherItemByUserIdAndVoucherItemId = (where) => prisma.voucherItem.findUnique({ where });
+voucherItemService.findUserIdAtVoucherItemByStoreProfileId = (storeProfileId) => prisma.voucherItem.findMany({ where: { storeProfileId } });
+voucherItemService.findManyVoucherItemByStoreProfile = (storeProfileId) => prisma.voucherItem.findMany({ where: { storeProfileId } });
 
 // group by
 voucherItemService.groupByVoucherItemByStoreId = (storeProfileId) =>
@@ -41,18 +34,15 @@ voucherItemService.groupByVoucherItemByStoreId = (storeProfileId) =>
   });
 
 // create
-voucherItemService.createVoucherItemByVoucherListIdAndStoreProfileIdAndUserId =
-  (voucherListId, storeProfileId, userId) =>
-    prisma.voucherItem.create({
-      data: { voucherListId, storeProfileId, userId },
-    });
+voucherItemService.createVoucherItemByVoucherListIdAndStoreProfileIdAndUserId = (voucherListId, storeProfileId, userId) =>
+  prisma.voucherItem.create({
+    data: { voucherListId, storeProfileId, userId },
+  });
 
 // update
-voucherItemService.updateVoucherItemByIdAndUserId = (where, data) =>
-  prisma.voucherItem.update({ where, data });
+voucherItemService.updateVoucherItemByIdAndUserId = (where, data) => prisma.voucherItem.update({ where, data });
 
 // delete
-voucherItemService.deleteManyVoucherItemByVoucherListId = (voucherListId) =>
-  prisma.voucherItem.deleteMany({ where: { voucherListId } });
+voucherItemService.deleteManyVoucherItemByVoucherListId = (voucherListId) => prisma.voucherItem.deleteMany({ where: { voucherListId } });
 
 module.exports = voucherItemService;

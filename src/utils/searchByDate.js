@@ -4,10 +4,7 @@ exports.eventWithinToday = (event, dateNow) => {
   const formattedEndDate = endDate.toISOString().split("T")[0];
   const formattedDateNow = dateNow.toISOString().split("T")[0];
 
-  return (
-    formattedStartDate <= formattedDateNow &&
-    formattedDateNow <= formattedEndDate
-  );
+  return formattedStartDate <= formattedDateNow && formattedDateNow <= formattedEndDate;
 };
 
 exports.eventWithinTomorrow = (event, dateNow) => {
@@ -17,10 +14,7 @@ exports.eventWithinTomorrow = (event, dateNow) => {
   const formattedStartDate = startDate.toISOString().split("T")[0];
   const formattedEndDate = endDate.toISOString().split("T")[0];
   const formattedDateTomorrow = tomorrow.toISOString().split("T")[0];
-  return (
-    formattedStartDate <= formattedDateTomorrow &&
-    formattedEndDate >= formattedDateTomorrow
-  );
+  return formattedStartDate <= formattedDateTomorrow && formattedEndDate >= formattedDateTomorrow;
 };
 
 exports.eventWithinRange = (event, dateNow, dateRange) => {
@@ -31,8 +25,5 @@ exports.eventWithinRange = (event, dateNow, dateRange) => {
   const formattedDateRange = dateRange.toISOString().split("T")[0];
   // console.log(formattedStartDate,"",formattedDateNow,"",formattedEndDate,"",formattedDateRange,formattedStartDate <= formattedDateRange && formattedEndDate >= formattedDateNow)
 
-  return (
-    formattedStartDate <= formattedDateRange &&
-    formattedDateNow <= formattedEndDate
-  );
+  return formattedStartDate <= formattedDateRange && formattedDateNow <= formattedEndDate;
 };

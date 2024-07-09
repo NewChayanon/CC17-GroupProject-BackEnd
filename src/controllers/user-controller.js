@@ -1030,7 +1030,7 @@ userController.buyerCreateStore = async (req, res, next) => {
 
     await Promise.all([createStoreProfile, changeRoleUser]);
 
-    return res.json({msg:"create store success."});
+    return res.json({ msg: "create store success." });
   } catch (err) {
     return next(err);
   }

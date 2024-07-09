@@ -1,10 +1,9 @@
 const fs = require("fs/promises");
 const createError = require("../utils/createError");
 const { registerSchema, loginSchema } = require("../validators/auth-validator");
-const { userReport, userComment, sellerEditDiscount, aboutSeller, editEvent, createEvent,createStore } = require("../validators/user-validator");
+const { userReport, userComment, sellerEditDiscount, aboutSeller, editEvent, createEvent, createStore } = require("../validators/user-validator");
 const { deleteImage } = require("../utils/deleteImages");
 const eventServices = require("../services/event-services");
-
 
 exports.registerValidator = (req, res, next) => {
   console.log(req.body);

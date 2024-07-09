@@ -8,6 +8,10 @@ async function run() {
 console.log("Reset DB..");
 run();
 
-// pnpm run resetDB
-// pnpm exec prisma db push
-// pnpm exec prisma db seed
+/* 
+
+pnpm run resetDB
+pnpm exec prisma db push
+pnpm exec prisma db seed
+
+*/

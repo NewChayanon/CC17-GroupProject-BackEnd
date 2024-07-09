@@ -2,8 +2,7 @@ const dataFormat = {};
 
 dataFormat.searchBar = (dataSearchBy) => {
   const newFormat = dataSearchBy.map((el) => {
-    const countVoucherThisEvent =
-      el.VoucherList.length === 0 ? 0 : el.VoucherList[0].VoucherItem.length;
+    const countVoucherThisEvent = el.VoucherList.length === 0 ? 0 : el.VoucherList[0].VoucherItem.length;
     return {
       id: el.id,
       eventName: el.name,
@@ -22,9 +21,9 @@ dataFormat.searchBar = (dataSearchBy) => {
       sellerFirstName: el.storeProfile.user.firstName,
       sellerCoverImage: el.storeProfile.user.profileImage,
       countFollower: el.storeProfile.Follow.length,
-      countEventOfSeller:el.storeProfile.Events.length,
+      countEventOfSeller: el.storeProfile.Events.length,
       countVoucherThisEvent,
-      sumVoucherSeller:el.storeProfile.VoucherItem.length,
+      sumVoucherSeller: el.storeProfile.VoucherItem.length,
     };
   });
   return newFormat;
@@ -32,16 +31,11 @@ dataFormat.searchBar = (dataSearchBy) => {
 
 dataFormat.sellerNearMe = (oldData, groupVoucherItem, groupEvent) => {
   const newFormat = oldData.map((el) => {
-    const countEventOfSeller = groupEvent.find(
-      (element) => element.storeProfileId === el.storeProfileId
-    )._count.storeProfileId;
+    const countEventOfSeller = groupEvent.find((element) => element.storeProfileId === el.storeProfileId)._count.storeProfileId;
 
-    const sumVoucherSeller = groupVoucherItem.find(
-      (element) => element.storeProfileId === el.storeProfileId
-    )._count.storeProfileId;
+    const sumVoucherSeller = groupVoucherItem.find((element) => element.storeProfileId === el.storeProfileId)._count.storeProfileId;
 
-    const countVoucherThisEvent =
-      el.VoucherList.length === 0 ? 0 : el.VoucherList[0].VoucherItem.length;
+    const countVoucherThisEvent = el.VoucherList.length === 0 ? 0 : el.VoucherList[0].VoucherItem.length;
 
     return {
       id: el.id,
@@ -70,8 +64,7 @@ dataFormat.sellerNearMe = (oldData, groupVoucherItem, groupEvent) => {
   return newFormat;
 };
 
-dataFormat.selectStoreProfileId = (seller) =>
-  seller.map((el) => el.storeProfileId);
+dataFormat.selectStoreProfileId = (seller) => seller.map((el) => el.storeProfileId);
 
 dataFormat.allFavoriteList = (allFavorite, allStoreProfileIdInFavorite) => {
   const allFavoriteList = allFavorite.map((el) => ({
@@ -93,21 +86,8 @@ dataFormat.allFavoriteList = (allFavorite, allStoreProfileIdInFavorite) => {
 };
 
 dataFormat.userEventId = (event, otherEvents, userId) => {
-  const {
-    id,
-    name,
-    images,
-    startDate,
-    endDate,
-    location,
-    VoucherList,
-    storeProfile,
-    Interest,
-    EventItem,
-  } = event;
-  const userVoucherStatus = VoucherList[0]?.VoucherItem.find(
-    (el) => el.userId === userId
-  );
+  const { id, name, images, startDate, endDate, location, VoucherList, storeProfile, Interest, EventItem } = event;
+  const userVoucherStatus = VoucherList[0]?.VoucherItem.find((el) => el.userId === userId);
   const newEvent = {
     id,
     eventName: name,
@@ -119,8 +99,7 @@ dataFormat.userEventId = (event, otherEvents, userId) => {
       ? {
           voucherCode: VoucherList[0].code,
           voucherCondition: VoucherList[0].condition,
-          voucherRemainingAmount:
-            VoucherList[0].totalAmount - VoucherList[0].VoucherItem.length,
+          voucherRemainingAmount: VoucherList[0].totalAmount - VoucherList[0].VoucherItem.length,
           userVoucherStatus: userVoucherStatus ? userVoucherStatus.status : [],
         }
       : [],
@@ -158,18 +137,7 @@ dataFormat.userEventId = (event, otherEvents, userId) => {
 };
 
 dataFormat.authEventId = (eventDetails, otherEvents) => {
-  const {
-    id,
-    name,
-    images,
-    startDate,
-    endDate,
-    location,
-    VoucherList,
-    storeProfile,
-    Interest,
-    EventItem,
-  } = eventDetails;
+  const { id, name, images, startDate, endDate, location, VoucherList, storeProfile, Interest, EventItem } = eventDetails;
   const formattedEventDetails = {
     id,
     eventName: name,
@@ -181,8 +149,7 @@ dataFormat.authEventId = (eventDetails, otherEvents) => {
       ? {
           voucherCode: VoucherList[0].code,
           voucherCondition: VoucherList[0].condition,
-          voucherRemainingAmount:
-            VoucherList[0].totalAmount - VoucherList[0].VoucherItem.length,
+          voucherRemainingAmount: VoucherList[0].totalAmount - VoucherList[0].VoucherItem.length,
           userVoucherStatus: [],
         }
       : [],
@@ -220,18 +187,7 @@ dataFormat.authEventId = (eventDetails, otherEvents) => {
 };
 
 dataFormat.authStoreProfileId = (oldData) => {
-  const {
-    id,
-    coverImage,
-    user,
-    name,
-    Follow,
-    Events,
-    VoucherItem,
-    sellerDescription,
-    description,
-    Comment,
-  } = oldData;
+  const { id, coverImage, user, name, Follow, Events, VoucherItem, sellerDescription, description, Comment } = oldData;
 
   return {
     id,
@@ -255,18 +211,7 @@ dataFormat.authStoreProfileId = (oldData) => {
 };
 
 dataFormat.userStoreProfileId = (oldData, userId) => {
-  const {
-    id,
-    coverImage,
-    user,
-    name,
-    Follow,
-    Events,
-    VoucherItem,
-    sellerDescription,
-    description,
-    Comment,
-  } = oldData;
+  const { id, coverImage, user, name, Follow, Events, VoucherItem, sellerDescription, description, Comment } = oldData;
 
   return {
     id,
@@ -298,11 +243,7 @@ dataFormat.couponList = (allCoupon) =>
       voucherList: {
         condition: voucherCondition,
         code: voucherCode,
-        event: {
-          name: eventName,
-          startDate: eventStartDate,
-          endDate: eventEndDate,
-        },
+        event: { name: eventName, startDate: eventStartDate, endDate: eventEndDate },
       },
     }) => ({
       voucherItemId: id,
@@ -317,36 +258,22 @@ dataFormat.couponList = (allCoupon) =>
   );
 
 dataFormat.StoreMainPage = (storeProfile, countFollower, countVoucher) => {
-  const {
-    id,
-    coverImage,
-    name: storeName,
-    Events = [],
-    user,
-    facebook = [],
-    instagram = [],
-    line = [],
-  } = storeProfile;
+  const { id, coverImage, name: storeName, Events = [], user, facebook = [], instagram = [], line = [] } = storeProfile;
   const { profileImage, firstName, lastName } = user;
   const events = Events.length;
-  const myEvent = Events.map(
-    ({ id,name, images, startDate, endDate, locationName, location }) => ({
-      eventId: id,
-      eventName: name,
-      eventImage: images,
-      eventStartDate: startDate,
-      eventEndDate: endDate,
-      storeName,
-      locationName,
-      location,
-    })
-  );
+  const myEvent = Events.map(({ id, name, images, startDate, endDate, locationName, location }) => ({
+    eventId: id,
+    eventName: name,
+    eventImage: images,
+    eventStartDate: startDate,
+    eventEndDate: endDate,
+    storeName,
+    locationName,
+    location,
+  }));
 
   const { eventNow, upComingEvent } = Events.reduce(
-    (
-      acc,
-      { id, name, startDate, endDate, openTime,closingTime, locationName, isActive }
-    ) => {
+    (acc, { id, name, startDate, endDate, openTime, closingTime, locationName, isActive }) => {
       const eventDetails = {
         eventId: id,
         startDate,
@@ -376,11 +303,9 @@ dataFormat.StoreMainPage = (storeProfile, countFollower, countVoucher) => {
       firstName,
       lastName,
       storeName,
-      followers:
-        countFollower.length !== 0 ? countFollower[0]._count.storeProfileId : 0,
+      followers: countFollower.length !== 0 ? countFollower[0]._count.storeProfileId : 0,
       events,
-      vouchers:
-        countVoucher.length !== 0 ? countVoucher[0]._count.storeProfileId : 0,
+      vouchers: countVoucher.length !== 0 ? countVoucher[0]._count.storeProfileId : 0,
       facebook,
       instagram,
       line,
@@ -393,25 +318,13 @@ dataFormat.StoreMainPage = (storeProfile, countFollower, countVoucher) => {
 dataFormat.eventInterest = (data, userId) => {
   return data.map((el) => {
     const { event } = el;
-    const {
-      storeProfile,
-      VoucherList,
-      id,
-      name,
-      images,
-      startDate,
-      endDate,
-      openTime,
-      locationName,
-    } = event;
+    const { storeProfile, VoucherList, id, name, images, startDate, endDate, openTime, locationName } = event;
     const { user, name: storeProfileName, id: sellerId } = storeProfile;
     const { firstName: sellerFirstName, profileImage: sellerCoverImage } = user;
 
     let getVoucher = [];
     if (VoucherList[0]) {
-      const voucherItem = VoucherList[0].VoucherItem.find(
-        (item) => item.userId === userId
-      );
+      const voucherItem = VoucherList[0].VoucherItem.find((item) => item.userId === userId);
       if (voucherItem) {
         getVoucher = voucherItem.status;
       }
@@ -469,31 +382,19 @@ dataFormat.detailYellowCard = (event) => {
       ]
     : [];
 
-  const voucherListDiscount =
-    promotion.length > 0 ? promotion[0].voucherListDiscount : [];
+  const voucherListDiscount = promotion.length > 0 ? promotion[0].voucherListDiscount : [];
 
-  const product = EventItem.map(
-    ({
-      products: {
-        id: productId,
-        image: productImage,
-        name: productName,
-        description: productDescription,
-        price: productPrice,
-        unit: productUnit,
-      },
-    }) => {
-      return {
-        productId,
-        productImage,
-        productName,
-        productDescription,
-        productPrice,
-        productUnit,
-        voucherListDiscount,
-      };
-    }
-  );
+  const product = EventItem.map(({ products: { id: productId, image: productImage, name: productName, description: productDescription, price: productPrice, unit: productUnit } }) => {
+    return {
+      productId,
+      productImage,
+      productName,
+      productDescription,
+      productPrice,
+      productUnit,
+      voucherListDiscount,
+    };
+  });
   return {
     eventId,
     eventName,
@@ -535,31 +436,19 @@ dataFormat.addProduct = ({ products }) => {
 };
 
 dataFormat.myEvent = (myEvent) =>
-  myEvent.map(
-    ({
-      id,
-      name,
-      storeProfile,
-      startDate,
-      endDate,
+  myEvent.map(({ id, name, storeProfile, startDate, endDate, openTime, closingTime, locationName, location }) => {
+    return {
+      eventId: id,
+      eventName: name,
+      storeProfileName: storeProfile.name,
+      eventStartDate: startDate,
+      eventEndDate: endDate,
       openTime,
       closingTime,
       locationName,
       location,
-    }) => {
-      return {
-        eventId: id,
-        eventName: name,
-        storeProfileName: storeProfile.name,
-        eventStartDate: startDate,
-        eventEndDate: endDate,
-        openTime,
-        closingTime,
-        locationName,
-        location,
-      };
-    }
-  );
+    };
+  });
 
 dataFormat.storeReview = (allReview) =>
   allReview.map(({ id, topic, rate, comment, user, createdAt, isVerify }) => ({
@@ -599,27 +488,10 @@ dataFormat.sellerCoupon = (allCoupon) =>
 dataFormat.myFollower = (myFollower) =>
   myFollower.map((el) => {
     const { user } = el;
-    const {
-      id: userId,
-      profileImage,
-      displayName,
-      firstName,
-      lastName,
-      StoreProfile,
-    } = user;
+    const { id: userId, profileImage, displayName, firstName, lastName, StoreProfile } = user;
     const storeProfile = [];
     if (StoreProfile) {
-      const {
-        id: storeProfileId,
-        coverImage,
-        name,
-        Follow,
-        Events,
-        VoucherItem,
-        facebook,
-        instagram,
-        line,
-      } = StoreProfile;
+      const { id: storeProfileId, coverImage, name, Follow, Events, VoucherItem, facebook, instagram, line } = StoreProfile;
       let followers = Follow ? Follow.length : 0;
       let events = Events ? Events.length : 0;
       let vouchers = VoucherItem ? VoucherItem.length : 0;
@@ -627,10 +499,7 @@ dataFormat.myFollower = (myFollower) =>
       let upComingEvent = [];
       if (Events) {
         const { EventNow, UpComingEvent } = Events.reduce(
-          (
-            acc,
-            { id, name, startDate, endDate, openTime, closingTime, locationName, isActive }
-          ) => {
+          (acc, { id, name, startDate, endDate, openTime, closingTime, locationName, isActive }) => {
             const eventDetails = {
               eventId: id,
               startDate,
@@ -682,14 +551,7 @@ dataFormat.myFollower = (myFollower) =>
     };
   });
 
-dataFormat.myStoreProfile = ([
-  mySeller,
-  myStoreProfile,
-  myFollower,
-  myEvent,
-  myVoucherItem,
-  myProduct,
-]) => {
+dataFormat.myStoreProfile = ([mySeller, myStoreProfile, myFollower, myEvent, myVoucherItem, myProduct]) => {
   let followers = myFollower.length;
   let events = myEvent.length;
   let vouchers = myVoucherItem.length;
@@ -709,19 +571,7 @@ dataFormat.myStoreProfile = ([
   let upComingEvent = [];
   if (myEvent.length !== 0) {
     const { EventNow, UpComingEvent } = myEvent.reduce(
-      (
-        acc,
-        {
-          id,
-          name,
-          startDate,
-          endDate,
-          openTime,
-          closingTime,
-          locationName,
-          isActive,
-        }
-      ) => {
+      (acc, { id, name, startDate, endDate, openTime, closingTime, locationName, isActive }) => {
         const eventDetails = {
           eventId: id,
           startDate,

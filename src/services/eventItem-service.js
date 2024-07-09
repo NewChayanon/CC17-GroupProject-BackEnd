@@ -8,16 +8,12 @@ eventItemService.findFirstByEventIdAndProductId = (where) =>
   });
 
 // create
-eventItemService.createEventItemByEventIdAndProductId = (data) =>
-  prisma.eventItem.create({ data, include: { products: true } });
+eventItemService.createEventItemByEventIdAndProductId = (data) => prisma.eventItem.create({ data, include: { products: true } });
 
-eventItemService.createManyEventItemByData = (data) =>
-  prisma.eventItem.createMany({ data });
+eventItemService.createManyEventItemByData = (data) => prisma.eventItem.createMany({ data });
 
 // delete
-eventItemService.deleteManyEventItemByEventId = (eventId) =>
-  prisma.eventItem.deleteMany({ where: { eventId } });
-eventItemService.deleteManyEventItemByProductId = (productId) =>
-  prisma.eventItem.deleteMany({ where: { productId } });
+eventItemService.deleteManyEventItemByEventId = (eventId) => prisma.eventItem.deleteMany({ where: { eventId } });
+eventItemService.deleteManyEventItemByProductId = (productId) => prisma.eventItem.deleteMany({ where: { productId } });
 
 module.exports = eventItemService;

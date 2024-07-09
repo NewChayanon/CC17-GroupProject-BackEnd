@@ -3,17 +3,11 @@ const prisma = require("../models/prisma");
 const followService = {};
 
 // find
-followService.findManyFavoriteByUserId = (userId) =>
-  prisma.follow.findMany({ where: { userId } });
-followService.findFollowByUserIdAndStoreProfileId = (userId, storeProfileId) =>
-  prisma.follow.findFirst({ where: { AND: [{ userId }, { storeProfileId }] } });
-followService.findManyUserIdFollowerByStoreProfileId = (storeProfileId) =>
-  prisma.follow.findMany({ where: { storeProfileId } });
-followService.findManyFollowByStoreProfileId = (storeProfileId) =>
-  prisma.follow.findMany({ where: { storeProfileId } });
-followService.findManyFollowAndUserAndStoreProfileAndEventByStoreProfileId = (
-  storeProfileId
-) =>
+followService.findManyFavoriteByUserId = (userId) => prisma.follow.findMany({ where: { userId } });
+followService.findFollowByUserIdAndStoreProfileId = (userId, storeProfileId) => prisma.follow.findFirst({ where: { AND: [{ userId }, { storeProfileId }] } });
+followService.findManyUserIdFollowerByStoreProfileId = (storeProfileId) => prisma.follow.findMany({ where: { storeProfileId } });
+followService.findManyFollowByStoreProfileId = (storeProfileId) => prisma.follow.findMany({ where: { storeProfileId } });
+followService.findManyFollowAndUserAndStoreProfileAndEventByStoreProfileId = (storeProfileId) =>
   prisma.follow.findMany({
     where: { storeProfileId },
     include: {
@@ -37,14 +31,10 @@ followService.findManyFollowAndUserAndStoreProfileAndEventByStoreProfileId = (
   });
 
 // create
-followService.createFollowByUserIdAndStoreProfileId = (
-  userId,
-  storeProfileId
-) => prisma.follow.create({ data: { userId, storeProfileId } });
+followService.createFollowByUserIdAndStoreProfileId = (userId, storeProfileId) => prisma.follow.create({ data: { userId, storeProfileId } });
 
 // delete
-followService.deleteFollowById = (id) =>
-  prisma.follow.delete({ where: { id } });
+followService.deleteFollowById = (id) => prisma.follow.delete({ where: { id } });
 
 // group by
 followService.groupByFollowByStoreProfileId = (storeProfileId) =>

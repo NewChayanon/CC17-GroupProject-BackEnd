@@ -31,7 +31,7 @@ adminService.getSeller = (pages, pageSize, sortBy) =>
     take: pageSize,
   });
 
-adminService.getBuyer = async(pages, pageSize, sortBy) => {
+adminService.getBuyer = async (pages, pageSize, sortBy) => {
   const result = await prisma.users.findMany({
     where: {
       role: "BUYER",
@@ -51,10 +51,10 @@ adminService.getBuyer = async(pages, pageSize, sortBy) => {
     skip: (pages - 1) * pageSize,
     take: pageSize,
   });
-  return result.map((el)=>{
-    const {displayName, ...rest} = el
-    return {...rest, username :displayName}
-  })
+  return result.map((el) => {
+    const { displayName, ...rest } = el;
+    return { ...rest, username: displayName };
+  });
 };
 
 //update
@@ -73,13 +73,11 @@ adminService.updateBlock = (id, isBlocked) =>
 
 //create
 
-adminService.createMessage = (data) =>
-  prisma.inboxMessageAdmin.create({ data });
+adminService.createMessage = (data) => prisma.inboxMessageAdmin.create({ data });
 
 // find
 
-adminService.findMessage = (id) =>
-  prisma.inboxMessageAdmin.findUnique({where:{id}})
+adminService.findMessage = (id) => prisma.inboxMessageAdmin.findUnique({ where: { id } });
 
 adminService.getAllMessages = (topic, message) =>
   prisma.inboxMessageAdmin.findMany({

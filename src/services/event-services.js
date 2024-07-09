@@ -3,6 +3,11 @@ const prisma = require("../models/prisma");
 const eventServices = {};
 
 // find
+
+eventServices.countActive = ()=> prisma.events.count({where:{isActive : true}})
+eventServices.countIsActive =()=> prisma.events.count({where:{isActive : false}})
+
+
 eventServices.findEventByEventId = (eventId) =>
   prisma.events.findUnique({
     where: { id: eventId },

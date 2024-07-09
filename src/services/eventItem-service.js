@@ -10,6 +10,7 @@ eventItemService.findFirstByEventIdAndProductId = (where) =>
 // create
 eventItemService.createEventItemByEventIdAndProductId = (data) =>
   prisma.eventItem.create({ data, include: { products: true } });
+
 eventItemService.createManyEventItemByData = (data) =>
   prisma.eventItem.createMany({ data });
 

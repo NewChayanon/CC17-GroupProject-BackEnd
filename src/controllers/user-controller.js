@@ -78,10 +78,24 @@ userController.interested = async (req, res, next) => {
 userController.fetchAllInbox = async (req, res, next) => {
   try {
     const userId = req.user.id;
-    const allInbox = await inboxMessageUserService.findManyInboxMessageByUserId(
-      userId
-    );
-    res.json(allInbox);
+  if (req.user.role === "ADMIN")
+    res.status(300).json({ message: "not allowed to access" });
+  const result = await userService.findUserId(userId);
+
+  if (!result) res.status(300).json({ message: "user is not defined" });
+  if (result.statusMessage || result.isBlocked)
+    res.status(300).json({ message: "No receive Notification" });
+
+  const publicNotification = await userService.getPublicNotification();
+  console.log("publicNotification", publicNotification);
+  const sellerNotification =
+    await inboxMessageUserService.findInboxMessageByUserIdReceiver(userId);
+    const sellerAndPublicNotification = [
+      ...publicNotification,
+      ...sellerNotification,
+    ];
+    console.log("sellerAndPublicNotification", sellerAndPublicNotification);
+  res.status(200).json(sellerAndPublicNotification);
   } catch (err) {
     next(err);
   }
@@ -130,27 +144,6 @@ userController.statusMessage = async (req, res, next) => {
   }
 };
 
-userController.getNotificationPublic = async (req, res, next) => {
-  const userId = req.user.id;
-  if (req.user.role === "ADMIN")
-    res.status(300).json({ message: "not allowed to access" });
-  const result = await userService.findUserId(userId);
-
-  if (!result) res.status(300).json({ message: "user is not defined" });
-  if (result.statusMessage || result.isBlocked)
-    res.status(300).json({ message: "No receive Notification" });
-
-  const publicNotification = await userService.getPublicNotification();
-  console.log("publicNotification", publicNotification);
-  const sellerNotification =
-    await inboxMessageUserService.findInboxMessageByUserIdReceiver(userId);
-    const sellerAndPublicNotification = [
-      ...publicNotification,
-      ...sellerNotification,
-    ];
-    console.log("sellerAndPublicNotification", sellerAndPublicNotification);
-  res.status(200).json(sellerAndPublicNotification);
-};
 
 userController.keepCoupon = async (req, res, next) => {
   try {

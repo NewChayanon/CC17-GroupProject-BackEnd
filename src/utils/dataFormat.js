@@ -330,8 +330,9 @@ dataFormat.StoreMainPage = (storeProfile, countFollower, countVoucher) => {
   const { profileImage, firstName, lastName } = user;
   const events = Events.length;
   const myEvent = Events.map(
-    ({ id, images, startDate, endDate, locationName, location }) => ({
+    ({ id,name, images, startDate, endDate, locationName, location }) => ({
       eventId: id,
+      eventName: name,
       eventImage: images,
       eventStartDate: startDate,
       eventEndDate: endDate,

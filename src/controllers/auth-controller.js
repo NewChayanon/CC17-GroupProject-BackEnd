@@ -68,6 +68,7 @@ authController.searchBar = async (req, res, next) => {
     let dataSearchBy = []
     switch (searchBy) {
       case "location":
+        
         break;
       case "product":
         const searchProduct = await productService.findManyStoreProfileSelectIdAndName()

@@ -80,28 +80,20 @@ authController.searchBar = async (req, res, next) => {
         const range = 10; //km.
         const seller = filterLocationWithinRange(searchEvent,searchKeyword,range);
         const eventIdByLocation = seller.map(el => el.id)
-        const dataSearchByLocation = await eventServices.findManyEventAndStoreProfileAndUserAndFollowAndVoucherItemAndVoucherListInId(eventIdByLocation)
-        dataSearchBy = dataSearchByLocation
+        dataSearchBy = await eventServices.findManyEventAndStoreProfileAndUserAndFollowAndVoucherItemAndVoucherListInId(eventIdByLocation)
         break;
       case "product":
         const searchProduct = await productService.findManyProductSelectIdAndName()
         const filterProduct = searchProduct.filter(el => el.name.toUpperCase().includes(searchKeyword.toUpperCase()))
-        const eventIdByProduct = []
-        filterProduct.map(el => el.EventItem.map(element=>{
-          const haveEventId = eventIdByProduct.find(eventId => eventId === element.eventId)
-          if (!haveEventId) {
-            eventIdByProduct.push(element.eventId)
-          }
-        }))
-        const dataSearchByProduct = await eventServices.findManyEventAndStoreProfileAndUserAndFollowAndVoucherItemAndVoucherListInId(eventIdByProduct)
-        dataSearchBy = dataSearchByProduct
+        const eventIdByProduct = [...new Set(filterProduct.flatMap(el => el.EventItem.map(item => item.eventId)))];
+        console.log(eventIdByProduct)
+        dataSearchBy = await eventServices.findManyEventAndStoreProfileAndUserAndFollowAndVoucherItemAndVoucherListInId(eventIdByProduct)
         break;
       case "store":
         const searchStore = await storeProfileService.findManyStoreProfileSelectIdAndName()
         const filterStore = searchStore.filter(el => el.name.toUpperCase().includes(searchKeyword.toUpperCase()))
         const storeProfileId = filterStore.map(el => el.id)
-        const dataSearchByStore = await eventServices.findManyEventAndStoreProfileAndUserAndFollowAndVoucherItemAndVoucherListInStoreProfileId(storeProfileId)
-        dataSearchBy = dataSearchByStore
+        dataSearchBy = await eventServices.findManyEventAndStoreProfileAndUserAndFollowAndVoucherItemAndVoucherListInStoreProfileId(storeProfileId)
         break;
       }
       

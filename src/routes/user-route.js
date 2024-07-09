@@ -26,7 +26,6 @@ const userRouter = express.Router();
 userRouter.get("/me", userController.getMe);
 userRouter.get("/event", userController.findEventListOfUser);
 userRouter.get("/inbox", userController.fetchAllInbox);
-// userRouter.get("/notification", userController.getNotificationPublic);
 userRouter.get("/favorite", userController.fetchAllFavorite);
 userRouter.get("/event/:eventId", userController.afterClickOnTheEventCard);
 userRouter.get("/storeProfile/:storeProfileId", userController.storeProfile);

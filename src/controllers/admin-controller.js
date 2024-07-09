@@ -1,6 +1,8 @@
 const prisma = require('../models/prisma');
 const adminService = require('../services/admin-service');
+const eventServices = require('../services/event-services');
 const userService = require('../services/user-service');
+const createError = require('../utils/createError');
 const adminController = {}
 
 adminController.getAllUser = async(req,res,next) =>{
@@ -42,6 +44,28 @@ adminController.getBuyer = async (req,res,next) =>{
     next(error)
   }
 };
+
+adminController.getAllEvents = async(req,res,next)=>{
+  try {
+    const countActiveEvents = await eventServices.countActive()
+    const countIsActiveEvents = await eventServices.countIsActive()
+    AllEvents = countActiveEvents+countIsActiveEvents
+    res.status(200).json({AllEvents,countActiveEvents,countIsActiveEvents})
+  } catch (error) {
+    next(error)
+  }
+}
+
+adminController.upComingEvent = async(req,res,next)=>{
+  try {
+    const countUpcomingEvents = await eventServices.countIsActive()
+    res.status(201).json(countUpcomingEvents)
+  } catch (error) {
+    next(error)
+  }
+}
+
+
 adminController.blocked = async(req,res,next) =>{
  try {
   const userId = +req.params.userId
@@ -67,7 +91,7 @@ adminController.createNotification = async (req,res,next) =>{
     const result = await adminService.createMessage(data)
     console.log('data',data)
     console.log('result',result)
-    res.status(200).json(result)
+    res.status(201).json(result)
   
   } catch (error) {
     next(error)
@@ -75,8 +99,13 @@ adminController.createNotification = async (req,res,next) =>{
 };
 
 adminController.getAllMessages = async(req,res,next) =>{
-  const text = await adminService.getAllMessages()
-  console.log('text',text)
+  try {
+    const text = await adminService.getAllMessages()
+    console.log('text',text)
+    res.status(200).json(text)
+  } catch (error) {
+    next(error)
+  }
 };
 
 

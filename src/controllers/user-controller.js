@@ -492,6 +492,7 @@ userController.createEvent = async (req, res, next) => {
       startDate: body.startDate,
       endDate: body.endDate,
       openTime: body.openTime,
+      closingTime:body.closingTime
     };
 
     const promise = [];

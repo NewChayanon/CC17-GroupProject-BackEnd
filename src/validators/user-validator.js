@@ -25,8 +25,10 @@ exports.editEvent = Joi.object({
   name: Joi.string(),
   description: Joi.string(),
   location: Joi.string(),
-  startDate: Joi.date().min("now"),
+  startDate: Joi.date(),
   endDate: Joi.date().min("now"),
+  openTime: Joi.date(),
+  closingTime: Joi.date().greater(Joi.ref("openTime")),
 });
 
 exports.createEvent = Joi.object({
@@ -34,9 +36,10 @@ exports.createEvent = Joi.object({
   description: Joi.string().required(),
   location: Joi.string().required(),
   locationName: Joi.string().required(),
-  startDate: Joi.date().required(),
-  endDate: Joi.date().required(),
-  openTime: Joi.string().required(),
+  startDate: Joi.date().min("now").required(),
+  endDate: Joi.date().min(Joi.ref("startDate")).required(),
+  openTime: Joi.date().required(),
+  closingTime: Joi.date().greater(Joi.ref("openTime")).required(),
   eventItem: Joi.array()
     .items(Joi.object({ productId: Joi.number().required() }))
     .required(),

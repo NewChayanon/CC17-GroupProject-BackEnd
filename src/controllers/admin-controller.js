@@ -5,9 +5,9 @@ const adminController = {}
 
 adminController.getAllUser = async(req,res,next) =>{
   try {
-    const BuyerAndSeller = await adminService.getAllBuyerAndSeller()
-    console.log('BuyerAndSeller',BuyerAndSeller)
-    res.status(200).json({BuyerAndSeller})
+    const buyerAndSeller = await adminService.getAllBuyerAndSeller()
+    console.log('BuyerAndSeller',buyerAndSeller)
+    res.status(200).json(buyerAndSeller)
   } catch (error) {
     next(error)
   }

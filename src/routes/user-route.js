@@ -58,6 +58,8 @@ userRouter.put(
   "/follow/:storeProfileId",
   userController.followAndUnFollowStoreProfile
 );
+userRouter.patch('/read-message/:id', userController.userReadMessage)
+
 
 // DELETE
 userRouter.delete("/remove/:inboxId", userController.removeMessageInbox);

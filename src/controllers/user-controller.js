@@ -875,12 +875,8 @@ userController.getReadMessageAdmin = async (req,res,next)=>{
     input = req.params?.adminId
     console.log('input',input)
 
-    // const publicNotification = await userService.getPublicNotification();
-    // console.log(publicNotification);
-
     const selectPublicNotification = await userService.selectPublicNotification(+input)
     console.log('selectPublicNotification',selectPublicNotification);
-
 
     data = {
       adminId: +input,
@@ -893,6 +889,24 @@ userController.getReadMessageAdmin = async (req,res,next)=>{
     }
     console.log('userRead',userRead)
     res.status(200).json(userRead)
+  } catch (error) {
+    next(error)
+  }
+}
+
+userController.userReadMessage = async (req,res,next)=>{
+  try {
+    const userId = +req.user.id
+    console.log('userId',userId)
+    const readId = +req.params.id
+    console.log('readId',readId)
+    const findMessage = await inboxMessageUserService.findInboxMessageByUserIdReceiver(userId)
+    console.log('findMessage',findMessage)
+
+    const readMessage = await inboxMessageUserService.readMessage(readId,!findMessage.isRead)
+    console.log('readMessage',readMessage)
+    res.status(201).json(readMessage)
+
   } catch (error) {
     next(error)
   }

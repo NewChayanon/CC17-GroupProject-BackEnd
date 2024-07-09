@@ -2,25 +2,22 @@ const storeProfileService = require("../services/storeProfile-service");
 
 exports.isSeller = async (req, res, next) => {
   try {
-    const role = req.user.role;
+    const { role, id: userId } = req.user;
     if (role !== "SELLER") {
       return res.status(403).json({ msg: "You don't have permission." });
     }
-    const storeProfile = await storeProfileService.findStoreProfileByUserId(
-      req.user.id
-    );
-    const eventId = storeProfile.Events.reduce((acc, { id }) => {
-      acc.push(id);
-      return acc;
-    }, []);
-    const productId = storeProfile.Product.reduce((acc, { id }) => {
-      acc.push(id);
-      return acc;
-    }, []);
-    const seller = { storeProfileId: storeProfile.id, eventId, productId };
-    req.seller = seller;
-    next();
+
+    const storeProfile = await storeProfileService.findStoreProfileByUserId(userId);
+    if (!storeProfile) {
+      return res.status(404).json({ msg: "Store profile not found!!!" });
+    }
+
+    const eventId = storeProfile.Events.map(({ id }) => id);
+    const productId = storeProfile.Product.map(({ id }) => id);
+
+    req.seller = { storeProfileId: storeProfile.id, eventId, productId };
+    return next();
   } catch (err) {
-    next(err);
+    return next(err);
   }
 };

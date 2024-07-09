@@ -3,8 +3,7 @@ const prisma = require("../models/prisma");
 const userService = {};
 
 userService.findUserId = (id) => prisma.users.findUnique({ where: { id } });
-userService.findEmail = (email) =>
-  prisma.users.findUnique({ where: { email } });
+userService.findEmail = (email) => prisma.users.findUnique({ where: { email } });
 
 userService.updateStatus = (id, role, statusMessage) =>
   prisma.users.update({
@@ -19,8 +18,7 @@ userService.updateStatus = (id, role, statusMessage) =>
 
 userService.getPublicNotification = () => prisma.inboxMessageAdmin.findMany();
 
-userService.selectPublicNotification = (id) => prisma.inboxMessageAdmin.findMany({where:{id}, select:{id: true}});
-
+userService.selectPublicNotification = (id) => prisma.inboxMessageAdmin.findMany({ where: { id }, select: { id: true } });
 
 userService.updateCoverImageById = (userId, data) =>
   prisma.storeProfile.update({
@@ -38,8 +36,7 @@ userService.updatePersonalInformationById = (id, data) =>
     data: data,
   });
 
-userService.createNotification = (data) =>
-  prisma.inboxMessageUser.createMany({ data });
+userService.createNotification = (data) => prisma.inboxMessageUser.createMany({ data });
 
 //future
 
@@ -56,7 +53,7 @@ userService.createNotification = (data) =>
 // });
 
 // Update
-userService.updateUserByIdAndData = (id, data) =>
-  prisma.users.update({ where: { id }, data });
+userService.updateUserByIdAndData = (id, data) => prisma.users.update({ where: { id }, data });
+userService.updateRoleById = (id) => prisma.users.update({ where: { id }, data: { role: "SELLER" } });
 
 module.exports = userService;

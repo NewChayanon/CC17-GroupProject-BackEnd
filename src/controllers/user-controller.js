@@ -16,7 +16,7 @@ const hashService = require("../services/hash-services");
 const commentService = require("../services/comment-service");
 const productService = require("../services/product-service");
 const eventItemService = require("../services/eventItem-service");
-const readMessageAdmin = require("../services/readMessageAdmin-service")
+const readMessageAdmin = require("../services/readMessageAdmin-service");
 
 const { log } = require("console");
 const { object } = require("joi");
@@ -55,20 +55,12 @@ userController.interested = async (req, res, next) => {
     if (!event) {
       return res.status(400).json({ msg: "Event invalid." });
     }
-    const interestId = await interestService.findInterestedByUserIdAndEventId(
-      userId,
-      eventId
-    );
+    const interestId = await interestService.findInterestedByUserIdAndEventId(userId, eventId);
     if (!interestId) {
-      const interest = await interestService.createInterestByUserIdAndEventId(
-        userId,
-        eventId
-      );
+      const interest = await interestService.createInterestByUserIdAndEventId(userId, eventId);
       return res.status(201).json({ msg: "Interested success" });
     }
-    const uninterestedEvent = await interestService.deleteInterestById(
-      interestId.id
-    );
+    const uninterestedEvent = await interestService.deleteInterestById(interestId.id);
     res.json({ meg: "Uninterested success" });
   } catch (error) {
     next(error);
@@ -78,24 +70,18 @@ userController.interested = async (req, res, next) => {
 userController.fetchAllInbox = async (req, res, next) => {
   try {
     const userId = req.user.id;
-  if (req.user.role === "ADMIN")
-    res.status(300).json({ message: "not allowed to access" });
-  const result = await userService.findUserId(userId);
+    if (req.user.role === "ADMIN") res.status(300).json({ message: "not allowed to access" });
+    const result = await userService.findUserId(userId);
 
-  if (!result) res.status(300).json({ message: "user is not defined" });
-  if (result.statusMessage || result.isBlocked)
-    res.status(300).json({ message: "No receive Notification" });
+    if (!result) res.status(300).json({ message: "user is not defined" });
+    if (result.statusMessage || result.isBlocked) res.status(300).json({ message: "No receive Notification" });
 
-  const publicNotification = await userService.getPublicNotification();
-  console.log("publicNotification", publicNotification);
-  const sellerNotification =
-    await inboxMessageUserService.findInboxMessageByUserIdReceiver(userId);
-    const sellerAndPublicNotification = [
-      ...publicNotification,
-      ...sellerNotification,
-    ];
+    const publicNotification = await userService.getPublicNotification();
+    console.log("publicNotification", publicNotification);
+    const sellerNotification = await inboxMessageUserService.findInboxMessageByUserIdReceiver(userId);
+    const sellerAndPublicNotification = [...publicNotification, ...sellerNotification];
     console.log("sellerAndPublicNotification", sellerAndPublicNotification);
-  res.status(200).json(sellerAndPublicNotification);
+    res.status(200).json(sellerAndPublicNotification);
   } catch (err) {
     next(err);
   }
@@ -104,13 +90,9 @@ userController.fetchAllInbox = async (req, res, next) => {
 userController.removeMessageInbox = async (req, res, next) => {
   try {
     const inboxId = +req.params.inboxId;
-    const haveMessage = await inboxMessageUserService.findInboxMessageById(
-      inboxId
-    );
-    if (!haveMessage)
-      return res.status(404).json({ msg: "Don't have message" });
-    const removeMessaged =
-      await inboxMessageUserService.removeInboxMessageByInboxId(inboxId);
+    const haveMessage = await inboxMessageUserService.findInboxMessageById(inboxId);
+    if (!haveMessage) return res.status(404).json({ msg: "Don't have message" });
+    const removeMessaged = await inboxMessageUserService.removeInboxMessageByInboxId(inboxId);
     res.status(204).json({ msg: "Removed" });
   } catch (err) {
     next(err);
@@ -122,8 +104,8 @@ userController.statusMessage = async (req, res, next) => {
   try {
     const userId = +req.params.userId;
     console.log("userId", userId);
-    const role = req.user.role
-    console.log(role)
+    const role = req.user.role;
+    console.log(role);
     const data = await userService.findUserId(userId);
     console.log("data", data);
 
@@ -132,18 +114,13 @@ userController.statusMessage = async (req, res, next) => {
       console.log(req.user.id);
       return res.status(300).json({ message: "not allowed to convert data" });
     }
-    const statusMessage = await userService.updateStatus(
-      userId,
-      role,
-      !data.statusMessage
-    );
+    const statusMessage = await userService.updateStatus(userId, role, !data.statusMessage);
     console.log("statusMessage", statusMessage);
     res.json(statusMessage);
   } catch (error) {
     next(error);
   }
 };
-
 
 userController.keepCoupon = async (req, res, next) => {
   try {
@@ -160,19 +137,13 @@ userController.keepCoupon = async (req, res, next) => {
 
     if (!VoucherList) return res.json({ msg: "This event have't a coupon." });
     const { VoucherItem } = VoucherList;
-    if (VoucherItem.length >= VoucherList.totalAmount)
-      return res.status(200).json({ msg: "Coupon sold out." });
+    if (VoucherItem.length >= VoucherList.totalAmount) return res.status(200).json({ msg: "Coupon sold out." });
 
     const haveCoupon = VoucherItem.find((el) => el.userId == userId);
 
     if (haveCoupon) return res.status(200).json({ msg: "You have a coupon." });
 
-    const keepCoupon =
-      await voucherItemService.createVoucherItemByVoucherListIdAndStoreProfileIdAndUserId(
-        VoucherList.id,
-        storeProfile.id,
-        userId
-      );
+    const keepCoupon = await voucherItemService.createVoucherItemByVoucherListIdAndStoreProfileIdAndUserId(VoucherList.id, storeProfile.id, userId);
 
     res.status(201).json({ msg: "Successfully collected coupons." });
   } catch (err) {
@@ -189,15 +160,9 @@ userController.fetchAllFavorite = async (req, res, next) => {
       id: el.storeProfileId,
     }));
 
-    const allStoreProfileIdInFavorite =
-      await storeProfileService.findManyStoreProfileByStoreProfileId(
-        storeProfileId
-      );
+    const allStoreProfileIdInFavorite = await storeProfileService.findManyStoreProfileByStoreProfileId(storeProfileId);
 
-    const allFavoriteList = dataFormat.allFavoriteList(
-      allFavorite,
-      allStoreProfileIdInFavorite
-    );
+    const allFavoriteList = dataFormat.allFavoriteList(allFavorite, allStoreProfileIdInFavorite);
 
     res.json(allFavoriteList);
   } catch (err) {
@@ -209,24 +174,13 @@ userController.afterClickOnTheEventCard = async (req, res, next) => {
   try {
     const userId = req.user.id;
     const eventId = +req.params.eventId;
-    const findEventById = await eventServices.findEventByEventIdAndUserId(
-      eventId,
-      userId
-    );
+    const findEventById = await eventServices.findEventByEventIdAndUserId(eventId, userId);
     if (!findEventById) {
       return res.status(400).json({ msg: "Event invalid" });
     }
-    const findEventOther = await eventServices.findManyEventByStoreId(
-      findEventById.storeProfile.id,
-      eventId,
-      userId
-    );
+    const findEventOther = await eventServices.findManyEventByStoreId(findEventById.storeProfile.id, eventId, userId);
 
-    const newFindEventById = dataFormat.userEventId(
-      findEventById,
-      findEventOther,
-      userId
-    );
+    const newFindEventById = dataFormat.userEventId(findEventById, findEventOther, userId);
 
     res.json(newFindEventById);
   } catch (err) {
@@ -240,9 +194,7 @@ userController.createStore = async (req, res, next) => {
   try {
     const userId = +req.user.id;
     console.log("userId", userId);
-    const findUserId = await storeProfileService.findStoreProfileByUserId(
-      userId
-    );
+    const findUserId = await storeProfileService.findStoreProfileByUserId(userId);
     console.log("findUserId", findUserId);
     if (findUserId)
       createError(
@@ -253,9 +205,7 @@ userController.createStore = async (req, res, next) => {
 
     const promises = [];
     if (req.files.coverImage) {
-      const result = uploadService
-        .upload(req.files.coverImage[0].path)
-        .then((url) => ({ url, key: "coverImage" }));
+      const result = uploadService.upload(req.files.coverImage[0].path).then((url) => ({ url, key: "coverImage" }));
       promises.push(result);
     }
 
@@ -273,13 +223,8 @@ userController.createStore = async (req, res, next) => {
       sellerDescription: req.body.sellerDescription,
       description: req.body.description,
     };
-    const createStoreProfile = await storeProfileService.createStoreProfile(
-      input
-    );
-    const convertToSeller = await userService.updateStatus(
-      userId,
-      (role = "SELLER")
-    );
+    const createStoreProfile = await storeProfileService.createStoreProfile(input);
+    const convertToSeller = await userService.updateStatus(userId, (role = "SELLER"));
 
     console.log("createStoreProfile", createStoreProfile);
 
@@ -299,9 +244,7 @@ userController.updateCoverImage = async (req, res, next) => {
     const promises = [];
     console.log(req.files);
     if (req.files.coverImage) {
-      const result = uploadService
-        .upload(req.files.coverImage[0].path)
-        .then((url) => ({ url, key: "coverImage" }));
+      const result = uploadService.upload(req.files.coverImage[0].path).then((url) => ({ url, key: "coverImage" }));
       promises.push(result);
     }
 
@@ -330,9 +273,7 @@ userController.updateProfileAndProfileImage = async (req, res, next) => {
     const promises = [];
     console.log(req.files);
     if (req.files.profileImage) {
-      const result = uploadService
-        .upload(req.files.profileImage[0].path)
-        .then((url) => ({ url, key: "profileImage" }));
+      const result = uploadService.upload(req.files.profileImage[0].path).then((url) => ({ url, key: "profileImage" }));
       promises.push(result);
     }
 
@@ -366,9 +307,7 @@ userController.updateProfileAndProfileImage = async (req, res, next) => {
     delete updateInfo.confirmPassword;
     await userService.updatePersonalInformationById(+req.user.id, updateInfo);
     console.log("updateInfo", updateInfo);
-    res
-      .status(200)
-      .json({ message: "update personal information complete!!!." });
+    res.status(200).json({ message: "update personal information complete!!!." });
   } catch (error) {
     next(error);
   } finally {
@@ -384,15 +323,12 @@ userController.editProduct = async (req, res, next) => {
     const productId = +req.params.productId;
     const productUserId = req.user.id;
     console.log("userIdProduct", productUserId);
-    const findUserIdInStoreProfile =
-      await storeProfileService.findStoreProfileByUserId(productUserId);
+    const findUserIdInStoreProfile = await storeProfileService.findStoreProfileByUserId(productUserId);
     console.log("findUserIdInStoreProfileId", findUserIdInStoreProfile.id);
 
     const promises = [];
     if (req.files.image) {
-      const result = uploadService
-        .upload(req.files.image[0].path)
-        .then((url) => ({ url, key: "image" }));
+      const result = uploadService.upload(req.files.image[0].path).then((url) => ({ url, key: "image" }));
       promises.push(result);
     }
     const result = await Promise.all(promises);
@@ -426,24 +362,13 @@ userController.getAllProductByStoreProfileId = async (req, res, next) => {
     const userId = req.user.id;
     const storeProfileId = req.seller.storeProfileId;
     const mySeller = userService.findUserId(userId);
-    const myStoreProfile =
-      storeProfileService.findFirstStoreProfileById(storeProfileId);
-    const myFollower =
-      followService.findManyFollowByStoreProfileId(storeProfileId);
+    const myStoreProfile = storeProfileService.findFirstStoreProfileById(storeProfileId);
+    const myFollower = followService.findManyFollowByStoreProfileId(storeProfileId);
     const myEvent = eventServices.findManyEventByStoreProfileId(storeProfileId);
-    const myVoucherItem =
-      voucherItemService.findManyVoucherItemByStoreProfile(storeProfileId);
-    const myProduct =
-      productService.findManyProductByStoreProfileId(storeProfileId);
+    const myVoucherItem = voucherItemService.findManyVoucherItemByStoreProfile(storeProfileId);
+    const myProduct = productService.findManyProductByStoreProfileId(storeProfileId);
     const promise = [];
-    promise.push(
-      mySeller,
-      myStoreProfile,
-      myFollower,
-      myEvent,
-      myVoucherItem,
-      myProduct
-    );
+    promise.push(mySeller, myStoreProfile, myFollower, myEvent, myVoucherItem, myProduct);
     const data = await Promise.all(promise);
 
     const response = dataFormat.myStoreProfile(data);
@@ -486,22 +411,18 @@ userController.createEvent = async (req, res, next) => {
       startDate: body.startDate,
       endDate: body.endDate,
       openTime: body.openTime,
-      closingTime:body.closingTime
+      closingTime: body.closingTime,
     };
 
     const promise = [];
     if (eventImage) {
-      const result = uploadService
-        .upload(eventImage[0].path)
-        .then((url) => ({ eventImage: url }));
+      const result = uploadService.upload(eventImage[0].path).then((url) => ({ eventImage: url }));
       promise.push(result);
     }
 
     const dataVoucherList = {};
     if (voucherImage) {
-      const result = uploadService
-        .upload(voucherImage[0].path)
-        .then((url) => ({ voucherImage: url }));
+      const result = uploadService.upload(voucherImage[0].path).then((url) => ({ voucherImage: url }));
       promise.push(result);
 
       Object.assign(dataVoucherList, {
@@ -559,15 +480,12 @@ userController.createProduct = async (req, res, next) => {
   try {
     const productUserId = req.user.id;
     console.log("userIdProduct", productUserId);
-    const findUserIdInStoreProfile =
-      await storeProfileService.findStoreProfileByUserId(productUserId);
+    const findUserIdInStoreProfile = await storeProfileService.findStoreProfileByUserId(productUserId);
     console.log("findUserIdInStoreProfileId", findUserIdInStoreProfile.id);
 
     const promises = [];
     if (req.files.image) {
-      const result = uploadService
-        .upload(req.files.image[0].path)
-        .then((url) => ({ url, key: "image" }));
+      const result = uploadService.upload(req.files.image[0].path).then((url) => ({ url, key: "image" }));
       promises.push(result);
     }
     const result = await Promise.all(promises);
@@ -622,10 +540,7 @@ userController.storeProfile = async (req, res, next) => {
   try {
     const userId = req.user.id;
     const storeProfileId = +req.params.storeProfileId;
-    const infoStoreProfile =
-      await storeProfileService.findStoreProfileByStoreProfileId(
-        storeProfileId
-      );
+    const infoStoreProfile = await storeProfileService.findStoreProfileByStoreProfileId(storeProfileId);
     if (!infoStoreProfile) {
       return res.status(400).json({ msg: "Store profile invalid." });
     }
@@ -641,25 +556,15 @@ userController.followAndUnFollowStoreProfile = async (req, res, next) => {
     const userId = req.user.id;
     const storeProfileId = +req.params.storeProfileId;
 
-    const storeProfile =
-      await storeProfileService.findStoreProfileByStoreProfileId(
-        storeProfileId
-      );
+    const storeProfile = await storeProfileService.findStoreProfileByStoreProfileId(storeProfileId);
     if (!storeProfile) {
       return res.status(400).json({ msg: "Store profile invalid." });
     }
 
-    const isFollow = await followService.findFollowByUserIdAndStoreProfileId(
-      userId,
-      storeProfileId
-    );
+    const isFollow = await followService.findFollowByUserIdAndStoreProfileId(userId, storeProfileId);
 
     if (!isFollow) {
-      const followed =
-        await followService.createFollowByUserIdAndStoreProfileId(
-          userId,
-          storeProfileId
-        );
+      const followed = await followService.createFollowByUserIdAndStoreProfileId(userId, storeProfileId);
       return res.status(201).json({ msg: "Followed" });
     }
 
@@ -681,10 +586,7 @@ userController.userReport = async (req, res, next) => {
       return res.status(400).json({ msg: "StoreProfile is required." });
     }
 
-    const haveStoreProfile =
-      await storeProfileService.findStoreProfileByStoreProfileId(
-        storeProfileReported
-      );
+    const haveStoreProfile = await storeProfileService.findStoreProfileByStoreProfileId(storeProfileReported);
     if (!haveStoreProfile) {
       return res.status(400).json({ msg: "StoreProfile invalid." });
     }
@@ -725,10 +627,7 @@ userController.userCreateComment = async (req, res, next) => {
       return res.status(400).json({ msg: "Comment invalid" });
     }
 
-    const haveStoreProfile =
-      await storeProfileService.findStoreProfileByStoreProfileId(
-        storeProfileId
-      );
+    const haveStoreProfile = await storeProfileService.findStoreProfileByStoreProfileId(storeProfileId);
     if (!haveStoreProfile) {
       return res.status(400).json({ msg: "StoreProfile invalid" });
     }
@@ -747,9 +646,7 @@ userController.userCreateComment = async (req, res, next) => {
 userController.fetchAllCoupon = async (req, res, next) => {
   try {
     const userId = req.user.id;
-    const allCoupon = await voucherItemService.findManyVoucherItemByUserId(
-      userId
-    );
+    const allCoupon = await voucherItemService.findManyVoucherItemByUserId(userId);
     const newAllCoupon = dataFormat.couponList(allCoupon);
     res.json(newAllCoupon);
   } catch (err) {
@@ -762,19 +659,15 @@ userController.userUseVoucher = async (req, res, next) => {
     const userId = req.user.id;
     const voucherItemId = +req.params.voucherItemId;
 
-    const haveVoucher =
-      await voucherItemService.findVoucherItemByUserIdAndVoucherItemId({
-        userId,
-        id: voucherItemId,
-      });
+    const haveVoucher = await voucherItemService.findVoucherItemByUserIdAndVoucherItemId({
+      userId,
+      id: voucherItemId,
+    });
     if (!haveVoucher) {
       return res.status(400).json({ msg: "You don't have permission" });
     }
 
-    const voucher = await voucherItemService.updateVoucherItemByIdAndUserId(
-      { id: voucherItemId, userId },
-      { status: "USED" }
-    );
+    const voucher = await voucherItemService.updateVoucherItemByIdAndUserId({ id: voucherItemId, userId }, { status: "USED" });
 
     res.json({ msg: "use coupon success" });
   } catch (err) {
@@ -786,12 +679,8 @@ userController.fetchStoreMainPage = async (req, res, next) => {
   try {
     const userId = req.user.id;
     const myEvent = await storeProfileService.findStoreProfileByUserId(userId);
-    const countFollower = await followService.groupByFollowByStoreProfileId(
-      myEvent.id
-    );
-    const countVoucher = await voucherItemService.groupByVoucherItemByStoreId([
-      myEvent.id,
-    ]);
+    const countFollower = await followService.groupByFollowByStoreProfileId(myEvent.id);
+    const countVoucher = await voucherItemService.groupByVoucherItemByStoreId([myEvent.id]);
     const data = dataFormat.StoreMainPage(myEvent, countFollower, countVoucher);
     res.json(data);
   } catch (err) {
@@ -805,8 +694,7 @@ userController.createMessageToBuyers = async (req, res, next) => {
     console.log("userId", userId);
     // follower
     const store = await storeProfileService.findStoreProfileByUserId(userId);
-    const userFollow =
-      await followService.findManyUserIdFollowerByStoreProfileId(store.id);
+    const userFollow = await followService.findManyUserIdFollowerByStoreProfileId(store.id);
 
     // interested
     const event = await eventServices.findEventsByStoreProfileId(store.id);
@@ -814,23 +702,14 @@ userController.createMessageToBuyers = async (req, res, next) => {
     let eventId = [];
     event.map((el) => eventId.push(el.id));
 
-    const userInterest = await interestService.findUserInterestByEventId(
-      eventId
-    );
+    const userInterest = await interestService.findUserInterestByEventId(eventId);
     // console.log('userInterest',userInterest)
 
     // get coupon
-    const userCoupon =
-      await voucherItemService.findUserIdAtVoucherItemByStoreProfileId(
-        store.id
-      );
+    const userCoupon = await voucherItemService.findUserIdAtVoucherItemByStoreProfileId(store.id);
     // console.log('coupon',userCoupon)
 
-    const followerAndInterestAndCoupon = [
-      ...userFollow,
-      ...userInterest,
-      ...userCoupon,
-    ];
+    const followerAndInterestAndCoupon = [...userFollow, ...userInterest, ...userCoupon];
     console.log("followerAndInterestAndCoupon", followerAndInterestAndCoupon);
 
     const receive = followerAndInterestAndCoupon.reduce((acc, el) => {
@@ -861,55 +740,53 @@ userController.createMessageToBuyers = async (req, res, next) => {
   }
 };
 
-userController.getReadMessageAdmin = async (req,res,next)=>{
+userController.getReadMessageAdmin = async (req, res, next) => {
   try {
-    const userId = +req.user.id
-    console.log('userId',userId)
-    input = req.params?.adminId
-    console.log('input',input)
+    const userId = +req.user.id;
+    console.log("userId", userId);
+    input = req.params?.adminId;
+    console.log("input", input);
 
-    const selectPublicNotification = await userService.selectPublicNotification(+input)
-    console.log('selectPublicNotification',selectPublicNotification);
+    const selectPublicNotification = await userService.selectPublicNotification(+input);
+    console.log("selectPublicNotification", selectPublicNotification);
 
     data = {
       adminId: +input,
-      userIdRead: userId
-    }
+      userIdRead: userId,
+    };
 
-    const userRead = await readMessageAdmin.createUserReadMessage(data)
-    if(userRead.userIdRead === userId){
-      return createError({message:"user read already"})
+    const userRead = await readMessageAdmin.createUserReadMessage(data);
+    if (userRead.userIdRead === userId) {
+      return createError({ message: "user read already" });
     }
-    console.log('userRead',userRead)
-    res.status(200).json(userRead)
+    console.log("userRead", userRead);
+    res.status(200).json(userRead);
   } catch (error) {
-    next(error)
+    next(error);
   }
-}
+};
 
-userController.userReadMessage = async (req,res,next)=>{
+userController.userReadMessage = async (req, res, next) => {
   try {
-    const userId = +req.user.id
-    console.log('userId',userId)
-    const readId = +req.params.id
-    console.log('readId',readId)
-    const findMessage = await inboxMessageUserService.findInboxMessageByUserIdReceiver(userId)
-    console.log('findMessage',findMessage)
+    const userId = +req.user.id;
+    console.log("userId", userId);
+    const readId = +req.params.id;
+    console.log("readId", readId);
+    const findMessage = await inboxMessageUserService.findInboxMessageByUserIdReceiver(userId);
+    console.log("findMessage", findMessage);
 
-    const readMessage = await inboxMessageUserService.readMessage(readId,!findMessage.isRead)
-    console.log('readMessage',readMessage)
-    res.status(201).json(readMessage)
-
+    const readMessage = await inboxMessageUserService.readMessage(readId, !findMessage.isRead);
+    console.log("readMessage", readMessage);
+    res.status(201).json(readMessage);
   } catch (error) {
-    next(error)
+    next(error);
   }
-}
+};
 
 userController.getHistoryInbox = async (req, res, next) => {
   try {
     const userId = req.user.id;
-    const allMessage =
-      await inboxMessageUserService.findInboxMessageByUserIdSender(userId);
+    const allMessage = await inboxMessageUserService.findInboxMessageByUserIdSender(userId);
     // console.log('allMessage',allMessage)
     res.status(200).json(allMessage);
   } catch (error) {
@@ -921,16 +798,11 @@ userController.viewDetailYellowCard = async (req, res, next) => {
   try {
     const userId = req.user.id;
     const eventId = +req.params.eventId;
-    const storeProfile = await storeProfileService.findStoreProfileByUserId(
-      userId
-    );
+    const storeProfile = await storeProfileService.findStoreProfileByUserId(userId);
     if (!storeProfile) {
       return res.status(400).json({ msg: "StoreProfile invalid" });
     }
-    const haveEvent = await eventServices.findUniqueEventByIdAndStoreProfileId(
-      eventId,
-      storeProfile.id
-    );
+    const haveEvent = await eventServices.findUniqueEventByIdAndStoreProfileId(eventId, storeProfile.id);
     if (!haveEvent) {
       return res.status(400).json({ msg: "EventId invalid" });
     }
@@ -945,15 +817,11 @@ userController.viewDetailYellowCard = async (req, res, next) => {
 userController.sellerMyProduct = async (req, res, next) => {
   try {
     const userId = req.user.id;
-    const storeProfile = await storeProfileService.findStoreProfileByUserId(
-      userId
-    );
+    const storeProfile = await storeProfileService.findStoreProfileByUserId(userId);
     if (!storeProfile) {
       return res.status(400).json({ msg: "StoreProfile invalid" });
     }
-    const myProduct = await productService.getAllProductByStoreProfileId(
-      storeProfile.id
-    );
+    const myProduct = await productService.getAllProductByStoreProfileId(storeProfile.id);
     const dataFormatMyProduct = dataFormat.myProduct(myProduct);
     res.json(dataFormatMyProduct);
   } catch (err) {
@@ -967,41 +835,26 @@ userController.addItemToEvent = async (req, res, next) => {
     const eventId = +req.params.eventId;
     const productId = +req.params.productId;
     const data = { eventId, productId };
-    const storeProfile = await storeProfileService.findStoreProfileByUserId(
-      userId
-    );
+    const storeProfile = await storeProfileService.findStoreProfileByUserId(userId);
     if (!storeProfile) {
       return res.status(400).json({ msg: "StoreProfile invalid" });
     }
-    const haveEventInStore =
-      await eventServices.findFirstEventByEventIdAndStoreProfileId(
-        eventId,
-        storeProfile.id
-      );
+    const haveEventInStore = await eventServices.findFirstEventByEventIdAndStoreProfileId(eventId, storeProfile.id);
     if (!haveEventInStore) {
       return res.status(400).json({ msg: "EventId invalid." });
     }
 
-    const haveProductInEvent =
-      await eventItemService.findFirstByEventIdAndProductId(data);
+    const haveProductInEvent = await eventItemService.findFirstByEventIdAndProductId(data);
     if (haveProductInEvent) {
       return res.status(400).json({ msg: "Have product in event." });
     }
 
-    const haveProductInStore =
-      await productService.findFirstProductByProductIdAndStoreProfileId(
-        productId,
-        storeProfile.id
-      );
+    const haveProductInStore = await productService.findFirstProductByProductIdAndStoreProfileId(productId, storeProfile.id);
     if (!haveProductInStore) {
-      return res
-        .status(400)
-        .json({ msg: "This product is not from this store." });
+      return res.status(400).json({ msg: "This product is not from this store." });
     }
 
-    const item = await eventItemService.createEventItemByEventIdAndProductId(
-      data
-    );
+    const item = await eventItemService.createEventItemByEventIdAndProductId(data);
     const dataFormatAddProduct = dataFormat.addProduct(item);
     res.status(201).json(dataFormatAddProduct);
   } catch (err) {
@@ -1019,18 +872,13 @@ userController.editDiscount = async (req, res, next) => {
     }
     const { storeProfile, VoucherList } = event;
     if (storeProfile.userId !== userId) {
-      return res
-        .status(403)
-        .json({ msg: "Editing of this event is not allowed." });
+      return res.status(403).json({ msg: "Editing of this event is not allowed." });
     }
     if (VoucherList.length === 0) {
       return res.status(404).json({ msg: "Event not having a coupon." });
     }
     const [{ id }] = VoucherList;
-    const discounted = await voucherListService.updateDiscountByEventId(
-      id,
-      req.body
-    );
+    const discounted = await voucherListService.updateDiscountByEventId(id, req.body);
     res.status(201).json(discounted);
   } catch (err) {
     next(err);
@@ -1043,26 +891,15 @@ userController.sellerRemoveEvent = async (req, res, next) => {
     const eventId = +req.params.eventId;
     const event = eventOfSeller.find((el) => el === eventId);
     if (!event) {
-      return res
-        .status(403)
-        .json({ msg: "Not Authorized to Delete This Event" });
+      return res.status(403).json({ msg: "Not Authorized to Delete This Event" });
     }
 
-    const deleteInterest = await interestService.deleteManyInterestByEventId(
-      eventId
-    );
-    const deleteEventItem = await eventItemService.deleteManyEventItemByEventId(
-      eventId
-    );
-    const haveVoucherList =
-      await voucherListService.findFirstVoucherListByEventId(eventId);
+    const deleteInterest = await interestService.deleteManyInterestByEventId(eventId);
+    const deleteEventItem = await eventItemService.deleteManyEventItemByEventId(eventId);
+    const haveVoucherList = await voucherListService.findFirstVoucherListByEventId(eventId);
     if (haveVoucherList) {
-      const deleteVoucherItem =
-        await voucherItemService.deleteManyVoucherItemByVoucherListId(
-          haveVoucherList.id
-        );
-      const deleteVoucherList =
-        await voucherListService.deleteManyVoucherListByEventId(eventId);
+      const deleteVoucherItem = await voucherItemService.deleteManyVoucherItemByVoucherListId(haveVoucherList.id);
+      const deleteVoucherList = await voucherListService.deleteManyVoucherListByEventId(eventId);
     }
     const deleteEvent = await eventServices.deleteEventById(eventId);
     res.status(201).json({ msg: "remove success" });
@@ -1074,9 +911,7 @@ userController.sellerRemoveEvent = async (req, res, next) => {
 userController.eventOfSeller = async (req, res, next) => {
   try {
     const storeProfileId = req.seller.storeProfileId;
-    const allMyEvent = await eventServices.findEventsByStoreProfileId(
-      storeProfileId
-    );
+    const allMyEvent = await eventServices.findEventsByStoreProfileId(storeProfileId);
     const dataFormatMyevent = dataFormat.myEvent(allMyEvent);
     res.json(dataFormatMyevent);
   } catch (err) {
@@ -1090,10 +925,7 @@ userController.editProfileImageInStoreProfilePage = async (req, res, next) => {
     const userProfileImage = req.file.path;
     const image = await uploadService.upload(userProfileImage);
     const data = { profileImage: image };
-    const updateProfileImaged = await userService.updateUserByIdAndData(
-      userId,
-      data
-    );
+    const updateProfileImaged = await userService.updateUserByIdAndData(userId, data);
     const { id, profileImage } = updateProfileImaged;
     const response = { userId: id, userProfileImage: profileImage };
 
@@ -1111,11 +943,7 @@ userController.editDescriptionStore = async (req, res, next) => {
   try {
     const storeProfileId = req.seller.storeProfileId;
     const data = req.seller.aboutSeller;
-    const { id, sellerDescription, description } =
-      await storeProfileService.updateStoreProfileByIdAndData(
-        storeProfileId,
-        data
-      );
+    const { id, sellerDescription, description } = await storeProfileService.updateStoreProfileByIdAndData(storeProfileId, data);
     const response = { storeProfileId: id, sellerDescription, description };
     res.status(201).json(response);
   } catch (err) {
@@ -1126,10 +954,7 @@ userController.editDescriptionStore = async (req, res, next) => {
 userController.storeReview = async (req, res, next) => {
   try {
     const storeProfileId = req.seller.storeProfileId;
-    const allReview =
-      await commentService.findManyCommentAndUserByStoreProfileId(
-        storeProfileId
-      );
+    const allReview = await commentService.findManyCommentAndUserByStoreProfileId(storeProfileId);
     const response = dataFormat.storeReview(allReview);
     res.json(response);
   } catch (err) {
@@ -1140,10 +965,7 @@ userController.storeReview = async (req, res, next) => {
 userController.sellerCoupon = async (req, res, next) => {
   try {
     const eventId = req.seller.eventId;
-    const allCoupon =
-      await voucherListService.findManyVoucherListAndEventAndStoreProfileByEventId(
-        eventId
-      );
+    const allCoupon = await voucherListService.findManyVoucherListAndEventAndStoreProfileByEventId(eventId);
     if (allCoupon.length === 0) {
       return res.json([]);
     }
@@ -1182,16 +1004,35 @@ userController.myFollower = async (req, res, next) => {
   try {
     const storeProfileId = req.seller.storeProfileId;
 
-    const myFollower =
-      await followService.findManyFollowAndUserAndStoreProfileAndEventByStoreProfileId(
-        storeProfileId
-      );
+    const myFollower = await followService.findManyFollowAndUserAndStoreProfileAndEventByStoreProfileId(storeProfileId);
 
     const dataFormatMyFollower = dataFormat.myFollower(myFollower);
 
     return res.json(dataFormatMyFollower);
   } catch (err) {
     next(err);
+  }
+};
+
+userController.buyerCreateStore = async (req, res, next) => {
+  try {
+    const { id: userId, role } = req.user;
+    const data = req.createStore;
+
+    if (role === "SELLER") {
+      return res.status(400).json({ msg: "You already have a store." });
+    }
+
+    data.userId = userId;
+
+    const createStoreProfile = storeProfileService.createStoreProfile(data);
+    const changeRoleUser = userService.updateRoleById(userId);
+
+    await Promise.all([createStoreProfile, changeRoleUser]);
+
+    return res.json({msg:"create store success."});
+  } catch (err) {
+    return next(err);
   }
 };
 

@@ -9,6 +9,7 @@ const voucherItemService = require("../services/voucherItem-service");
 const storeProfileService = require("../services/storeProfile-service");
 const { filterLocationWithinRange } = require("../utils/calculate");
 const productService = require("../services/product-service");
+const { locationValidator } = require("../middlewares/validator");
 
 const authController = {};
 
@@ -68,10 +69,19 @@ authController.searchBar = async (req, res, next) => {
     let dataSearchBy = []
     switch (searchBy) {
       case "location":
-        
+        const isLocation = locationValidator(searchKeyword)
+        if (!isLocation) {
+          return res.json({msg:"Search keyword is not location"})
+        }
+        const searchEvent = await eventServices.findManyEventSelectIdAndLocation()
+        const range = 10; //km.
+        const seller = filterLocationWithinRange(searchEvent,searchKeyword,range);
+        const eventIdByLocation = seller.map(el => el.id)
+        const dataSearchByLocation = await eventServices.findManyEventAndStoreProfileAndUserAndFollowAndVoucherItemAndVoucherListInId(eventIdByLocation)
+        dataSearchBy.push(dataSearchByLocation)
         break;
       case "product":
-        const searchProduct = await productService.findManyStoreProfileSelectIdAndName()
+        const searchProduct = await productService.findManyProductSelectIdAndName()
         const filterProduct = searchProduct.filter(el => el.name.toUpperCase().includes(searchKeyword.toUpperCase()))
         const eventIdByProduct = []
         filterProduct.map(el => el.EventItem.map(element=>{

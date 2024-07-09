@@ -27,7 +27,7 @@ productService.findFirstProductByProductIdAndStoreProfileId = (
 ) => prisma.product.findFirst({ where: { id, storeProfileId } });
 productService.findManyProductByStoreProfileId = (storeProfileId) =>
   prisma.product.findMany({ where: { storeProfileId } });
-productService.findManyStoreProfileSelectIdAndName = () =>
+productService.findManyProductSelectIdAndName = () =>
   prisma.product.findMany({ select: { id: true, name: true ,EventItem:true}});
 
 // create

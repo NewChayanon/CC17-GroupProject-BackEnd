@@ -219,3 +219,11 @@ exports.createEventValidator = (req, res, next) => {
     next(err);
   }
 };
+
+exports.locationValidator = (location) => {
+  const [latitude, longitude] = location.split(",").map(Number);
+  const isLatitudeValid = latitude >= -90 && latitude <= 90;
+  const isLongitudeValid = longitude >= -180 && longitude <= 180;
+  return isLatitudeValid && isLongitudeValid;
+};
+

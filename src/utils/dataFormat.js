@@ -1,7 +1,6 @@
 const dataFormat = {};
 
 dataFormat.searchBar = ([dataSearchBy]) => {
-  console.log(dataSearchBy)
   const newFormat = dataSearchBy.map((el) => {
     const countVoucherThisEvent =
       el.VoucherList.length === 0 ? 0 : el.VoucherList[0].VoucherItem.length;

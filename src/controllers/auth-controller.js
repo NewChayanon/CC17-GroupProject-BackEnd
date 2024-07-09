@@ -123,7 +123,7 @@ authController.searchBar = async (req, res, next) => {
         case "this month":
           break;
       }
-
+// return res.json(dataSearchByWhen)
     const response = dataFormat.searchBar(dataSearchByWhen)
 
     res.json(response);

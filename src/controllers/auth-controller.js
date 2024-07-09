@@ -10,7 +10,7 @@ const storeProfileService = require("../services/storeProfile-service");
 const { filterLocationWithinRange } = require("../utils/calculate");
 const productService = require("../services/product-service");
 const { locationValidator } = require("../middlewares/validator");
-const { eventWithinToday } = require("../utils/searchByDate");
+const { eventWithinToday, eventWithinTomorrow } = require("../utils/searchByDate");
 
 
 const authController = {};
@@ -105,7 +105,10 @@ authController.searchBar = async (req, res, next) => {
         break;
       }
       
+      const thaiTimeOffset = 7 * 60 * 60 * 1000;
       const dateNow = new Date()
+      dateNow.setTime(dateNow.getTime() + thaiTimeOffset)
+  
       let dataSearchByWhen = []
       console.log(when)
       switch (when){
@@ -113,6 +116,7 @@ authController.searchBar = async (req, res, next) => {
           dataSearchByWhen = dataSearchBy.filter(event=>eventWithinToday(event,dateNow))
           break;
         case "tomorrow":
+          dataSearchByWhen = dataSearchBy.filter(event=>eventWithinTomorrow(event,dateNow))
           break;
         case "this week":
           break;

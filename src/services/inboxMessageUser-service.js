@@ -15,7 +15,15 @@ inboxMessageUserService.findInboxMessageByUserIdSender = (userIdSender) =>
   prisma.inboxMessageUser.findFirst({ where: { userIdSender },select:{userIdSender:true,topic:true, message:true, createdAt:true} });
 
 inboxMessageUserService.findInboxMessageByUserIdReceiver = (userIdReceiver)=>
-  prisma.inboxMessageUser.findMany({ where: { userIdReceiver },select:{userIdSender:true,topic:true, message:true, createdAt:true} });
+  prisma.inboxMessageUser.findMany({ where: { userIdReceiver },select:{id:true, userIdSender:true,topic:true, message:true, createdAt:true} });
 
+inboxMessageUserService.readMessage = (id,isRead) => prisma.inboxMessageUser.update({
+  where:{
+    id:id
+  },
+   data:{
+    isRead: isRead
+  }
+});
 
 module.exports = inboxMessageUserService;

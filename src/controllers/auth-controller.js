@@ -94,14 +94,14 @@ authController.searchBar = async (req, res, next) => {
           }
         }))
         const dataSearchByProduct = await eventServices.findManyEventAndStoreProfileAndUserAndFollowAndVoucherItemAndVoucherListInId(eventIdByProduct)
-        dataSearchBy = dataSearchByLocation
+        dataSearchBy = dataSearchByProduct
         break;
       case "store":
         const searchStore = await storeProfileService.findManyStoreProfileSelectIdAndName()
         const filterStore = searchStore.filter(el => el.name.toUpperCase().includes(searchKeyword.toUpperCase()))
         const storeProfileId = filterStore.map(el => el.id)
         const dataSearchByStore = await eventServices.findManyEventAndStoreProfileAndUserAndFollowAndVoucherItemAndVoucherListInStoreProfileId(storeProfileId)
-        dataSearchBy = dataSearchByLocation
+        dataSearchBy = dataSearchByStore
         break;
       }
       

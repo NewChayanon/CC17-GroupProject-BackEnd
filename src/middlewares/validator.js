@@ -120,37 +120,40 @@ exports.editAboutSellerAndStoreValidator = (req, res, next) => {
 
 exports.editEventValidator = async (req, res, next) => {
   try {
+    const thaiTimeOffset = 7 * 60 * 60 * 1000;
+    const now = new Date(new Date().getTime() + thaiTimeOffset);
+
     if (req.body.startDate || req.body.endDate) {
       const { startDate, endDate } = await eventServices.findFirstEventById(
         +req.params.eventId
       );
 
-      const thaiTimeOffset = 7 * 60 * 60 * 1000;
-      const now = new Date(new Date().getTime() + thaiTimeOffset);
+      if (req.body.startDate) {
+        const newStartDate = new Date(req.body.startDate);
 
-      if (req.body.startDate && startDate < now) {
-        deleteImage(req);
-        return res.status(400).json({ msg: "Event in progress." });
-      }
-
-      if (req.body.startDate && new Date(req.body.startDate) < now) {
-        deleteImage(req);
-        return res.status(400).json({ msg: "Start date greater now." });
-      }
-
-      if (req.body.startDate && req.body.endDate) {
-        if (new Date(req.body.endDate) < new Date(req.body.startDate)) {
+        if (startDate < now || newStartDate < now) {
           deleteImage(req);
-          return res.status(400).json({ msg: "End date greater Start Date." });
+          return res
+            .status(400)
+            .json({ msg: "Start date must be greater than the current date." });
         }
-      } else if (new Date(req.body.startDate) > endDate) {
+
+        if (req.body.endDate && new Date(req.body.endDate) < newStartDate) {
+          deleteImage(req);
+          return res
+            .status(400)
+            .json({ msg: "End date must be greater than start date." });
+        }
+
+        if (!req.body.endDate && newStartDate > endDate) {
+          deleteImage(req);
+          return res.status(400).json({ msg: "Start date is invalid." });
+        }
+      }
+
+      if (req.body.endDate && new Date(req.body.endDate) < startDate) {
         deleteImage(req);
-        return res.status(400).json({ msg: "Start date invalid." });
-      } else if (new Date(req.body.endDate) < startDate) {
-        deleteImage(req);
-        return res.status(400).json({ msg: "End date invalid." });
-      } else if (!req.body.startDate) {
-        req.body.startDate = startDate;
+        return res.status(400).json({ msg: "End date is invalid." });
       }
     }
 
@@ -163,6 +166,7 @@ exports.editEventValidator = async (req, res, next) => {
       }
       const openTime = req.body.openTime.split("T")[0];
       const closingTime = req.body.closingTime.split("T")[0];
+
       if (openTime !== closingTime) {
         deleteImage(req);
         return res
@@ -184,31 +188,34 @@ exports.editEventValidator = async (req, res, next) => {
 };
 
 exports.createEventValidator = (req, res, next) => {
-  if (req.body.eventItem) {
-    const newEventItem = JSON.parse(req.body.eventItem);
-    req.body.eventItem = newEventItem;
-  }
-  if (req.files.voucherImage && req.body.voucher) {
-    const newVoucher = JSON.parse(req.body.voucher);
-    req.body.voucher = newVoucher;
-  }
-  if (!req.body.openTime || !req.body.closingTime) {
-    deleteImage(req);
-    return res.status(400).json({ msg: "Required OpenTime Or ClosingTime." });
-  }
+  try {
+    if (req.body.eventItem) {
+      req.body.eventItem = JSON.parse(req.body.eventItem);
+    }
+    if (req.files.voucherImage && req.body.voucher) {
+      req.body.voucher = JSON.parse(req.body.voucher);
+    }
+    if (!req.body.openTime || !req.body.closingTime) {
+      deleteImage(req);
+      return res.status(400).json({ msg: "Required OpenTime Or ClosingTime." });
+    }
 
-  const openTime = req.body.openTime.split("T")[0];
-  const closingTime = req.body.closingTime.split("T")[0];
-  if (openTime !== closingTime) {
-    deleteImage(req);
-    return res.status(400).json({ msg: "OpenTime Or ClosingTime Invalid." });
-  }
+    const openTime = req.body.openTime.split("T")[0];
+    const closingTime = req.body.closingTime.split("T")[0];
+    if (openTime !== closingTime) {
+      deleteImage(req);
+      return res.status(400).json({ msg: "OpenTime Or ClosingTime Invalid." });
+    }
 
-  const { value, error } = createEvent.validate(req.body);
-  if (error) {
+    const { value, error } = createEvent.validate(req.body);
+    if (error) {
+      deleteImage(req);
+      return res.status(400).json({ message: error.details[0].message });
+    }
+    req.seller.createEvent = value;
+    next();
+  } catch (err) {
     deleteImage(req);
-    return res.status(400).json({ message: error.details[0].message });
+    next(err);
   }
-  req.seller.createEvent = value;
-  next();
 };

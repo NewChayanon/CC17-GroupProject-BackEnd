@@ -270,6 +270,7 @@ userController.updateCoverImage = async (req, res, next) => {
 
 userController.updateProfileAndProfileImage = async (req, res, next) => {
   try {
+    const userId = +req.user.id
     const promises = [];
     console.log(req.files);
     if (req.files.profileImage) {
@@ -291,8 +292,13 @@ userController.updateProfileAndProfileImage = async (req, res, next) => {
       profileImage: data?.profileImage,
       mobile: req.body?.mobile,
       password: req.body?.password,
+      displayName: req.body?.displayName,
+      gender: req.body?.gender,
+      dateOfBirth: req.body?.dateOfBirth,
       confirmPassword: req.body?.confirmPassword,
     };
+
+    console.log('updateInfo',updateInfo)
 
     if (updateInfo.password !== updateInfo.confirmPassword) {
       return createError({
@@ -300,14 +306,16 @@ userController.updateProfileAndProfileImage = async (req, res, next) => {
         statusCode: 400,
       });
     }
-    updateInfo.password = await hashService.hash(updateInfo.password);
-    console.log("updateInfo", updateInfo);
+    if(updateInfo.password){
+      updateInfo.password = await hashService.hash(updateInfo.password);
+      delete updateInfo.confirmPassword;
+    }
+    console.log("updateInfo1", updateInfo);
 
-    delete updateInfo.password;
-    delete updateInfo.confirmPassword;
-    await userService.updatePersonalInformationById(+req.user.id, updateInfo);
-    console.log("updateInfo", updateInfo);
-    res.status(200).json({ message: "update personal information complete!!!." });
+    const rs = await userService.updatePersonalInformationById(userId, updateInfo);
+    console.log("rs", rs);
+    res.status(200).json(rs);
+    // delete updateInfo.password;
   } catch (error) {
     next(error);
   } finally {

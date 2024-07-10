@@ -23,8 +23,21 @@ adminController.getSeller = async (req, res, next) => {
     console.log("sortBy", sortBy);
     const seller = await adminService.getSeller(pages, pageSize, sortBy);
     console.log("seller", seller);
+
+    const result = seller.map(user => ({
+      id: user.id,
+      storeProfileId: user.StoreProfile?.id,
+      profileImage: user.profileImage,
+      email: user.email,
+      displayName: user.displayName,
+      isBlocked: user.isBlocked,
+      updatedAt: user.updatedAt
+    }));
+    console.log('result',result)
+
+
     const countSeller = await prisma.users.count({ where: { role: "SELLER" } });
-    res.status(200).json({ seller, countSeller });
+    res.status(200).json({ result, countSeller });
   } catch (error) {
     next(error);
   }
@@ -37,8 +50,21 @@ adminController.getBuyer = async (req, res, next) => {
     const sortBy = req.query.sortBy;
     console.log("sortBy", sortBy);
     const buyer = await adminService.getBuyer(pages, pageSize, sortBy);
+    console.log('buyer',buyer)
+
+    const result = buyer.map(user => ({
+      id: user.id,
+      storeProfileId: user.StoreProfile ? user.StoreProfile.id: "N/A",
+      profileImage: user.profileImage,
+      email: user.email,
+      displayName: user.displayName,
+      isBlocked: user.isBlocked,
+      updatedAt: user.updatedAt
+    }));
+
+    console.log('result',result)
     const countBuyer = await prisma.users.count({ where: { role: "BUYER" } });
-    res.status(200).json({ buyer, countBuyer });
+    res.status(200).json({ result, countBuyer });
   } catch (error) {
     next(error);
   }

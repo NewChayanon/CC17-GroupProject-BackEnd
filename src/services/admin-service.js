@@ -34,7 +34,7 @@ adminService.getSeller = (pages, pageSize, sortBy) =>
 adminService.getBuyer = async (pages, pageSize, sortBy) => {
   const result = await prisma.users.findMany({
     where: {
-      role: "BUYER",
+      OR: [{ role: "BUYER" }, { role: "SELLER" }],
     },
     select: {
       StoreProfile: {

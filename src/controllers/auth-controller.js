@@ -173,4 +173,14 @@ authController.storeProfile = async (req, res, next) => {
   }
 };
 
+authController.googleLogin = async (req, res, next) => {
+  try {
+    const accessToken = jwtService.sign({ id: req.user.dbId });
+    const encoded = encodeURIComponent(accessToken);
+    res.redirect(`http://localhost:${process.env.PORT_FRONT_END || 5173}/?token=${encoded}`);
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = authController;

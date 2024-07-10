@@ -291,6 +291,9 @@ userController.updateProfileAndProfileImage = async (req, res, next) => {
       profileImage: data?.profileImage,
       mobile: req.body?.mobile,
       password: req.body?.password,
+      displayName: req.body?.displayName,
+      gender: req.body?.gender,
+      dateOfBirth: req.body?.dateOfBirth,
       confirmPassword: req.body?.confirmPassword,
     };
 
@@ -302,12 +305,12 @@ userController.updateProfileAndProfileImage = async (req, res, next) => {
     }
     updateInfo.password = await hashService.hash(updateInfo.password);
     console.log("updateInfo", updateInfo);
-
-    delete updateInfo.password;
     delete updateInfo.confirmPassword;
-    await userService.updatePersonalInformationById(+req.user.id, updateInfo);
-    console.log("updateInfo", updateInfo);
-    res.status(200).json({ message: "update personal information complete!!!." });
+
+    const rs = await userService.updatePersonalInformationById(+req.user.id, updateInfo);
+    console.log("rs", rs);
+    res.status(200).json(rs);
+    // delete updateInfo.password;
   } catch (error) {
     next(error);
   } finally {

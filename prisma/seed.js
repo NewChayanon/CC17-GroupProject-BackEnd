@@ -406,16 +406,6 @@ const voucherList = [
     discount: 20,
     image: "https://picsum.photos/200",
   },
-  {
-    eventId: 6,
-    code: "25JUN50P",
-    description:
-      "Boat noodle lovers can enjoy the taste of rich beef broth, premium beefand and premium kurobuta in old rustic vibe.",
-    condition: "test",
-    totalAmount: 20,
-    discount: 20,
-    image: "https://picsum.photos/200",
-  },
 ];
 const voucherItem = [
   { storeProfileId: 1, voucherListId: 1, userId: 2 },

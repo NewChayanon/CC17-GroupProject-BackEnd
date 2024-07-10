@@ -423,11 +423,6 @@ const voucherItem = [
   { storeProfileId: 2, voucherListId: 3, userId: 7 },
   { storeProfileId: 2, voucherListId: 3, userId: 2 },
   { storeProfileId: 2, voucherListId: 3, userId: 5 },
-  { storeProfileId: 3, voucherListId: 4, userId: 7 },
-  { storeProfileId: 3, voucherListId: 4, userId: 6 },
-  { storeProfileId: 3, voucherListId: 4, userId: 3 },
-  { storeProfileId: 3, voucherListId: 4, userId: 6 },
-  { storeProfileId: 3, voucherListId: 4, userId: 4 },
 ];
 const follow = [
   { storeProfileId: 1, userId: 2 },

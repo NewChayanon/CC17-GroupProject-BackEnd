@@ -17,7 +17,7 @@ model Users {
   displayName   String?   @db.VarChar(50)
   gender        Gender?
   dateOfBirth   DateTime?
-  googleLogin   String?
+  googleLogin   String?   @db.VarChar(256)
   profileImage  String?
   statusMessage Boolean   @default(false)
   isBlocked     Boolean   @default(false)

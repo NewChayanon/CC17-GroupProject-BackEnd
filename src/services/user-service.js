@@ -36,7 +36,9 @@ userService.updatePersonalInformationById = (id, data) =>
     data: data,
   });
 
+// create
 userService.createNotification = (data) => prisma.inboxMessageUser.createMany({ data });
+userService.createUserByData = (data) => prisma.users.create({ data });
 
 //future
 

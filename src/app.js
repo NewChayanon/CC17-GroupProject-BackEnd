@@ -9,12 +9,17 @@ const { authenticate } = require("./middlewares/authenticate");
 const userRouter = require("./routes/user-route");
 const adminRouter = require("./routes/admin-route");
 const { isAdmin } = require("./middlewares/isAdmin");
+const { sessionGoogleLogin } = require("./config/sessionGoogleLogin");
+const passport = require("./config/passport");
 
 const app = express();
 
 app.use(cors());
 app.use(morgan("dev"));
 app.use(express.json());
+app.use(sessionGoogleLogin());
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use("/auth", authRouter);
 app.use("/user", authenticate, userRouter);

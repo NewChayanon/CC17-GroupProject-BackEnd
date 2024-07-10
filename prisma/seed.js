@@ -266,18 +266,9 @@ const event = [
   },
 ];
 const interest = [
-  {
-    userId: 2,
-    eventId: 1,
-  },
-  {
-    userId: 2,
-    eventId: 2,
-  },
-  {
-    userId: 2,
-    eventId: 3,
-  },
+  { userId: 2, eventId: 1 },
+  { userId: 2, eventId: 2 },
+  { userId: 2, eventId: 3 },
   {
     userId: 6,
     eventId: 2,

@@ -12,8 +12,8 @@ exports.isSeller = async (req, res, next) => {
       return res.status(404).json({ msg: "Store profile not found!!!" });
     }
 
-    const eventId = storeProfile.Events.map(({ id }) => id);
-    const productId = storeProfile.Product.map(({ id }) => id);
+    const eventId = storeProfile?.Events.map(({ id }) => id);
+    const productId = storeProfile?.Product.map(({ id }) => id);
 
     req.seller = { storeProfileId: storeProfile.id, eventId, productId };
     return next();

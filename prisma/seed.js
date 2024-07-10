@@ -485,7 +485,7 @@ const inboxMessageUser = [
 ];
 const report = {
   userIdReporter: 4,
-  storeProfileReported: 3,
+  storeProfileReported: 2,
   subject: "mangosteen",
   message: "test",
   image: "https://picsum.photos/400",

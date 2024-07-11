@@ -77,7 +77,7 @@ adminService.getAllReport = (pages, pageSize,sortBy)=> prisma.report.findMany({
     subject: true,
     message:true,
     image: true,
-    // updatedAt: true,
+    createdAt: true,
   },
   orderBy: sortBy === "createdAt" ? { createdAt: "desc" } : { id: "asc" },
     skip: (pages - 1) * pageSize,

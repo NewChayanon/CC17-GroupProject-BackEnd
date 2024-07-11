@@ -17,7 +17,8 @@ adminService.getSeller = (pages, pageSize, sortBy) =>
     },
     select: {
       StoreProfile: {
-        select: { id: true },
+        select: { id: true , name:true},
+
       },
       id: true,
       profileImage: true,

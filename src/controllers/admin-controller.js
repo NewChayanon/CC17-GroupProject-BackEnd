@@ -27,9 +27,10 @@ adminController.getSeller = async (req, res, next) => {
     const result = seller.map(user => ({
       id: user.id,
       storeProfileId: user.StoreProfile?.id,
+      name: user.displayName,
       profileImage: user.profileImage,
       email: user.email,
-      displayName: user.displayName,
+      storeName: user.StoreProfile?.name,
       isBlocked: user.isBlocked,
       updatedAt: user.updatedAt
     }));
@@ -112,7 +113,6 @@ adminController.createNotification = async (req, res, next) => {
 
     let data = { ...input, userIdSender: adminId };
     const result = await adminService.createMessage(data);
-    console.log("data", data);
     console.log("result", result);
     res.status(201).json(result);
   } catch (error) {

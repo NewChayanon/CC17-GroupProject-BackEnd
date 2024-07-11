@@ -156,7 +156,7 @@ try {
     userId: el.userIdReporter,
     username: el.user.displayName,
     storeId: el.storeProfileReported,
-    storeName: el.storeProfile.name,
+    storeNameReported: el.storeProfile.name,
     topic: el.subject,
     message: el.message,
     image: el.image,

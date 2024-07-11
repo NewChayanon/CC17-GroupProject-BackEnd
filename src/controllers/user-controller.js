@@ -270,7 +270,7 @@ userController.updateCoverImage = async (req, res, next) => {
 
 userController.updateProfileAndProfileImage = async (req, res, next) => {
   try {
-    const userId = +req.user.id
+    const userId = +req.user.id;
     const promises = [];
     console.log(req.files);
     if (req.files.profileImage) {
@@ -298,7 +298,7 @@ userController.updateProfileAndProfileImage = async (req, res, next) => {
       confirmPassword: req.body?.confirmPassword,
     };
 
-    console.log('updateInfo',updateInfo)
+    console.log("updateInfo", updateInfo);
 
     if (updateInfo.password !== updateInfo.confirmPassword) {
       return createError({
@@ -306,7 +306,7 @@ userController.updateProfileAndProfileImage = async (req, res, next) => {
         statusCode: 400,
       });
     }
-    if(updateInfo.password){
+    if (updateInfo.password) {
       updateInfo.password = await hashService.hash(updateInfo.password);
       delete updateInfo.confirmPassword;
     }
@@ -421,6 +421,15 @@ userController.createEvent = async (req, res, next) => {
       openTime: body.openTime,
       closingTime: body.closingTime,
     };
+
+    const thaiTimeOffset = 7 * 60 * 60 * 1000;
+    const today = new Date(Date.now() + thaiTimeOffset);
+    const dateToday = today.toISOString().split("T")[0];
+    const eventStartDate = body.startDate.toISOString().split("T")[0];
+
+    if (eventStartDate === dateToday) {
+      dataEvent.isActive = true;
+    }
 
     const promise = [];
     if (eventImage) {

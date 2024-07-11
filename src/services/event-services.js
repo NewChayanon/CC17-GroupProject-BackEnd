@@ -1,12 +1,9 @@
 const prisma = require("../models/prisma");
-
 const eventServices = {};
 
 // find
-
 eventServices.countActive = () => prisma.events.count({ where: { isActive: true } });
 eventServices.countIsActive = () => prisma.events.count({ where: { isActive: false } });
-
 eventServices.findEventByEventId = (eventId) =>
   prisma.events.findUnique({
     where: { id: eventId },
@@ -84,6 +81,12 @@ eventServices.findManyEventAndStoreProfileAndUserAndFollowAndVoucherItemAndVouch
       VoucherList: { include: { VoucherItem: true } },
     },
   });
+eventServices.findManyEventsByDateAndIsActiveIsFalse = (DateToday) => prisma.events.findMany({ where: { AND: [{ startDate: DateToday }, { isActive: false }] } });
+eventServices.findManyEventIdAndByDateAndIsActiveIsTrue = (DateToday) =>
+  prisma.events.findMany({
+    where: { AND: [{ startDate: DateToday }, { isActive: true }] },
+    select: { id: true, Interest: true, storeProfile: { select: { userId: true, Follow: true } }, VoucherList: { select: { VoucherItem: true } } },
+  });
 
 // group by
 eventServices.groupByEventByStoreId = (storeProfileId) =>
@@ -98,6 +101,7 @@ eventServices.createEventsByStoreProfileId = (data) => prisma.events.create({ da
 
 // update
 eventServices.updateEventByIdAndData = (id, data) => prisma.events.update({ where: { id }, data });
+eventServices.updateManyIsActiveIsTrueInId = (id) => prisma.events.updateMany({ where: { id: { in: id } }, data: { isActive: true } });
 
 // delete
 eventServices.deleteEventById = (id) => prisma.events.delete({ where: { id } });

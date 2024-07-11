@@ -514,11 +514,11 @@ userController.createProduct = async (req, res, next) => {
 
     const data = {
       storeProfileId: findUserIdInStoreProfile.id,
-      name: req.body?.name,
-      description: req.body?.description,
+      name: req.body?.productName,
+      description: req.body?.productDescription,
       image: input?.image,
-      price: +req.body?.price,
-      unit: req.body?.unit,
+      price: +req.body?.productPrice,
+      unit: req.body?.productUnit,
     };
     console.log("first");
 

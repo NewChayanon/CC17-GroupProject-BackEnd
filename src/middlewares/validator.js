@@ -22,6 +22,7 @@ exports.loginValidator = (req, res, next) => {
 };
 
 exports.validateCoverImage = (req, res, next) => {
+  console.log(req)
   if (!req.files)
     return createError({
       message: "at least one of cover image",

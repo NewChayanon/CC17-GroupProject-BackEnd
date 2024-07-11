@@ -21,9 +21,11 @@ passport.use(
             firstName,
             lastName,
             displayName: profile.displayName,
-            profileImage,
             googleLogin: await hashService.hash(profile.id),
           };
+          if (profileImage) {
+            data.profileImage = profileImage;
+          }
           user = await userService.createUserByData(data);
         } else {
           const isMatch = await hashService.compare(profile.id, user.googleLogin);

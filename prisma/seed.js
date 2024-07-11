@@ -188,7 +188,7 @@ const event = [
     locationName: "อนุสาวรีย์ชัยสมรภูมิ",
     description:
       "Welcome to Durian Aroi Aroi, where the passion for delivering the freshest and most delicious durians drives everything we do. Nestled in the heart of Chantaburi province, our store is dedicated to bringing you the best durians Thailand has to offer. Established on 12 March 2023, Durian Aroi Aroi quickly became a beloved source for durian enthusiasts seeking premium quality and exceptional taste. Our commitment to excellence begins at the orchard, where our durians are carefully cultivated and harvested at the peak of ripeness. We take pride in our sustainable farming practices and our dedication to providing fruits that are not only delicious but also responsibly grown.At Durian Aroi Aroi, we believe that every durian lover deserves a perfect durian experience. Whether you're a seasoned connoisseur or trying durian for the first time, our store offers a variety of durian types to suit every palate. From the rich and creamy Mon Thong to the unique flavors of Kan Yao, our selection is sure to delight.∂ us on this flavorful journey and discover why Durian Aroi Aroi is the preferred choice for durian aficionados in Chantaburi and beyond. Our store is more than just a place to buy durians; it's a community of durian lovers who share a passion for this king of fruits. We look forward to serving you and making your durian dreams come true.",
-    startDate: "2024-07-07T00:00:00.000Z",
+    startDate: "2024-07-11T00:00:00.000Z",
     endDate: "2024-07-07T00:00:00.000Z",
     openTime: "2024-07-07T09:00:00Z",
     closingTime: "2024-07-07T18:00:00Z",

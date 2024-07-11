@@ -177,7 +177,7 @@ authController.googleLogin = async (req, res, next) => {
   try {
     const accessToken = jwtService.sign({ id: req.user.dbId });
     const encoded = encodeURIComponent(accessToken);
-    res.redirect(`http://localhost:${process.env.PORT_FRONT_END || 5173}/?token=${encoded}`);
+    res.redirect(`http://localhost:${process.env.PORT_FRONT_END || 5173}/home?token=${encoded}`);
   } catch (err) {
     next(err);
   }

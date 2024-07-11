@@ -58,7 +58,7 @@ adminController.getBuyer = async (req, res, next) => {
       storeProfileId: user.StoreProfile ? user.StoreProfile.id: "N/A",
       profileImage: user.profileImage,
       email: user.email,
-      userName: user.username,
+      username: user.username,
       isBlocked: user.isBlocked,
       updatedAt: user.updatedAt
     }));

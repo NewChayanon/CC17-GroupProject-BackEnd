@@ -27,7 +27,7 @@ adminController.getSeller = async (req, res, next) => {
     const result = seller.map(user => ({
       id: user.id,
       storeProfileId: user.StoreProfile?.id,
-      name: user.displayName,
+      username: user.displayName,
       profileImage: user.profileImage,
       email: user.email,
       storeName: user.StoreProfile?.name,
@@ -58,7 +58,7 @@ adminController.getBuyer = async (req, res, next) => {
       storeProfileId: user.StoreProfile ? user.StoreProfile.id: "N/A",
       profileImage: user.profileImage,
       email: user.email,
-      displayName: user.displayName,
+      userName: user.username,
       isBlocked: user.isBlocked,
       updatedAt: user.updatedAt
     }));

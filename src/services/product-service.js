@@ -21,6 +21,7 @@ productService.getAllProductByStoreProfileId = async (storeProfileId) => {
     };
   });
 };
+productService.getAllProductInStoreProfileId = async (storeProfileId) => prisma.product.findMany({ where: { storeProfileId: { in: [storeProfileId] } } });
 productService.findFirstProductByProductIdAndStoreProfileId = (id, storeProfileId) => prisma.product.findFirst({ where: { id, storeProfileId } });
 productService.findManyProductByStoreProfileId = (storeProfileId) => prisma.product.findMany({ where: { storeProfileId } });
 productService.findManyProductSelectIdAndName = () => prisma.product.findMany({ select: { id: true, name: true, EventItem: true } });

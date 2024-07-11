@@ -838,8 +838,10 @@ userController.sellerMyProduct = async (req, res, next) => {
     if (!storeProfile) {
       return res.status(400).json({ msg: "StoreProfile invalid" });
     }
-    const myProduct = await productService.getAllProductByStoreProfileId(storeProfile.id);
+    const myProduct = await productService.getAllProductInStoreProfileId(storeProfile.id);
+
     const dataFormatMyProduct = dataFormat.myProduct(myProduct);
+
     res.json(dataFormatMyProduct);
   } catch (err) {
     next(err);

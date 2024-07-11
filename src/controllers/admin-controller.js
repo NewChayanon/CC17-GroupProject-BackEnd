@@ -160,7 +160,7 @@ try {
     topic: el.subject,
     message: el.message,
     image: el.image,
-    updatedAt: el.createdAt
+    createdAt: el.createdAt
   }));
   console.log('result',result)
   res.status(200).json(result)

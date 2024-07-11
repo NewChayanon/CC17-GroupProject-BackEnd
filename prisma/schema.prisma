@@ -200,6 +200,7 @@ model Report {
   subject              String @db.Text
   message              String @db.Text
   image                String @db.Text
+  createdAt            DateTime @default(now()) @db.DateTime(0)
 
   storeProfile StoreProfile @relation(fields: [storeProfileReported], references: [id])
   user         Users        @relation(fields: [userIdReporter], references: [id])

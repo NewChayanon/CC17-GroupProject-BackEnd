@@ -131,11 +131,41 @@ adminController.getAllMessages = async (req, res, next) => {
 };
 
 adminController.deleteMessages = async (req, res, next) => {
+ try {
   const deleteId = +req.params.id;
   console.log("deleteId", deleteId);
   const deleteText = await adminService.deleteMessageById(deleteId);
   console.log("deleteText", deleteText);
   res.status(200).json({ message: "delete successful" });
+ } catch (error) {
+  next(error)
+ }
 };
 
+adminController.getAllReport = async (req,res,next)=>{
+try {
+  const pages = +req.query.pages;
+  const pageSize = +req.query.pageSize;
+  const sortBy = req.query.sortBy;
+  console.log('sortBy',sortBy)
+  const reports = await adminService.getAllReport(pages,pageSize,sortBy)
+  console.log('reports',reports)
+
+  const result = reports.map(el => ({
+    id: el.id,
+    userId: el.userIdReporter,
+    username: el.user.displayName,
+    storeId: el.storeProfileReported,
+    storeName: el.storeProfile.name,
+    topic: el.subject,
+    message: el.message,
+    image: el.image,
+    // updatedAt: el.updatedAt
+  }));
+  console.log('result',result)
+  // res.status(200).json(report)
+} catch (error) {
+  next(error)
+}
+}
 module.exports = adminController;

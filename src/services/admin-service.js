@@ -1,3 +1,4 @@
+const { provisioning } = require("../config/cloudinary");
 const prisma = require("../models/prisma");
 
 adminService = {};
@@ -58,6 +59,31 @@ adminService.getBuyer = async (pages, pageSize, sortBy) => {
   });
 };
 
+adminService.getAllReport = (pages, pageSize,sortBy)=> prisma.report.findMany({
+  select: {
+    user:{
+      select:{
+        displayName: true,
+      },
+    },
+    storeProfile:{
+      select:{
+        name:true
+      },
+    },
+    id: true,
+    storeProfileReported:true,
+    userIdReporter: true,
+    subject: true,
+    message:true,
+    image: true,
+    // updatedAt: true,
+  },
+  orderBy: sortBy === "createdAt" ? { createdAt: "desc" } : { id: "asc" },
+    skip: (pages - 1) * pageSize,
+    take: pageSize
+})
+
 //update
 
 adminService.updateBlock = (id, isBlocked) =>
@@ -115,5 +141,7 @@ adminService.deleteMessageById = (id, data) =>
     },
     data: data,
   });
+
+
 
 module.exports = adminService;

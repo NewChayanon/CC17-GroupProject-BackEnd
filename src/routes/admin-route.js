@@ -12,5 +12,6 @@ adminRouter.get("/all-events", adminController.getAllEvents);
 adminRouter.post("/new-message", adminController.createNotification);
 adminRouter.get("/all-messages", adminController.getAllMessages);
 adminRouter.delete("/deleteMessage/:id", adminController.deleteMessages);
+adminRouter.get("/all-report", adminController.getAllReport)
 
 module.exports = adminRouter;

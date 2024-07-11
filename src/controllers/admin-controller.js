@@ -163,7 +163,7 @@ try {
     updatedAt: el.createdAt
   }));
   console.log('result',result)
-  // res.status(200).json(report)
+  res.status(200).json(result)
 } catch (error) {
   next(error)
 }

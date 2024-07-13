@@ -41,6 +41,7 @@ model StoreProfile {
   id                Int      @id @default(autoincrement())
   userId            Int      @unique
   name              String
+  storeCode         String   @default(nanoid(5))
   coverImage        String?
   sellerDescription String?  @db.Text
   description       String?  @db.Text
@@ -194,12 +195,12 @@ model InboxMessageUser {
 }
 
 model Report {
-  id                   Int    @id @default(autoincrement())
+  id                   Int      @id @default(autoincrement())
   storeProfileReported Int
   userIdReporter       Int
-  subject              String @db.Text
-  message              String @db.Text
-  image                String @db.Text
+  subject              String   @db.Text
+  message              String   @db.Text
+  image                String   @db.Text
   createdAt            DateTime @default(now()) @db.DateTime(0)
 
   storeProfile StoreProfile @relation(fields: [storeProfileReported], references: [id])

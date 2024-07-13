@@ -14,7 +14,7 @@ passport.use(
       try {
         const { email, given_name: firstName, family_name: lastName, picture: profileImage } = profile._json;
         let user = await userService.findEmail(email);
-
+        console.log(profile)
         if (!user) {
           const data = {
             email,

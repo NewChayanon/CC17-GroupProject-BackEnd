@@ -10,6 +10,7 @@ dataFormat.searchBar = (dataSearchBy) => {
       eventStartDate: el.startDate,
       eventEndDate: el.endDate,
       eventLocation: el.location,
+      eventLocationName: el.locationName,
       eventDescription: el.description,
 
       storeId: el.storeProfile.id,
@@ -44,6 +45,7 @@ dataFormat.sellerNearMe = (oldData, groupVoucherItem, groupEvent) => {
       eventStartDate: el.startDate,
       eventEndDate: el.endDate,
       eventLocation: el.location,
+      eventLocationName: el.locationName,
       eventDescription: el.description,
 
       storeId: el.storeProfile.id,
@@ -137,7 +139,7 @@ dataFormat.userEventId = (event, otherEvents, userId) => {
 };
 
 dataFormat.authEventId = (eventDetails, otherEvents) => {
-  const { id, name, images, startDate, endDate, location, VoucherList, storeProfile, Interest, EventItem } = eventDetails;
+  const { id, name, images, startDate, endDate, location, locationName, VoucherList, storeProfile, Interest, EventItem } = eventDetails;
   const formattedEventDetails = {
     id,
     eventName: name,
@@ -145,6 +147,7 @@ dataFormat.authEventId = (eventDetails, otherEvents) => {
     eventStartDate: startDate,
     eventEndDate: endDate,
     eventLocation: location,
+    eventLocationName: locationName,
     voucherItem: VoucherList.length
       ? {
           voucherCode: VoucherList[0].code,

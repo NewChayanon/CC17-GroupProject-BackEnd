@@ -15,4 +15,24 @@ authService.findUserById = (userId) =>
     where: { id: userId },
   });
 
+authService.findEmailByEmail = (email) =>
+  prisma.users.findUnique({
+    where: { email: email },
+    select: { email: true },
+  });
+// update
+authService.updatePasswordByEmail = (email, data) =>
+  prisma.users.update({
+    where: {
+      email: email,
+    },
+    select:{
+      email: true,
+      password: true
+    },
+    data: {
+      password: data,
+    },
+  });
+
 module.exports = authService;

@@ -1,6 +1,6 @@
 const fs = require("fs/promises");
 const createError = require("../utils/createError");
-const { registerSchema, loginSchema } = require("../validators/auth-validator");
+const { registerSchema, loginSchema, resetPasswordSchema } = require("../validators/auth-validator");
 const { userReport, userComment, sellerEditDiscount, aboutSeller, editEvent, createEvent, createStore } = require("../validators/user-validator");
 const { deleteImage } = require("../utils/deleteImages");
 const eventServices = require("../services/event-services");
@@ -20,6 +20,14 @@ exports.loginValidator = (req, res, next) => {
   req.input = value;
   next();
 };
+
+exports.resetValidator = (req,res,next)=>{
+  console.log(req.body);
+  const { value, error } = resetPasswordSchema.validate(req.body);
+  if (error) return res.status(400).json({ message: error.details[0].message });
+  req.input = value;
+  next();
+}
 
 exports.validateCoverImage = (req, res, next) => {
   if (!req.files)

@@ -53,6 +53,33 @@ authController.login = async (req, res, next) => {
   }
 };
 
+authController.resetPassword = async(req,res,next)=>{
+  try {
+    const data = req.body
+    console.log('data',data)
+    // find email
+    const email = await authService.findEmailByEmail(data.email);
+    if(!email){
+      createError({ message: "Invalid credential", statusCode: 400 })
+    }
+    // rest password
+   
+    const reset = await hashService.hash(data.password);
+    console.log('reset',reset)
+    const isMatch = await hashService.compare(data.password,reset);
+    if (!isMatch) return createError({ message: "password or confirm password is invalids", statusCode: 400 });
+    console.log(isMatch)
+    delete data.confirmPassword;
+    console.log('data.email',data.email)
+    const result =await authService.updatePasswordByEmail(data.email, reset);
+    console.log(result);
+    return res.status(201).json(result);
+  } catch (error) {
+    next(error)
+  }
+}
+
+
 authController.searchBar = async (req, res, next) => {
   try {
     const searchBy = req.query.searchBy.toLowerCase();

@@ -475,6 +475,7 @@ dataFormat.sellerCoupon = (allCoupon) =>
         endDate: eventEndDate,
         storeProfile: { name: storeName },
       },
+      description:voucherDescription,
       condition: voucherCondition,
       code: voucherCode,
     }) => ({
@@ -482,6 +483,7 @@ dataFormat.sellerCoupon = (allCoupon) =>
       storeName,
       eventName,
       voucherCondition,
+      voucherDescription,
       eventStartDate,
       eventEndDate,
       voucherCode,

@@ -2,7 +2,7 @@ const cron = require("node-cron");
 const eventServices = require("../services/event-services");
 const inboxMessageUserService = require("../services/inboxMessageUser-service");
 
-cron.schedule("* * * * *", async () => {
+cron.schedule("0 0 * * *", async () => {
   try {
     const thaiTimeOffset = 7 * 60 * 60 * 1000;
     const today = new Date(Date.now() + thaiTimeOffset);

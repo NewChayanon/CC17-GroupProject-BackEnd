@@ -1,3 +1,5 @@
+const { eventWithinToday, eventUpcoming } = require("./searchByDate");
+
 const dataFormat = {};
 
 dataFormat.searchBar = (dataSearchBy) => {
@@ -500,70 +502,83 @@ dataFormat.sellerCoupon = (allCoupon) =>
   );
 
 dataFormat.myFollower = (myFollower) =>
-  myFollower.map((el) => {
-    const { user } = el;
-    const { id: userId, profileImage, displayName, firstName, lastName, StoreProfile } = user;
-    const storeProfile = [];
-    if (StoreProfile) {
-      const { id: storeProfileId, coverImage, name, Follow, Events, VoucherItem, facebook, instagram, line } = StoreProfile;
-      let followers = Follow ? Follow.length : 0;
-      let events = Events ? Events.length : 0;
-      let vouchers = VoucherItem ? VoucherItem.length : 0;
-      let eventNow = [];
-      let upComingEvent = [];
-      if (Events) {
-        const { EventNow, UpComingEvent } = Events.reduce(
-          (acc, { id, name, startDate, endDate, openTime, closingTime, locationName, isActive }) => {
-            const eventDetails = {
-              eventId: id,
-              startDate,
-              endDate,
-              openTime,
-              closingTime,
-              locationName,
-              eventName: name,
-            };
-            if (isActive) {
-              acc.EventNow.push(eventDetails);
-            }
-            if (!isActive) {
-              acc.UpComingEvent.push(eventDetails);
-            }
-            return acc;
-          },
-          { EventNow: [], UpComingEvent: [] }
-        );
-        eventNow = EventNow;
-        upComingEvent = UpComingEvent;
-      }
-      const myStoreProfile = {
-        storeProfileId,
-        storeProfileCoverImage: coverImage,
-        userProfileImage: profileImage,
-        userDisplayName: displayName,
-        userFirstName: firstName,
-        userLastName: lastName,
-        storeName: name,
-        followers,
-        events,
-        vouchers,
-        facebook,
-        instagram,
-        line,
-        eventNow,
-        upComingEvent,
-      };
-      storeProfile.push(myStoreProfile);
+  myFollower.map(({ user }) => ({
+    userId: user.id,
+    userProfileImage: user.profileImage,
+    userDisplayName: user.displayName,
+    userFirstName: user.firstName,
+    userLastName: user.lastName,
+  }));
+
+dataFormat.myFollowerId = ({ user }) => {
+  const { id: userId, profileImage, displayName, firstName, lastName, createdAt, StoreProfile } = user;
+
+  const storeProfile = [];
+  if (StoreProfile) {
+    const { id: storeProfileId, coverImage, name, Follow, Events, VoucherItem, facebook, instagram, line } = StoreProfile;
+
+    const followers = Follow ? Follow.length : 0;
+    const events = Events ? Events.length : 0;
+    const vouchers = VoucherItem ? VoucherItem.length : 0;
+
+    let eventNow = [];
+    let upComingEvent = [];
+
+    if (Events) {
+      const thaiTimeOffset = 7 * 60 * 60 * 1000;
+      const today = new Date(Date.now() + thaiTimeOffset);
+      const dateToday = new Date(today.toISOString().split("T")[0]);
+
+      eventNow = Events.filter((event) => eventWithinToday(event, dateToday)).map(({ id, name, startDate, endDate, openTime, closingTime, locationName }) => ({
+        eventId: id,
+        eventName: name,
+        startDate,
+        endDate,
+        openTime,
+        closingTime,
+        locationName,
+      }));
+
+      upComingEvent = Events.filter((event) => eventUpcoming(event, dateToday)).map(({ id, name, startDate, endDate, openTime, closingTime, locationName }) => ({
+        eventId: id,
+        eventName: name,
+        startDate,
+        endDate,
+        openTime,
+        closingTime,
+        locationName,
+      }));
     }
-    return {
-      userId,
+
+    storeProfile.push({
+      storeProfileId,
+      storeProfileCoverImage: coverImage,
       userProfileImage: profileImage,
       userDisplayName: displayName,
       userFirstName: firstName,
       userLastName: lastName,
-      storeProfile,
-    };
-  });
+      storeName: name,
+      followers,
+      events,
+      vouchers,
+      facebook,
+      instagram,
+      line,
+      eventNow,
+      upComingEvent,
+    });
+  }
+
+  return {
+    userId,
+    userProfileImage: profileImage,
+    userDisplayName: displayName,
+    userFirstName: firstName,
+    userLastName: lastName,
+    userCreatedAt: createdAt,
+    storeProfile,
+  };
+};
 
 dataFormat.myStoreProfile = ([mySeller, myStoreProfile, myFollower, myEvent, myVoucherItem, myProduct]) => {
   let followers = myFollower.length;

@@ -1023,13 +1023,32 @@ userController.myFollower = async (req, res, next) => {
   try {
     const storeProfileId = req.seller.storeProfileId;
 
-    const myFollower = await followService.findManyFollowAndUserAndStoreProfileAndEventByStoreProfileId(storeProfileId);
+    const myFollower = await followService.findManyFollowerAndUserByStoreProfileId(storeProfileId);
 
     const dataFormatMyFollower = dataFormat.myFollower(myFollower);
 
     return res.json(dataFormatMyFollower);
   } catch (err) {
     next(err);
+  }
+};
+
+userController.myFollowerUserId = async (req, res, next) => {
+  try {
+    const userId = +req.params.userId
+    const followerUserId = req.seller.followerUserId
+
+    const haveFollower = followerUserId.find(followerUserId => followerUserId === userId)
+    if (!haveFollower) {
+      return res.status(400).json({msg:"Don't have this userId"})
+    }
+    const follower = await followService.findFollowAndUserAndStoreProfileAndEventByUserId(userId);
+
+    const dataFormatFollower = dataFormat.myFollowerId(follower);
+
+    res.json(dataFormatFollower)
+  } catch (err) {
+    next(err)
   }
 };
 

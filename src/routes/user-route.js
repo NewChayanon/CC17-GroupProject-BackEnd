@@ -65,7 +65,6 @@ userRouter.post("/create-storeProfile", upload.fields([{ name: "coverImage", max
 userRouter.post("/create-product", upload.fields([{ name: "image", maxCount: 1 }]), validateCoverImage, userController.createProduct);
 userRouter.post("/new-message", isSeller, userController.createMessageToBuyers);
 userRouter.post("/add-item/:eventId/:productId", isSeller, userController.addItemToEvent);
-
 userRouter.post("/read-message-admin/:adminId", userController.getReadMessageAdmin);
 
 // get
@@ -78,14 +77,12 @@ userRouter.get("/store-review", isSeller, userController.storeReview);
 userRouter.get("/seller-coupon", isSeller, userController.sellerCoupon);
 userRouter.get("/seller-history-inbox", isSeller, userController.getHistoryInbox);
 userRouter.get("/seller-followers", isSeller, userController.myFollower);
+userRouter.get("/seller-followers/:userId", isSeller, userController.myFollowerUserId);
 
 //update
 userRouter.patch("/update-coverImage", upload.fields([{ name: "coverImage", maxCount: 1 }]), validateCoverImage, userController.updateCoverImage);
-
 userRouter.patch("/change-info", isUser, upload.fields([{ name: "profileImage", maxCount: 1 }]), validateUpdateProfileOrProfileImage, userController.updateProfileAndProfileImage);
-
 userRouter.patch("/edit-product/:productId", upload.fields([{ name: "image", maxCount: 1 }]), validateCoverImage, userController.editProduct);
-
 userRouter.patch("/edit-discount/:eventId", isSeller, validateEditDiscount, userController.editDiscount);
 userRouter.patch("/store-profile-page/edit-user-profile-image", isSeller, upload.single("userProfileImage"), singleProfileImageValidator, userController.editProfileImageInStoreProfilePage);
 userRouter.patch("/edit-description-store", isSeller, editAboutSellerAndStoreValidator, userController.editDescriptionStore);

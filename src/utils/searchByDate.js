@@ -27,3 +27,11 @@ exports.eventWithinRange = (event, dateNow, dateRange) => {
 
   return formattedStartDate <= formattedDateRange && formattedDateNow <= formattedEndDate;
 };
+
+exports.eventUpcoming = (event, dateNow) => {
+  const { startDate } = event;
+  const formattedStartDate = startDate.toISOString().split("T")[0];
+  const formattedDateNow = dateNow.toISOString().split("T")[0];
+
+  return formattedStartDate > formattedDateNow;
+};

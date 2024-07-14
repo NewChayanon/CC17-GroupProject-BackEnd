@@ -7,6 +7,7 @@ followService.findManyFavoriteByUserId = (userId) => prisma.follow.findMany({ wh
 followService.findFollowByUserIdAndStoreProfileId = (userId, storeProfileId) => prisma.follow.findFirst({ where: { AND: [{ userId }, { storeProfileId }] } });
 followService.findManyUserIdFollowerByStoreProfileId = (storeProfileId) => prisma.follow.findMany({ where: { storeProfileId } });
 followService.findManyFollowByStoreProfileId = (storeProfileId) => prisma.follow.findMany({ where: { storeProfileId } });
+followService.findManyFollowerAndUserByStoreProfileId = (storeProfileId) => prisma.follow.findMany({ where: { storeProfileId }, include: { user: true } });
 followService.findManyFollowAndUserAndStoreProfileAndEventByStoreProfileId = (storeProfileId) =>
   prisma.follow.findMany({
     where: { storeProfileId },
@@ -18,6 +19,29 @@ followService.findManyFollowAndUserAndStoreProfileAndEventByStoreProfileId = (st
           displayName: true,
           firstName: true,
           lastName: true,
+          StoreProfile: {
+            include: {
+              Follow: { select: { id: true } },
+              Events: true,
+              VoucherItem: { select: { id: true } },
+            },
+          },
+        },
+      },
+    },
+  });
+followService.findFollowAndUserAndStoreProfileAndEventByUserId = (userId) =>
+  prisma.follow.findFirst({
+    where: { userId },
+    include: {
+      user: {
+        select: {
+          id: true,
+          profileImage: true,
+          displayName: true,
+          firstName: true,
+          lastName: true,
+          createdAt:true,
           StoreProfile: {
             include: {
               Follow: { select: { id: true } },

@@ -14,8 +14,9 @@ exports.isSeller = async (req, res, next) => {
 
     const eventId = storeProfile?.Events.map(({ id }) => id);
     const productId = storeProfile?.Product.map(({ id }) => id);
+    const followerUserId = storeProfile?.Follow.map(({ userId }) => userId);
 
-    req.seller = { storeProfileId: storeProfile.id, eventId, productId };
+    req.seller = { storeProfileId: storeProfile.id, eventId, productId, followerUserId };
     return next();
   } catch (err) {
     return next(err);

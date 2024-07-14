@@ -11,7 +11,7 @@ const adminRouter = require("./routes/admin-route");
 const { isAdmin } = require("./middlewares/isAdmin");
 const { sessionGoogleLogin } = require("./config/sessionGoogleLogin");
 const passport = require("./config/passport");
-const cron = require("./config/cronJob")
+const cron = require("./config/cronJob");
 
 const app = express();
 
@@ -21,8 +21,6 @@ app.use(express.json());
 app.use(sessionGoogleLogin());
 app.use(passport.initialize());
 app.use(passport.session());
-
-
 
 app.use("/auth", authRouter);
 app.use("/user", authenticate, userRouter);

@@ -6,7 +6,7 @@ const authRouter = express.Router();
 
 authRouter.post("/register", registerValidator, authController.register);
 authRouter.post("/login", loginValidator, authController.login);
-authRouter.patch("/reset-password", resetValidator,authController.resetPassword )
+authRouter.patch("/reset-password", resetValidator, authController.resetPassword);
 authRouter.get("/near-me", authController.sellerNearMe);
 authRouter.get("/event/:eventId", authController.afterClickOnTheEventCard);
 authRouter.get("/storeProfile/:storeProfileId", authController.storeProfile);

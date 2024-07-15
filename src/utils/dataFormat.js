@@ -270,7 +270,7 @@ dataFormat.couponList = (allCoupon) =>
   );
 
 dataFormat.StoreMainPage = (storeProfile, countFollower, countVoucher) => {
-  const { id, coverImage, name: storeName, Events = [], user, facebook = [], instagram = [], line = [] } = storeProfile;
+  const { id, coverImage, name: storeName, Events, user, facebook = [], instagram = [], line = [] } = storeProfile;
   const { profileImage, firstName, lastName } = user;
   const events = Events.length;
   const myEvent = Events.map(({ id, name, images, startDate, endDate, locationName, location }) => ({
@@ -284,27 +284,34 @@ dataFormat.StoreMainPage = (storeProfile, countFollower, countVoucher) => {
     location,
   }));
 
-  const { eventNow, upComingEvent } = Events.reduce(
-    (acc, { id, name, startDate, endDate, openTime, closingTime, locationName, isActive }) => {
-      const eventDetails = {
-        eventId: id,
-        startDate,
-        endDate,
-        openTime,
-        closingTime,
-        locationName,
-        eventName: name,
-      };
-      if (isActive) {
-        acc.eventNow.push(eventDetails);
-      }
-      if (!isActive) {
-        acc.upComingEvent.push(eventDetails);
-      }
-      return acc;
-    },
-    { eventNow: [], upComingEvent: [] }
-  );
+  let eventNow = [];
+  let upComingEvent = [];
+
+  if (Events) {
+    const thaiTimeOffset = 7 * 60 * 60 * 1000;
+    const today = new Date(Date.now() + thaiTimeOffset);
+    const dateToday = new Date(today.toISOString().split("T")[0]);
+
+    eventNow = Events.filter((event) => eventWithinToday(event, dateToday)).map(({ id, name, startDate, endDate, openTime, closingTime, locationName }) => ({
+      eventId: id,
+      eventName: name,
+      startDate,
+      endDate,
+      openTime,
+      closingTime,
+      locationName,
+    }));
+
+    upComingEvent = Events.filter((event) => eventUpcoming(event, dateToday)).map(({ id, name, startDate, endDate, openTime, closingTime, locationName }) => ({
+      eventId: id,
+      eventName: name,
+      startDate,
+      endDate,
+      openTime,
+      closingTime,
+      locationName,
+    }));
+  }
 
   return {
     myEvent,
@@ -598,30 +605,35 @@ dataFormat.myStoreProfile = ([mySeller, myStoreProfile, myFollower, myEvent, myV
 
   let eventNow = [];
   let upComingEvent = [];
-  if (myEvent.length !== 0) {
-    const { EventNow, UpComingEvent } = myEvent.reduce(
-      (acc, { id, name, startDate, endDate, openTime, closingTime, locationName, isActive }) => {
-        const eventDetails = {
-          eventId: id,
-          startDate,
-          endDate,
-          openTime,
-          closingTime,
-          locationName,
-          eventName: name,
-        };
-        if (isActive) {
-          acc.EventNow.push(eventDetails);
-        }
-        if (!isActive) {
-          acc.UpComingEvent.push(eventDetails);
-        }
-        return acc;
-      },
-      { EventNow: [], UpComingEvent: [] }
-    );
-    eventNow = EventNow;
-    upComingEvent = UpComingEvent;
+
+  if (myEvent) {
+    const thaiTimeOffset = 7 * 60 * 60 * 1000;
+    const today = new Date(Date.now() + thaiTimeOffset);
+    const dateToday = new Date(today.toISOString().split("T")[0]);
+
+    eventNow = myEvent
+      .filter((event) => eventWithinToday(event, dateToday))
+      .map(({ id, name, startDate, endDate, openTime, closingTime, locationName }) => ({
+        eventId: id,
+        eventName: name,
+        startDate,
+        endDate,
+        openTime,
+        closingTime,
+        locationName,
+      }));
+
+    upComingEvent = myEvent
+      .filter((event) => eventUpcoming(event, dateToday))
+      .map(({ id, name, startDate, endDate, openTime, closingTime, locationName }) => ({
+        eventId: id,
+        eventName: name,
+        startDate,
+        endDate,
+        openTime,
+        closingTime,
+        locationName,
+      }));
   }
 
   return {

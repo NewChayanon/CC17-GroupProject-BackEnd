@@ -52,15 +52,16 @@ authController.login = async (req, res, next) => {
   }
 };
 
-authController.resetPassword = async(req,res,next)=>{
+authController.resetPassword = async (req, res, next) => {
   try {
-    const data = req.body
-    console.log('data',data)
+    const data = req.body;
+    console.log("data", data);
     // find email
     const email = await authService.findEmailByEmail(data.email);
-    if(!email){
-      createError({ message: "Invalid credential", statusCode: 400 })
+    if (!email) {
+      createError({ message: "Invalid credential", statusCode: 400 });
     }
+
     // // reset password
     const length = 12;
     const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -80,11 +81,11 @@ authController.resetPassword = async(req,res,next)=>{
     console.log('convertPassword',convertPassword)
 
     return res.status(201).json(convertPassword);
-  } catch (error) {
-    next(error)
-  }
-}
 
+  } catch (error) {
+    next(error);
+  }
+};
 
 authController.searchBar = async (req, res, next) => {
   try {

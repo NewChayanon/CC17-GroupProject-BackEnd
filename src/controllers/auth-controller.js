@@ -13,7 +13,6 @@ const { locationValidator } = require("../middlewares/validator");
 const { eventWithinToday, eventWithinTomorrow, eventWithinRange } = require("../utils/searchByDate");
 
 const authController = {};
-
 authController.register = async (req, res, next) => {
   try {
     // get data
@@ -62,18 +61,25 @@ authController.resetPassword = async(req,res,next)=>{
     if(!email){
       createError({ message: "Invalid credential", statusCode: 400 })
     }
-    // rest password
-   
-    const reset = await hashService.hash(data.password);
-    console.log('reset',reset)
-    const isMatch = await hashService.compare(data.password,reset);
-    if (!isMatch) return createError({ message: "password or confirm password is invalids", statusCode: 400 });
-    console.log(isMatch)
-    delete data.confirmPassword;
-    console.log('data.email',data.email)
-    const result =await authService.updatePasswordByEmail(data.email, reset);
-    console.log(result);
-    return res.status(201).json(result);
+    // // reset password
+    const length = 12;
+    const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let password = '';
+
+    // generate random password
+    for (let i =0; i < length; i++){
+      const randomIndex = Math.floor(Math.random() * chars.length);
+      console.log('randomIndex',randomIndex)
+      password += chars[randomIndex]
+      }
+    console.log('password',password)
+    // hash password
+    const hashedPassword = await hashService.hash(password)
+    console.log('hashedPassword',hashedPassword)
+    const convertPassword = await authService.updatePasswordByEmail(data.email,hashedPassword)
+    console.log('convertPassword',convertPassword)
+
+    return res.status(201).json(convertPassword);
   } catch (error) {
     next(error)
   }

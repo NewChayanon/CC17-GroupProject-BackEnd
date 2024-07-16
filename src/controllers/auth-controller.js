@@ -11,6 +11,7 @@ const { filterLocationWithinRange } = require("../utils/calculate");
 const productService = require("../services/product-service");
 const { locationValidator } = require("../middlewares/validator");
 const { eventWithinToday, eventWithinTomorrow, eventWithinRange } = require("../utils/searchByDate");
+const{ mailer} = require('../config/mailer')
 
 const authController = {};
 authController.register = async (req, res, next) => {
@@ -55,9 +56,9 @@ authController.login = async (req, res, next) => {
 authController.resetPassword = async (req, res, next) => {
   try {
     const data = req.body;
-    console.log("data", data);
     // find email
-    const email = await authService.findEmailByEmail(data.email);
+    const {email} = await authService.findEmailByEmail(data.email);
+    // console.log('email',email)
     if (!email) {
       createError({ message: "Invalid credential", statusCode: 400 });
     }
@@ -65,20 +66,35 @@ authController.resetPassword = async (req, res, next) => {
     // // reset password
     const length = 12;
     const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    let password = '';
+    let temporaryPassword = '';
 
     // generate random password
     for (let i =0; i < length; i++){
       const randomIndex = Math.floor(Math.random() * chars.length);
-      console.log('randomIndex',randomIndex)
-      password += chars[randomIndex]
-      }
-    console.log('password',password)
+      temporaryPassword += chars[randomIndex]
+    }
+    // console.log('temporaryPassword',temporaryPassword)
+
     // hash password
-    const hashedPassword = await hashService.hash(password)
-    console.log('hashedPassword',hashedPassword)
+    const hashedPassword = await hashService.hash(temporaryPassword)
+    // console.log('hashedPassword',hashedPassword.length)
     const convertPassword = await authService.updatePasswordByEmail(data.email,hashedPassword)
-    console.log('convertPassword',convertPassword)
+
+
+    const emailData ={
+      from: process.env.GOOGLE_GMAIL,
+      to: email,
+      subject: "Your Temporary Password",
+      text: `Your temporary password is: ${temporaryPassword}. Please log in and change your password.`,
+      html: `
+      <p>Your temporary password is: <strong>${temporaryPassword}</strong></p>
+      <p>Please log in and change your password.</p>
+    `,
+    };
+    // console.log('emailData',emailData)
+    const mail = await mailer(emailData);
+    // console.log('mail',mail)
+    
 
     return res.status(201).json(convertPassword);
 

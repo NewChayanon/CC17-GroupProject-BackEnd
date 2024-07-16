@@ -475,6 +475,7 @@ dataFormat.storeReview = (allReview) =>
     topic,
     rate,
     comment,
+    reviewerImage: user.profileImage,
     commenterFirstName: user.firstName,
     commenterLastName: user.lastName,
     createdAt,

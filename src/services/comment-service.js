@@ -6,7 +6,7 @@ const commentService = {};
 commentService.findManyCommentAndUserByStoreProfileId = (storeProfileId) =>
   prisma.comment.findMany({
     where: { storeProfileId },
-    include: { user: { select: { firstName: true, lastName: true } } },
+    include: { user: { select: { firstName: true, lastName: true, profileImage: true } } },
   });
 
 // create

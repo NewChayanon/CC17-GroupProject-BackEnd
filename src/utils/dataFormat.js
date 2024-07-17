@@ -106,6 +106,7 @@ dataFormat.userEventId = (event, otherEvents, userId) => {
           voucherCode: VoucherList[0].code,
           voucherDescription: VoucherList[0].description,
           voucherCondition: VoucherList[0].condition,
+          voucherImage : VoucherList[0].image,
           voucherRemainingAmount: VoucherList[0].totalAmount - VoucherList[0].VoucherItem.length,
           userVoucherStatus: userVoucherStatus ? userVoucherStatus.status : [],
         }
@@ -160,6 +161,7 @@ dataFormat.authEventId = (eventDetails, otherEvents) => {
           voucherCode: VoucherList[0].code,
           voucherDescription: VoucherList[0].description,
           voucherCondition: VoucherList[0].condition,
+          voucherImage: VoucherList[0].image,
           voucherRemainingAmount: VoucherList[0].totalAmount - VoucherList[0].VoucherItem.length,
           userVoucherStatus: [],
         }
@@ -254,6 +256,8 @@ dataFormat.couponList = (allCoupon) =>
       storeProfile: { name: storeName },
       voucherList: {
         condition: voucherCondition,
+        description: voucherDescription,
+        image: voucherImage,
         code: voucherCode,
         event: { name: eventName, startDate: eventStartDate, endDate: eventEndDate },
       },
@@ -262,6 +266,8 @@ dataFormat.couponList = (allCoupon) =>
       storeName,
       eventName,
       voucherCondition,
+      voucherDescription,
+      voucherImage,
       eventStartDate,
       eventEndDate,
       voucherCode,

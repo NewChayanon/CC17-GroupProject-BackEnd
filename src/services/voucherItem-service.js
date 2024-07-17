@@ -15,6 +15,8 @@ voucherItemService.findManyVoucherItemByUserId = (userId) =>
       voucherList: {
         select: {
           condition: true,
+          description: true,
+          image: true,
           code: true,
           event: { select: { name: true, startDate: true, endDate: true } },
         },

@@ -734,8 +734,7 @@ const product = [
     name: "Kradum Thong Durian (กระดุมทอง)",
     description:
       "Kradum Thong durian is one of the most authentic varieties of durian from Thailand.",
-    image:
-      "https://greatcurryrecipes.net/wp-content/uploads/2022/06/sau2-720x540.jpg",
+    image: "https://statics.vinwonders.com/vietnamese-durian-01_1708501488.jpg",
     price: 120,
     unit: "KG",
   },
@@ -765,7 +764,7 @@ const product = [
     description:
       "Kan Yao is a medium to large varietal, generally weighing between 2 - 4.5 kg, and have a distinct round appearance with a long, thick, and fibrous stem, averaging 10 - 14 cm in length.",
     image:
-      "https://greatcurryrecipes.net/wp-content/uploads/2022/06/sau2-720x540.jpg",
+      "https://thethaiger.com/wp-content/uploads/2023/05/fresh-durian-durio-zibthinus-murray-sack-old-wood-background-king-fruit-from-thailand-summer-season.jpg",
     price: 120,
     unit: "KG",
   },
@@ -1041,6 +1040,22 @@ const eventItem = [
   { eventId: 5, productId: 3 },
   { eventId: 5, productId: 4 },
   { eventId: 5, productId: 5 },
+  { eventId: 6, productId: 6 },
+  { eventId: 6, productId: 7 },
+  { eventId: 6, productId: 8 },
+  { eventId: 6, productId: 9 },
+  { eventId: 7, productId: 6 },
+  { eventId: 7, productId: 7 },
+  { eventId: 7, productId: 8 },
+  { eventId: 7, productId: 9 },
+  { eventId: 8, productId: 6 },
+  { eventId: 8, productId: 7 },
+  { eventId: 8, productId: 8 },
+  { eventId: 8, productId: 9 },
+  { eventId: 9, productId: 6 },
+  { eventId: 9, productId: 7 },
+  { eventId: 9, productId: 8 },
+  { eventId: 9, productId: 9 },
 ];
 const voucherList = [
   {
@@ -1057,21 +1072,25 @@ const voucherList = [
   },
   {
     eventId: 2,
-    code: "XXXXX24",
-    description: "description description description description",
-    condition: "condition condition condition condition condition condition.",
-    totalAmount: 999,
+    code: "MOOPING16",
+    description: "Present the coupon to get the 15% discount!",
+    condition:
+      "This coupon can be used only 1 time and cannot be shared to any third parties.",
+    totalAmount: 200,
     discount: 99,
-    image: "https://picsum.photos/400",
+    image:
+      "https://media-cdn.tripadvisor.com/media/photo-s/11/4b/e1/47/getlstd-property-photo.jpg",
   },
   {
     eventId: 3,
-    code: "XXXXX24",
-    description: "description description description description",
-    condition: "condition condition condition condition condition condition.",
-    totalAmount: 999,
+    code: "PORK8LOVER",
+    description: "Buy one mooping with your loved one to get free skewer.",
+    condition:
+      "The coupon bearer must bring the partner at the actual event to redeem the benefit of this coupon.",
+    totalAmount: 200,
     discount: 99,
-    image: "https://picsum.photos/400",
+    image:
+      "https://hungryinthailand.com/wp-content/uploads/2023/04/moo-ping-at-a-street-food-market-1-1.webp",
   },
   {
     eventId: 4,
@@ -1098,47 +1117,56 @@ const voucherList = [
   },
   {
     eventId: 6,
-    code: "XXXXX24",
-    description: "description description description description",
-    condition: "condition condition condition condition condition condition.",
-    totalAmount: 999,
-    discount: 99,
-    image: "https://picsum.photos/400",
+    code: "DURIAN24",
+    description: "Present this coupon to get 10% discount",
+    condition:
+      "This coupon can be used only 1 time and cannot be shared to any third parties.",
+    totalAmount: 100,
+    discount: 10,
+    image:
+      "https://i0.wp.com/www.yearofthedurian.com/wp-content/uploads/2013/06/P6014213-1-4.jpg?resize=640%2C480",
   },
   {
     eventId: 7,
-    code: "XXXXX24",
-    description: "description description description description",
-    condition: "condition condition condition condition condition condition.",
-    totalAmount: 999,
-    discount: 99,
-    image: "https://picsum.photos/400",
+    code: "SUPER50OFF",
+    description: "Get 50% OFF presenting this coupon to the seller.",
+    condition:
+      "This coupon can be used only 1 time and cannot be shared to any third parties.",
+    totalAmount: 300,
+    discount: 50,
+    image:
+      "https://news.cgtn.com/news/3d3d414f306b545a326c4754/img/179a5ef3-3247-48c2-aad7-92b2ed814ed3.jpg",
   },
   {
     eventId: 8,
-    code: "XXXXX24",
-    description: "description description description description",
-    condition: "condition condition condition condition condition condition.",
-    totalAmount: 999,
-    discount: 99,
-    image: "https://picsum.photos/400",
+    code: "BUY1GET1F",
+    description: "Bring your friend to our event and get another one for FREE!",
+    condition:
+      "This coupon can be used only 1 time and cannot be shared to any third parties.",
+    totalAmount: 150,
+    discount: 10,
+    image:
+      "https://www.afoodieworld.com/wp-content/uploads/2024/07/Hong-Kongs-largest-Malaysian-durian-festival-returns-to-Hotel-ICON-from-Jul.-20-to-Aug.-24-1024x683.jpg",
   },
   {
     eventId: 9,
-    code: "XXXXX24",
-    description: "description description description description",
-    condition: "condition condition condition condition condition condition.",
-    totalAmount: 999,
-    discount: 99,
-    image: "https://picsum.photos/400",
+    code: "DURIAN88",
+    description: "8.8 Promo - 100 THB discount if buying more than 500 THB",
+    condition:
+      "This coupon can be used only 1 time and cannot be shared to any third parties.",
+    totalAmount: 200,
+    discount: 25,
+    image:
+      "https://moneyandbanking.co.th/wp-content/uploads/2023/06/robinhood-durian.jpg",
   },
   {
     eventId: 10,
-    code: "XXXXX24",
-    description: "description description description description",
-    condition: "condition condition condition condition condition condition.",
-    totalAmount: 999,
-    discount: 99,
+    code: "DURIAN88",
+    description: "8.8 Promo - 100 THB discount if buying more than 500 THB",
+    condition:
+      "This coupon can be used only 1 time and cannot be shared to any third parties.",
+    totalAmount: 200,
+    discount: 25,
     image: "https://picsum.photos/400",
   },
   {
@@ -1368,26 +1396,54 @@ const follow = [
   { storeProfileId: 1, userId: 3 },
   { storeProfileId: 1, userId: 4 },
   { storeProfileId: 1, userId: 5 },
+  { storeProfileId: 1, userId: 7 },
+  { storeProfileId: 1, userId: 8 },
+  { storeProfileId: 1, userId: 9 },
+  { storeProfileId: 1, userId: 10 },
   { storeProfileId: 2, userId: 2 },
   { storeProfileId: 2, userId: 3 },
   { storeProfileId: 2, userId: 4 },
   { storeProfileId: 2, userId: 5 },
+  { storeProfileId: 2, userId: 6 },
+  { storeProfileId: 2, userId: 8 },
+  { storeProfileId: 2, userId: 9 },
+  { storeProfileId: 2, userId: 10 },
+  { storeProfileId: 2, userId: 11 },
   { storeProfileId: 3, userId: 2 },
   { storeProfileId: 3, userId: 3 },
   { storeProfileId: 3, userId: 4 },
   { storeProfileId: 3, userId: 5 },
+  { storeProfileId: 3, userId: 6 },
+  { storeProfileId: 3, userId: 7 },
+  { storeProfileId: 3, userId: 9 },
+  { storeProfileId: 3, userId: 10 },
   { storeProfileId: 4, userId: 2 },
   { storeProfileId: 4, userId: 3 },
   { storeProfileId: 4, userId: 4 },
   { storeProfileId: 4, userId: 5 },
+  { storeProfileId: 4, userId: 6 },
+  { storeProfileId: 4, userId: 7 },
+  { storeProfileId: 4, userId: 9 },
+  { storeProfileId: 4, userId: 10 },
+  { storeProfileId: 4, userId: 11 },
   { storeProfileId: 5, userId: 2 },
   { storeProfileId: 5, userId: 3 },
   { storeProfileId: 5, userId: 4 },
   { storeProfileId: 5, userId: 5 },
+  { storeProfileId: 5, userId: 6 },
+  { storeProfileId: 5, userId: 7 },
+  { storeProfileId: 5, userId: 8 },
+  { storeProfileId: 5, userId: 9 },
+  { storeProfileId: 5, userId: 11 },
   { storeProfileId: 6, userId: 2 },
   { storeProfileId: 6, userId: 3 },
   { storeProfileId: 6, userId: 4 },
   { storeProfileId: 6, userId: 5 },
+  { storeProfileId: 6, userId: 6 },
+  { storeProfileId: 6, userId: 7 },
+  { storeProfileId: 6, userId: 8 },
+  { storeProfileId: 6, userId: 9 },
+  { storeProfileId: 6, userId: 10 },
 ];
 const comment = [
   {
@@ -1657,13 +1713,35 @@ const inboxMessageUser = [
   },
 ];
 
-const report = {
-  userIdReporter: 4,
-  storeProfileReported: 2,
-  subject: "mangosteen",
-  message: "test",
-  image: "https://picsum.photos/400",
-};
+const report = [
+  {
+    userIdReporter: 4,
+    storeProfileReported: 2,
+    subject: "Durian is overriped and squishy",
+    message:
+      "The seller told me that the quality of his Durian is top-notch. Not worth paying indeed. I won't buy it again!",
+    image:
+      "https://i0.wp.com/www.yearofthedurian.com/wp-content/uploads/2012/11/Tekkaraub3-2.jpg?resize=640%2C480",
+  },
+  {
+    userIdReporter: 2,
+    storeProfileReported: 8,
+    subject: "Boat noodle is so pricey, considering its quality",
+    message:
+      "I do not find the taste of boat noodle here so special. The price per bowl is way too costly! ",
+    image:
+      "https://thumbs.dreamstime.com/z/dry-boat-noodles-pork-thai-street-food-guay-dtieow-reua-moo-naam-dtok-thin-rice-ball-liver-topped-dark-soy-sauce-30978330.jpg",
+  },
+  {
+    userIdReporter: 3,
+    storeProfileReported: 11,
+    subject: "The quality of the chili is off!",
+    message:
+      "I had the diarrhea after having had this chili paste. It was not a good experience at all!",
+    image:
+      "https://www.eatingthaifood.com/wp-content/uploads/2018/12/recipe-nam-prik-goong-sot.jpg",
+  },
+];
 
 // const run = async () => {
 //   await prisma.users.createMany({ data: userData });

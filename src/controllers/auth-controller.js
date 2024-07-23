@@ -175,9 +175,9 @@ authController.searchBar = async (req, res, next) => {
 authController.sellerNearMe = async (req, res, next) => {
   try {
     const userLocation = req.query.userLocation;
+    console.log("******",userLocation)
     const range = 13; //km.
     const allEventIsActive = await eventServices.findAllEventByIsActive();
-
     const seller = filterLocationWithinRange(allEventIsActive, userLocation, range);
 
     const storeProfileId = dataFormat.selectStoreProfileId(seller);
